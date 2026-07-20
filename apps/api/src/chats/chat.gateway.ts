@@ -1,0 +1,101 @@
+import { HttpException, Inject, OnModuleDestroy, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer, WsException } from '@nestjs/websockets';
+import type { Namespace, Socket } from 'socket.io';
+import { AuthService, type AuthenticatedUser } from '../auth/auth.service.js';
+import { SafetyService } from '../safety/safety.service.js';
+import { ChatJoinDto, SendChatMessageDto } from './chat.dto.js';
+import { ChatService } from './chat.service.js';
+
+function cookie(value: string | undefined, name: string) {
+  const encoded = value?.split(';').map((part) => part.trim()).find((part) => part.startsWith(`${name}=`))?.slice(name.length + 1);
+  return encoded ? decodeURIComponent(encoded) : undefined;
+}
+
+function websocketError(error: unknown) {
+  if (error instanceof WsException) return error;
+  if (error instanceof HttpException) {
+    const response = error.getResponse();
+    if (typeof response === 'object' && response !== null && 'code' in response) return new WsException(String(response.code));
+  }
+  return new WsException('CHAT_REQUEST_FAILED');
+}
+
+@WebSocketGateway({ namespace: 'chats', cors: { origin: true, credentials: true } })
+@UsePipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true, exceptionFactory: () => new WsException('INVALID_MESSAGE') }))
+export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnModuleDestroy {
+  @WebSocketServer() server!: Namespace;
+  private unsubscribeRelationship: (() => void) | undefined;
+
+  constructor(
+    @Inject(AuthService) private readonly auth: AuthService,
+    @Inject(ChatService) private readonly chats: ChatService,
+    @Inject(SafetyService) private readonly safety: SafetyService,
+  ) {}
+
+  afterInit() {
+    this.unsubscribeRelationship = this.safety.onRelationshipChanged((change) => {
+      for (const socket of this.server.sockets.values()) {
+        const user = socket.data.user as AuthenticatedUser | undefined;
+        if (user && change.userIds.includes(user.id)) {
+          socket.emit('safety:relationship', change);
+          void this.refreshSubscriptions(socket, user);
+        }
+      }
+    });
+  }
+
+  onModuleDestroy() {
+    this.unsubscribeRelationship?.();
+  }
+
+  async handleConnection(socket: Socket) {
+    const sessionToken = cookie(socket.handshake.headers.cookie, 'gm_session');
+    if (!sessionToken) return socket.disconnect();
+    socket.data.sessionToken = sessionToken;
+    const user = await this.auth.getActiveSession(sessionToken);
+    if (!user) return socket.disconnect();
+    socket.data.user = user;
+    await this.refreshSubscriptions(socket, user);
+  }
+
+  private async refreshSubscriptions(socket: Socket, user: AuthenticatedUser) {
+    for (const room of socket.rooms) if (room.startsWith('chat:')) await socket.leave(room);
+    const { chats } = await this.chats.list(user);
+    if (chats.length > 0) await socket.join(chats.map((chat) => `chat:${chat.id}`));
+  }
+
+  private async activeUser(socket: Socket) {
+    const sessionToken = socket.data.sessionToken as string | undefined;
+    const user = sessionToken ? await this.auth.getActiveSession(sessionToken) : undefined;
+    if (!user) {
+      socket.disconnect();
+      throw new WsException('AUTHENTICATION_REQUIRED');
+    }
+    socket.data.user = user;
+    return user;
+  }
+
+  @SubscribeMessage('chat:join')
+  async join(@ConnectedSocket() socket: Socket, @MessageBody() input: ChatJoinDto) {
+    try {
+      const user = await this.activeUser(socket);
+      await this.chats.detail(input.chatId, user);
+      await socket.join(`chat:${input.chatId}`);
+      return { chatId: input.chatId };
+    } catch (error) {
+      throw websocketError(error);
+    }
+  }
+
+  @SubscribeMessage('chat:send')
+  async send(@ConnectedSocket() socket: Socket, @MessageBody() input: SendChatMessageDto) {
+    try {
+      const user = await this.activeUser(socket);
+      const message = await this.chats.send(input.chatId, user, input.body, input.clientMessageId);
+      this.server.to(`chat:${input.chatId}`).emit('chat:message', message);
+      return message;
+    } catch (error) {
+      throw websocketError(error);
+    }
+  }
+}

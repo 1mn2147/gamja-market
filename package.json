@@ -1,0 +1,38 @@
+{
+  "name": "gamja-market",
+  "private": true,
+  "packageManager": "pnpm@10.13.1",
+  "scripts": {
+    "dev": "corepack pnpm --parallel --stream -r --filter @gamja/web --filter @gamja/api --filter @gamja/worker dev",
+    "build": "corepack pnpm -r --if-present build",
+    "lint": "corepack pnpm -r --if-present lint",
+    "typecheck": "corepack pnpm -r --if-present typecheck",
+    "test:unit": "corepack pnpm -r --if-present test:unit",
+    "test:integration": "corepack pnpm --filter @gamja/api test:integration",
+    "test:contract": "corepack pnpm --filter @gamja/contracts test:contract",
+    "test:e2e": "corepack pnpm --filter @gamja/web test:e2e",
+    "test:a11y": "corepack pnpm --filter @gamja/web test:a11y",
+    "test:security": "node packages/config/scripts/security-check.mjs",
+    "test:release": "corepack pnpm lint && corepack pnpm typecheck && corepack pnpm build && corepack pnpm test:unit && corepack pnpm test:integration && corepack pnpm test:contract && node scripts/verify-baseline.mjs && corepack pnpm test:e2e && corepack pnpm test:a11y && corepack pnpm test:security"
+  },
+  "engines": {
+    "node": ">=24.0.0 <25",
+    "pnpm": ">=10.13.1 <11"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "prisma",
+      "esbuild",
+      "sharp",
+      "msgpackr-extract",
+      "@scarf/scarf",
+      "argon2"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "typescript-eslint": "^8.64.0"
+  }
+}

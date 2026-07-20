@@ -1,0 +1,754 @@
+openapi: 3.1.0
+info:
+  title: Gamja Market API
+  version: 0.8.0
+  description: WBS-02 through WBS-07 implemented account, product, chat, safety, trade, sandbox payment, and administrator REST contract. Authentication uses an opaque HttpOnly session cookie.
+servers:
+  - url: /api/v1
+paths:
+  /healthz:
+    get:
+      operationId: getHealth
+      responses:
+        '200':
+          description: Process is healthy.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Health' } } }
+  /readyz:
+    get:
+      operationId: getReadiness
+      responses:
+        '200':
+          description: Ready for traffic.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Health' } } }
+        '503': { $ref: '#/components/responses/Problem' }
+  /auth/signups:
+    post:
+      operationId: signUp
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/SignUpRequest' } } } }
+      responses:
+        '201': { description: Contact confirmation was issued. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /auth/contact-confirmations:
+    post:
+      operationId: confirmContact
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/CodeConfirmationRequest' } } } }
+      responses:
+        '201': { description: Account is active. }
+        '400': { $ref: '#/components/responses/Problem' }
+  /auth/login:
+    post:
+      operationId: login
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/LoginRequest' } } } }
+      responses:
+        '201':
+          description: Session is issued in the gm_session HttpOnly cookie.
+          headers:
+            Set-Cookie: { schema: { type: string } }
+        '401': { $ref: '#/components/responses/Problem' }
+        '429': { $ref: '#/components/responses/Problem' }
+  /auth/logout:
+    post:
+      operationId: logout
+      security: [{ sessionCookie: [] }]
+      responses:
+        '204': { description: Session revoked. }
+        '401': { $ref: '#/components/responses/Problem' }
+  /auth/me:
+    get:
+      operationId: getCurrentAccount
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: Current account. }
+        '401': { $ref: '#/components/responses/Problem' }
+  /auth/password-resets:
+    post:
+      operationId: requestPasswordReset
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/IdentifierRequest' } } } }
+      responses:
+        '202': { description: Always accepted to avoid account enumeration. }
+  /auth/password-resets/confirm:
+    post:
+      operationId: confirmPasswordReset
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/PasswordResetConfirmRequest' } } } }
+      responses:
+        '204': { description: Password changed and sessions revoked. }
+        '400': { $ref: '#/components/responses/Problem' }
+  /auth/me/neighborhood:
+    patch:
+      operationId: setCurrentNeighborhood
+      security: [{ sessionCookie: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/NeighborhoodSelection' } } } }
+      responses:
+        '200': { description: Selected administrative neighborhood. }
+        '401': { $ref: '#/components/responses/Problem' }
+  /auth/me/withdrawal:
+    post:
+      operationId: withdrawCurrentAccount
+      security: [{ sessionCookie: [] }]
+      responses:
+        '201': { description: Account is withdrawn and sessions are revoked. }
+        '401': { $ref: '#/components/responses/Problem' }
+  /neighborhoods:
+    get:
+      operationId: listNeighborhoods
+      responses:
+        '200': { description: Administrative neighborhood list only. }
+  /neighborhoods/{code}/nearby:
+    get:
+      operationId: listNearbyNeighborhoods
+      parameters: [{ name: code, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Selected neighborhood and configured adjacent neighborhoods. }
+        '404': { $ref: '#/components/responses/Problem' }
+  /products:
+    get:
+      operationId: searchProducts
+      parameters:
+        - { name: query, in: query, schema: { type: string, maxLength: 100 } }
+        - { name: category, in: query, schema: { type: string } }
+        - { name: minPrice, in: query, schema: { type: string, pattern: '^[0-9]+$' } }
+        - { name: maxPrice, in: query, schema: { type: string, pattern: '^[0-9]+$' } }
+        - { name: sort, in: query, schema: { type: string, enum: [latest, price_asc, price_desc] } }
+        - { name: cursor, in: query, schema: { type: string } }
+      responses:
+        '200': { description: Active products within the selected administrative neighborhood scope. }
+    post:
+      operationId: createProduct
+      security: [{ sessionCookie: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/CreateProductRequest' } } } }
+      responses:
+        '201': { description: Product created with validated image bytes. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+  /products/me:
+    get:
+      operationId: listMyProducts
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: Current user's non-deleted products. }
+  /products/{id}:
+    get:
+      operationId: getProduct
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Public active product or owner's non-deleted product. }
+        '404': { $ref: '#/components/responses/Problem' }
+    patch:
+      operationId: updateProduct
+      security: [{ sessionCookie: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Owner updated the product. }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+    delete:
+      operationId: deleteProduct
+      security: [{ sessionCookie: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '204': { description: Product hidden as deleted. }
+  /products/{id}/status:
+    patch:
+      operationId: changeProductVisibility
+      security: [{ sessionCookie: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Owner changed ACTIVE or HIDDEN visibility. }
+  /products/{id}/images/{imageId}:
+    get:
+      operationId: getProductImage
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { name: imageId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { description: Validated product image bytes. }
+        '404': { $ref: '#/components/responses/Problem' }
+  /products/{productId}/chats:
+    post:
+      operationId: createProductChat
+      description: Creates or returns the buyer and seller's single chat room for an active product.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: productId, in: path, required: true, schema: { type: string } }
+      responses:
+        '201': { description: Chat room created or returned. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /chats:
+    get:
+      operationId: listChats
+      description: Lists only chat rooms visible to the current participant after block enforcement.
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: Visible chat rooms and their latest message. }
+        '401': { $ref: '#/components/responses/Problem' }
+  /chats/{chatId}:
+    get:
+      operationId: getChat
+      description: Returns a participant-visible chat and marks it read for the current account.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: chatId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { description: Chat detail with product, participants, and messages. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /chats/{chatId}/messages:
+    post:
+      operationId: sendChatMessage
+      description: Sends a message after participant and block checks. Socket.IO uses the same service checks.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: chatId, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/SendMessageRequest' } } } }
+      responses:
+        '201': { description: Message persisted. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /blocks:
+    get:
+      operationId: listBlockedUsers
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: Users blocked by the current account. }
+        '401': { $ref: '#/components/responses/Problem' }
+    post:
+      operationId: blockUser
+      security: [{ sessionCookie: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/BlockUserRequest' } } } }
+      responses:
+        '201': { description: Block relationship enforced. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /blocks/{userId}:
+    delete:
+      operationId: unblockUser
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: userId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { description: Block relationship removed if present. }
+        '401': { $ref: '#/components/responses/Problem' }
+  /reports:
+    post:
+      operationId: createReport
+      security: [{ sessionCookie: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/CreateReportRequest' } } } }
+      responses:
+        '201': { description: Report received without exposing internal investigation data. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /reports/me:
+    get:
+      operationId: listMyReports
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: Current account's reports without internal notes or evidence. }
+        '401': { $ref: '#/components/responses/Problem' }
+  /trades:
+    get:
+      operationId: listTrades
+      description: Lists trades where the current account is the buyer or seller.
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: Participant-visible trades with KRW integer strings and the current account role. }
+        '401': { $ref: '#/components/responses/Problem' }
+    post:
+      operationId: requestTrade
+      description: Requests a trade after product, neighborhood, ownership, duplicate, and block checks.
+      security: [{ sessionCookie: [] }]
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/CreateTradeRequest' } } } }
+      responses:
+        '201': { description: Trade requested with a server-side price snapshot. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /trades/{tradeId}:
+    get:
+      operationId: getTrade
+      description: Returns a trade only to its buyer or seller.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: tradeId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { description: Trade detail and ordered state history. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /trades/{tradeId}/accept:
+    post:
+      operationId: acceptTrade
+      description: Allows the seller to accept a requested trade and reserve the active product.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: tradeId, in: path, required: true, schema: { type: string } }
+      responses:
+        '201': { description: Trade accepted and product reserved. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /trades/{tradeId}/reject:
+    post:
+      operationId: rejectTrade
+      description: Allows the seller to reject a requested trade with a reason.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: tradeId, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/TradeActionRequest' } } } }
+      responses:
+        '201': { description: Trade rejected and history appended. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /trades/{tradeId}/deliver:
+    post:
+      operationId: deliverTrade
+      description: Allows the seller to mark an accepted trade delivered and fixes the auto-confirm deadline.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: tradeId, in: path, required: true, schema: { type: string } }
+      responses:
+        '201': { description: Trade marked delivered. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /trades/{tradeId}/confirm:
+    post:
+      operationId: confirmTrade
+      description: Allows the buyer to confirm a delivered trade.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: tradeId, in: path, required: true, schema: { type: string } }
+      responses:
+        '201': { description: Trade confirmed and product marked sold. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /trades/{tradeId}/dispute:
+    post:
+      operationId: disputeTrade
+      description: Allows either participant to dispute an accepted, delivered, or confirmed trade.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: tradeId, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/TradeActionRequest' } } } }
+      responses:
+        '201': { description: Trade disputed and history appended. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /trades/{tradeId}/cancel:
+    post:
+      operationId: cancelTrade
+      description: Cancels a requested trade, or an accepted trade by its buyer, within the server-side window.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: tradeId, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/TradeActionRequest' } } } }
+      responses:
+        '201': { description: Trade cancelled and any accepted product reservation released. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /payments/orders:
+    post:
+      operationId: createPaymentOrder
+      description: Creates a sandbox-only payment order from the accepted trade server-side KRW price.
+      x-sandbox-only: true
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: Idempotency-Key, in: header, required: true, schema: { type: string, minLength: 8, maxLength: 200 } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/CreatePaymentOrderRequest' } } } }
+      responses:
+        '201':
+          description: Sandbox payment order created, or the first response replayed for the same request and idempotency key.
+          content: { application/json: { schema: { $ref: '#/components/schemas/PaymentView' } } }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /payments/{orderId}/confirm:
+    post:
+      operationId: confirmPayment
+      description: Confirms a sandbox-only payment after matching the buyer, path order ID, and server-side amount.
+      x-sandbox-only: true
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: orderId, in: path, required: true, schema: { type: string, minLength: 1 } }
+        - { name: Idempotency-Key, in: header, required: true, schema: { type: string, minLength: 8, maxLength: 200 } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/ConfirmPaymentRequest' } } } }
+      responses:
+        '201':
+          description: Sandbox payment approved, or the first response replayed for the same request and idempotency key.
+          content: { application/json: { schema: { $ref: '#/components/schemas/PaymentView' } } }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /payments/{orderId}/cancel:
+    post:
+      operationId: cancelPayment
+      description: Cancels an approved sandbox payment for its buyer while the trade remains accepted.
+      x-sandbox-only: true
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: orderId, in: path, required: true, schema: { type: string, minLength: 1 } }
+        - { name: Idempotency-Key, in: header, required: true, schema: { type: string, minLength: 8, maxLength: 200 } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/PaymentReasonRequest' } } } }
+      responses:
+        '201':
+          description: Sandbox payment cancelled and settlement paused, or the first response replayed.
+          content: { application/json: { schema: { $ref: '#/components/schemas/PaymentView' } } }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /payments/{orderId}/refund:
+    post:
+      operationId: refundPayment
+      description: Refunds an approved sandbox payment for a confirmed or disputed participant trade.
+      x-sandbox-only: true
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: orderId, in: path, required: true, schema: { type: string, minLength: 1 } }
+        - { name: Idempotency-Key, in: header, required: true, schema: { type: string, minLength: 8, maxLength: 200 } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/PaymentReasonRequest' } } } }
+      responses:
+        '201':
+          description: Sandbox payment refunded and settlement paused, or the first response replayed.
+          content: { application/json: { schema: { $ref: '#/components/schemas/PaymentView' } } }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+        '409': { $ref: '#/components/responses/Problem' }
+  /payments/{orderId}:
+    get:
+      operationId: getPayment
+      description: Returns sandbox payment detail only to the trade buyer or seller.
+      x-sandbox-only: true
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: orderId, in: path, required: true, schema: { type: string, minLength: 1 } }
+      responses:
+        '200':
+          description: Participant-visible sandbox payment detail.
+          content: { application/json: { schema: { $ref: '#/components/schemas/PaymentView' } } }
+        '401': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /payments/webhooks/toss:
+    post:
+      operationId: receiveTossPaymentWebhook
+      description: Accepts a sandbox-only Toss payment webhook, durably preserving the exact raw JSON body before lookup verification and duplicate or sequence handling.
+      x-sandbox-only: true
+      x-raw-body-required: true
+      security: []
+      parameters:
+        - { name: toss-transmission-id, in: header, required: true, schema: { type: string, minLength: 1 } }
+      requestBody:
+        required: true
+        description: JSON is parsed for processing while its exact raw UTF-8 bytes are retained for the webhook record.
+        content: { application/json: { schema: { $ref: '#/components/schemas/TossPaymentWebhookRequest' } } }
+      responses:
+        '202':
+          description: Webhook durably accepted; processing status reports processed, ignored, duplicate, or failed sandbox verification.
+          content: { application/json: { schema: { $ref: '#/components/schemas/PaymentWebhookReceipt' } } }
+        '400': { $ref: '#/components/responses/Problem' }
+  /admin/overview:
+    get:
+      operationId: getAdminOverview
+      description: SUPER_ADMIN-only aggregate work queue counts.
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: User, product, open report, and active trade counts. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+  /admin/users:
+    get:
+      operationId: listAdminUsers
+      description: SUPER_ADMIN-only masked user list.
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: Up to 100 users with masked email and phone values. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+  /admin/reports:
+    get:
+      operationId: listAdminReports
+      description: SUPER_ADMIN-only report queue.
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: Up to 100 reports ordered by creation time. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+  /admin/trades:
+    get:
+      operationId: listAdminTrades
+      description: SUPER_ADMIN-only trade operations view.
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: Up to 100 trades with product summaries and KRW integer strings. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+  /admin/audit-logs:
+    get:
+      operationId: listAdminAuditLogs
+      description: SUPER_ADMIN-only immutable audit log view.
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: Up to 200 audit records ordered by occurrence time. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+  /admin/users/{userId}/suspend:
+    post:
+      operationId: suspendAdminUser
+      description: Suspends a non-admin user after SUPER_ADMIN password reauthentication and records an audit reason.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: userId, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/AdminActionRequest' } } } }
+      responses:
+        '201': { description: User suspended and active sessions revoked. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /admin/users/{userId}/activate:
+    post:
+      operationId: activateAdminUser
+      description: Reactivates a non-admin user after SUPER_ADMIN password reauthentication and records an audit reason.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: userId, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/AdminActionRequest' } } } }
+      responses:
+        '201': { description: User activated. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /admin/products/{productId}/hide:
+    post:
+      operationId: hideAdminProduct
+      description: Hides a product after SUPER_ADMIN password reauthentication and records before and after values.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: productId, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/AdminActionRequest' } } } }
+      responses:
+        '201': { description: Product hidden. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /admin/reports/{reportId}/resolve:
+    post:
+      operationId: resolveAdminReport
+      description: Resolves a report after SUPER_ADMIN password reauthentication and records an audit reason.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: reportId, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/AdminActionRequest' } } } }
+      responses:
+        '201': { description: Report resolved. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /admin/reports/{reportId}/dismiss:
+    post:
+      operationId: dismissAdminReport
+      description: Dismisses a report after SUPER_ADMIN password reauthentication and records an audit reason.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: reportId, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/AdminActionRequest' } } } }
+      responses:
+        '201': { description: Report dismissed. }
+        '400': { $ref: '#/components/responses/Problem' }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+components:
+  securitySchemes:
+    sessionCookie: { type: apiKey, in: cookie, name: gm_session }
+  schemas:
+    Health:
+      type: object
+      required: [status, requestId]
+      properties: { status: { type: string, enum: [ok] }, requestId: { type: string } }
+    SignUpRequest:
+      type: object
+      required: [password, adultConfirmed]
+      properties:
+        email: { type: string, format: email }
+        phone: { type: string }
+        password: { type: string, minLength: 12, writeOnly: true }
+        adultConfirmed: { type: boolean, const: true }
+    IdentifierRequest:
+      type: object
+      required: [identifier]
+      properties: { identifier: { type: string } }
+    CodeConfirmationRequest:
+      allOf:
+        - $ref: '#/components/schemas/IdentifierRequest'
+        - type: object
+          required: [code]
+          properties: { code: { type: string, minLength: 6, maxLength: 6, writeOnly: true } }
+    PasswordResetConfirmRequest:
+      allOf:
+        - $ref: '#/components/schemas/CodeConfirmationRequest'
+        - type: object
+          required: [newPassword]
+          properties: { newPassword: { type: string, minLength: 12, writeOnly: true } }
+    LoginRequest:
+      allOf:
+        - $ref: '#/components/schemas/IdentifierRequest'
+        - type: object
+          required: [password]
+          properties: { password: { type: string, writeOnly: true } }
+    NeighborhoodSelection:
+      type: object
+      required: [neighborhoodCode]
+      properties: { neighborhoodCode: { type: string } }
+    CreateProductRequest:
+      type: object
+      required: [title, description, priceKrw, category, images]
+      properties:
+        title: { type: string, minLength: 1, maxLength: 100 }
+        description: { type: string, minLength: 1, maxLength: 2000 }
+        priceKrw: { type: string, pattern: '^[0-9]+$', description: KRW integer in the minimum unit. }
+        category: { type: string, maxLength: 50 }
+        images:
+          type: array
+          minItems: 1
+          maxItems: 5
+          items:
+            type: object
+            required: [dataBase64, altText]
+            properties:
+              dataBase64: { type: string, format: byte, writeOnly: true }
+              altText: { type: string, minLength: 1, maxLength: 120 }
+    SendMessageRequest:
+      type: object
+      additionalProperties: false
+      required: [body]
+      properties:
+        body: { type: string, minLength: 1, maxLength: 1000 }
+    BlockUserRequest:
+      type: object
+      additionalProperties: false
+      required: [userId]
+      properties:
+        userId: { type: string, minLength: 1 }
+    CreateReportRequest:
+      type: object
+      additionalProperties: false
+      required: [targetType, targetId, reason]
+      properties:
+        targetType: { type: string, enum: [USER, PRODUCT, MESSAGE] }
+        targetId: { type: string, minLength: 1 }
+        reason: { type: string, minLength: 2, maxLength: 100 }
+        detail: { type: string, maxLength: 2000 }
+    CreateTradeRequest:
+      type: object
+      additionalProperties: false
+      required: [productId]
+      properties:
+        productId: { type: string, minLength: 1 }
+    TradeActionRequest:
+      type: object
+      additionalProperties: false
+      required: [reason]
+      properties:
+        reason: { type: string, minLength: 2, maxLength: 500 }
+    AdminActionRequest:
+      type: object
+      additionalProperties: false
+      required: [reason, password]
+      properties:
+        reason: { type: string, minLength: 2, maxLength: 500 }
+        password: { type: string, minLength: 12, maxLength: 200, writeOnly: true }
+    CreatePaymentOrderRequest:
+      type: object
+      additionalProperties: false
+      required: [tradeId]
+      properties:
+        tradeId: { type: string, minLength: 1 }
+    ConfirmPaymentRequest:
+      type: object
+      additionalProperties: false
+      required: [paymentKey, orderId, amountKrw]
+      properties:
+        paymentKey: { type: string, minLength: 8, maxLength: 200 }
+        orderId: { type: string, minLength: 1 }
+        amountKrw: { type: string, pattern: '^[0-9]+$', description: Exact server-priced KRW integer in the minimum unit. }
+    PaymentReasonRequest:
+      type: object
+      additionalProperties: false
+      required: [reason]
+      properties:
+        reason: { type: string, minLength: 2, maxLength: 500 }
+    TossPaymentWebhookRequest:
+      type: object
+      additionalProperties: false
+      required: [eventType, sequence, data]
+      properties:
+        eventType: { type: string, minLength: 1 }
+        sequence: { type: integer }
+        data:
+          type: object
+          additionalProperties: false
+          required: [paymentKey, orderId, amountKrw, status]
+          properties:
+            paymentKey: { type: string, minLength: 1 }
+            orderId: { type: string, minLength: 1 }
+            amountKrw: { type: string, pattern: '^[0-9]+$' }
+            status: { type: string, enum: [DONE, CANCELED, REFUNDED] }
+    PaymentView:
+      type: object
+      additionalProperties: false
+      required: [id, tradeId, orderId, paymentKey, amountKrw, status, settlementStatus, methodMasked, approvedAt, cancelledAt, refundedAt]
+      properties:
+        id: { type: string }
+        tradeId: { type: string }
+        orderId: { type: string }
+        paymentKey: { type: [string, 'null'] }
+        amountKrw: { type: string, pattern: '^[0-9]+$' }
+        status: { type: string, enum: [READY, APPROVED, UNCONFIRMED, FAILED, CANCEL_PENDING, CANCELLED, REFUND_PENDING, REFUNDED] }
+        settlementStatus: { type: string, enum: [HOLD, PAUSED, READY, SANDBOX_SETTLED] }
+        methodMasked: { type: [string, 'null'] }
+        approvedAt: { type: [string, 'null'], format: date-time }
+        cancelledAt: { type: [string, 'null'], format: date-time }
+        refundedAt: { type: [string, 'null'], format: date-time }
+    PaymentWebhookReceipt:
+      type: object
+      additionalProperties: false
+      required: [accepted, duplicate, status]
+      properties:
+        accepted: { type: boolean, const: true }
+        duplicate: { type: boolean }
+        status: { type: string, enum: [RECEIVED, PROCESSED, IGNORED, FAILED] }
+    Problem:
+      type: object
+      required: [type, title, status, code, requestId]
+      properties:
+        type: { type: string, format: uri }
+        title: { type: string }
+        status: { type: integer }
+        code: { type: string }
+        requestId: { type: string }
+  responses:
+    Problem:
+      description: Safe problem response.
+      content: { application/problem+json: { schema: { $ref: '#/components/schemas/Problem' } } }

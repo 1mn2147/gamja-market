@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+  --surface: #fffdf8;
+  --ink: #222018;
+  --muted: #6a665c;
+  --brand: #a83e00;
+  --focus: #1459d9;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--surface); color: var(--ink); font-family: Arial, sans-serif; }
+a { color: inherit; }
+.skip-link { position: fixed; left: 12px; top: -80px; z-index: 100; padding: 12px; background: var(--ink); color: white; }
+.skip-link:focus { top: 12px; }
+.site-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid #ded9cf; padding: 16px 24px; }
+.site-brand { font-weight: 800; text-decoration: none; white-space: nowrap; }
+.site-nav { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0; padding: 0; list-style: none; }
+.site-nav a { display: inline-flex; align-items: center; min-height: 44px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+main { margin: 0 auto; max-width: 720px; padding: 48px 24px; }
+form { display: grid; gap: 16px; max-width: 460px; }
+label { display: grid; gap: 6px; font-weight: 700; }
+input { min-height: 44px; padding: 8px 10px; border: 1px solid #8b857a; border-radius: 6px; font: inherit; }
+button { min-height: 44px; padding: 8px 14px; border: 0; border-radius: 6px; background: var(--brand); color: white; cursor: pointer; font: inherit; font-weight: 700; }
+section button { margin-right: 8px; }
+textarea { min-height: 120px; padding: 8px 10px; border: 1px solid #8b857a; border-radius: 6px; font: inherit; }
+.product-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.product-card { border: 1px solid #ded9cf; border-radius: 8px; padding: 12px; }
+.product-card img, .product-image { width: 100%; height: auto; border-radius: 6px; object-fit: cover; }
+.product-card img { aspect-ratio: 1; }
+@media (max-width: 640px) { .site-header { align-items: flex-start; flex-direction: column; gap: 4px; } .site-nav { gap: 4px 14px; } main { padding: 32px 16px; } }

@@ -1,0 +1,13 @@
+groups:
+  - name: gamja-payment-and-worker
+    rules:
+      - alert: WebhookProcessingBacklog
+        expr: gamja_outbox_pending_events > 100
+        for: 10m
+        labels: { severity: warning }
+        annotations: { summary: "Outbox events are accumulating" }
+      - alert: PaymentReconciliationMismatch
+        expr: gamja_payment_reconciliation_mismatches > 0
+        for: 5m
+        labels: { severity: critical }
+        annotations: { summary: "Payment reconciliation needs review" }
