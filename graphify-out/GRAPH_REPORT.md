@@ -1,16 +1,16 @@
 # Graph Report - gamja-market  (2026-07-23)
 
 ## Corpus Check
-- 199 files · ~210,428 words
+- 199 files · ~210,731 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4354 nodes · 5127 edges · 194 communities (119 shown, 75 thin omitted)
+- 4356 nodes · 5129 edges · 205 communities (128 shown, 77 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 9 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d93d1baa`
+- Built from commit: `335f1123`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -104,7 +104,6 @@
 - database/tsconfig.json
 - SendMessageDto
 - ReadinessService
-- test_plan.md
 - test-utils/tsconfig.json
 - ui/tsconfig.json
 - trade-client.tsx
@@ -119,8 +118,10 @@
 - contracts/tsconfig.json
 - Prisma__NeighborhoodClient
 - trade.controller.ts
+- AuthenticatedUser
 - 도메인·상태 모델
 - 8. 인증·계정 페이지
+- ReadinessService
 - 8. 기능 테스트 매트릭스
 - Prisma__PaymentClient
 - ADR-0001: 모듈형 모놀리스와 계약 우선 기반
@@ -171,8 +172,10 @@
 - 10. 채팅 페이지
 - AGENTS.md
 - class-validator
+- ProductService
 - @nestjs/common
 - @nestjs/platform-express
+- NeighborhoodController
 - @nestjs/throttler
 - 13. 진입·종료와 출시 판정
 - socket.io
@@ -183,6 +186,8 @@
 - redis
 - reflect-metadata
 - rxjs
+- ObservabilityService
+- 8. 기능 테스트 매트릭스
 - class-validator
 - POST
 - @nestjs/platform-socket.io
@@ -193,8 +198,13 @@
 - PATCH
 - POST
 - PUT
+- 요구사항·화면 추적표
 - TradeActionDto
 - 취약 비밀번호 차단 기능 구현·검증 보고서
+- 11. 성능, 복원력과 관측성
+- 13. 진입·종료와 출시 판정
+- seed.ts
+- 10. 채팅 페이지
 
 ## God Nodes (most connected - your core abstractions)
 1. `AuthenticatedUser` - 51 edges
@@ -209,25 +219,23 @@
 10. `ProductService` - 19 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `bootstrap()` --indirect_call--> `ObservabilityService`  [INFERRED]
+  apps/api/src/main.ts → apps/api/src/observability.service.ts
 - `bootstrap()` --indirect_call--> `AppModule`  [INFERRED]
   apps/api/src/main.ts → apps/api/src/app.module.ts
 - `bootstrap()` --indirect_call--> `requestContextMiddleware()`  [INFERRED]
   apps/api/src/main.ts → apps/api/src/common/request-context.middleware.ts
-- `bootstrap()` --indirect_call--> `ObservabilityService`  [INFERRED]
-  apps/api/src/main.ts → apps/api/src/observability.service.ts
+- `start()` --calls--> `processDueSettlements()`  [EXTRACTED]
+  apps/worker/src/main.ts → apps/worker/src/settlement-maintenance.ts
 - `SignupForm()` --calls--> `evaluatePassword()`  [EXTRACTED]
-  apps/web/app/account-forms.tsx → apps/web/app/password-policy.ts
-- `PasswordResetForm()` --calls--> `evaluatePassword()`  [EXTRACTED]
   apps/web/app/account-forms.tsx → apps/web/app/password-policy.ts
 
 ## Import Cycles
-- 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/Session.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
-- 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/Report.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
-- 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/ChatParticipant.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
 - 3-file cycle: `packages/database/prisma/generated/commonInputTypes.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/commonInputTypes.ts`
 - 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/AuditLog.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
 - 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/Block.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
 - 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/ChatMessage.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
+- 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/ChatParticipant.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
 - 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/ChatRoom.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
 - 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/LedgerEntry.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
 - 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/LoginThrottle.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
@@ -239,10 +247,12 @@
 - 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/PaymentWebhook.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
 - 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/Product.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
 - 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/ProductImage.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
+- 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/Report.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
+- 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/Session.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
 - 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/Trade.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
 - 3-file cycle: `packages/database/prisma/generated/internal/prismaNamespace.ts -> packages/database/prisma/generated/models.ts -> packages/database/prisma/generated/models/TradeHistory.ts -> packages/database/prisma/generated/internal/prismaNamespace.ts`
 
-## Communities (194 total, 75 thin omitted)
+## Communities (205 total, 77 thin omitted)
 
 ### Community 0 - "User.ts"
 Cohesion: 0.01
@@ -341,8 +351,8 @@ Cohesion: 0.04
 Nodes (52): AggregateAuditLog, AuditLogAggregateArgs, AuditLogCountAggregateInputType, AuditLogCountAggregateOutputType, AuditLogCountArgs, AuditLogCountOrderByAggregateInput, AuditLogCreateArgs, AuditLogCreateInput (+44 more)
 
 ### Community 24 - "PaymentService"
-Cohesion: 0.12
-Nodes (9): Inject, PaymentService, Inject, Injectable, TossPayment, TossResponse, TossSandboxAdapter, Injectable (+1 more)
+Cohesion: 0.09
+Nodes (24): PaymentController, Body, Controller, Get, HttpCode, Inject, Param, Post (+16 more)
 
 ### Community 25 - "devDependencies"
 Cohesion: 0.05
@@ -381,8 +391,8 @@ Cohesion: 0.06
 Nodes (30): AuditLogScalarFieldEnum, BlockScalarFieldEnum, ChatMessageScalarFieldEnum, ChatParticipantScalarFieldEnum, ChatRoomScalarFieldEnum, JsonNullValueFilter, JsonNullValueInput, LedgerEntryScalarFieldEnum (+22 more)
 
 ### Community 35 - "ChatGateway"
-Cohesion: 0.10
-Nodes (19): ChatJoinDto, SendChatMessageDto, SendMessageDto, IsOptional, IsString, Matches, MaxLength, MinLength (+11 more)
+Cohesion: 0.11
+Nodes (18): ChatJoinDto, SendChatMessageDto, SendMessageDto, IsOptional, IsString, Matches, MaxLength, MinLength (+10 more)
 
 ### Community 36 - "product-client.tsx"
 Cohesion: 0.10
@@ -397,8 +407,8 @@ Cohesion: 0.09
 Nodes (23): devDependencies, eslint, react, @types/react, typescript, vitest, exports, eslint (+15 more)
 
 ### Community 39 - "ProductController"
-Cohesion: 0.08
-Nodes (35): OptionalSession(), OptionalAuthRequest, ProductController, Body, Controller, Delete, Get, HttpCode (+27 more)
+Cohesion: 0.20
+Nodes (14): OptionalSession(), ProductController, Body, Controller, Delete, Get, HttpCode, Param (+6 more)
 
 ### Community 40 - "browser.ts"
 Cohesion: 0.09
@@ -413,20 +423,20 @@ Cohesion: 0.09
 Nodes (21): devDependencies, eslint, @gamja/config, @types/node, typescript, vitest, eslint, @gamja/config (+13 more)
 
 ### Community 43 - "enums.ts"
-Cohesion: 0.16
-Nodes (13): AuthenticatedUser, VerificationResult, isUniqueConstraintError(), SafetyRelationshipChange, SafetyService, Injectable, ACTIVE_TRADE_STATUSES, user (+5 more)
+Cohesion: 0.11
+Nodes (25): VerificationResult, logger, PaymentView, StoredResponse, TossPayment, TossResponse, SafetyRelationshipChange, ACTIVE_TRADE_STATUSES (+17 more)
 
 ### Community 44 - "감자마켓 테스트 전략 및 명세"
-Cohesion: 0.05
-Nodes (40): 10.1 API와 애플리케이션 보안, 10.2 PCI DSS 및 결제 데이터, 10.3 전송, 저장과 관리체계, 10. 보안 및 컴플라이언스 테스트, 11.1 성능, 11.2 장애 주입, 11.3 관측성 판정, 11. 성능, 복원력과 관측성 (+32 more)
+Cohesion: 0.08
+Nodes (25): 10.1 API와 애플리케이션 보안, 10.2 PCI DSS 및 결제 데이터, 10.3 전송, 저장과 관리체계, 10. 보안 및 컴플라이언스 테스트, 12. 핵심 E2E 인수 시나리오, 14. 결함 우선순위, 15. Codex 테스트 실행 절차, 16. 추적성 완전성 검사 (+17 more)
 
 ### Community 45 - "AdminService"
 Cohesion: 0.10
 Nodes (16): AdminController, Body, Controller, Get, Inject, Param, Post, Req (+8 more)
 
 ### Community 46 - "AuthenticatedRequest"
-Cohesion: 0.19
-Nodes (17): PaymentController, Body, Controller, Get, HttpCode, Param, Post, Req (+9 more)
+Cohesion: 0.20
+Nodes (18): OptionalAuthRequest, CreateProductDto, ProductImageDto, ProductQueryDto, ProductStatusDto, IsOptional, IsString, Matches (+10 more)
 
 ### Community 47 - "test-utils/package.json"
 Cohesion: 0.10
@@ -450,15 +460,15 @@ Nodes (18): devDependencies, eslint, @types/node, typescript, vitest, eslint, @t
 
 ### Community 52 - "SafetyController"
 Cohesion: 0.11
-Nodes (18): SafetyController, Body, Controller, Delete, Get, Inject, Param, Post (+10 more)
+Nodes (14): Inject, SafetyController, Body, Controller, Delete, Get, Inject, Param (+6 more)
 
 ### Community 53 - "web/tsconfig.json"
 Cohesion: 0.11
 Nodes (17): compilerOptions, jsx, lib, noEmit, plugins, exclude, extends, include (+9 more)
 
 ### Community 75 - "AdminController"
-Cohesion: 0.06
-Nodes (24): AppModule, HttpProblemFilter, requestContext, requestContextMiddleware(), HealthController, Controller, Get, HttpCode (+16 more)
+Cohesion: 0.14
+Nodes (11): AppModule, HttpProblemFilter, requestContext, requestContextMiddleware(), bootstrap(), configured, acceptedTrade(), account() (+3 more)
 
 ### Community 76 - "ProductService"
 Cohesion: 0.33
@@ -469,16 +479,16 @@ Cohesion: 0.12
 Nodes (16): Accessibility, Brand, Components, Content voice, Design principles, Implementation constraints, Information architecture, Interaction states (+8 more)
 
 ### Community 79 - "감자마켓 웹페이지 구성 설계"
-Cohesion: 0.11
-Nodes (18): 10.1 CHAT-01 채팅 목록, 10.2 CHAT-02 1:1 상품 채팅, 10. 채팅 페이지, 14. 시스템 상태 화면, 15. 공통 컴포넌트, 16. 반응형 구성, 17. 접근성 및 키보드 동작, 18. 콘텐츠와 마이크로카피 (+10 more)
+Cohesion: 0.13
+Nodes (15): 14. 시스템 상태 화면, 15. 공통 컴포넌트, 16. 반응형 구성, 17. 접근성 및 키보드 동작, 18. 콘텐츠와 마이크로카피, 19. 화면 상태 체크리스트, 1. 문서 정보, 20. 분석 및 개인정보 제한 (+7 more)
 
 ### Community 80 - "감자마켓 Codex 활용 개발 WBS"
 Cohesion: 0.13
 Nodes (15): 10. 진행 현황 형식, 1. 문서 정보, 2. 목표와 완료 조건, 3.1 확정 기술 기준선, 3.2 승인된 제품·운영 결정, 3. 개발 전제와 출시 차단 결정, 4.1 작업 입력 계약, 4.2 역할 분담 (+7 more)
 
 ### Community 81 - "ChatController"
-Cohesion: 0.15
-Nodes (10): AdminGuard, Injectable, readCookie(), SessionGuard, SessionRequest, Injectable, NeighborhoodController, Controller (+2 more)
+Cohesion: 0.14
+Nodes (14): AdminGuard, Injectable, readCookie(), SessionGuard, SessionRequest, Injectable, BlockUserDto, CreateReportDto (+6 more)
 
 ### Community 82 - "compilerOptions"
 Cohesion: 0.14
@@ -497,12 +507,8 @@ Cohesion: 0.17
 Nodes (11): compilerOptions, outDir, rootDir, types, extends, include, node, src/**/*.ts (+3 more)
 
 ### Community 88 - "ReadinessService"
-Cohesion: 0.11
-Nodes (26): PaymentView, StoredResponse, connection, logger, start(), dispatchOutboxJobs(), finish(), lookupPayment() (+18 more)
-
-### Community 89 - "test_plan.md"
-Cohesion: 0.29
-Nodes (4): M0 인수 기준, 기준선 검사, 변경 규칙, 요구사항·화면 추적표
+Cohesion: 0.19
+Nodes (13): connection, logger, start(), dispatchOutboxJobs(), finish(), lookupPayment(), processOutboxEvent(), processPaymentWebhook() (+5 more)
 
 ### Community 90 - "test-utils/tsconfig.json"
 Cohesion: 0.20
@@ -544,6 +550,10 @@ Nodes (7): compilerOptions, outDir, rootDir, extends, include, src/**/*.ts, ../.
 Cohesion: 0.20
 Nodes (9): 1. 실행 환경, 2. 종합 결과, 3. 배포 차단 결함, 4. 보안·배포 구성 확인 사항, 5. 미실행 필수 시험, 6. 최종 판정과 재시험 범위, PD-001 Redis 장애 시 readiness 응답 지연 — 높음, PD-002 Redis 재기동 후 Worker 자동 복구 실패 — 높음 (+1 more)
 
+### Community 104 - "AuthenticatedUser"
+Cohesion: 0.21
+Nodes (5): AuthenticatedUser, Inject, TradeService, Inject, Injectable
+
 ### Community 105 - "도메인·상태 모델"
 Cohesion: 0.29
 Nodes (6): 거래와 결제, 공통 불변 조건, 도메인·상태 모델, 사용자, 상품, 신고와 차단
@@ -551,6 +561,10 @@ Nodes (6): 거래와 결제, 공통 불변 조건, 도메인·상태 모델, 사
 ### Community 106 - "8. 인증·계정 페이지"
 Cohesion: 0.29
 Nodes (7): 8.1 AUTH-01 로그인, 8.2 AUTH-02 회원가입·성인 확인, 8.3 AUTH-03 연락처 인증, 8.4 AUTH-04 비밀번호 재설정, 8.5 ACCOUNT-01 내 활동 홈, 8.6 ACCOUNT-02 계정·인증·세션, 8. 인증·계정 페이지
+
+### Community 107 - "ReadinessService"
+Cohesion: 0.18
+Nodes (10): HealthController, Controller, Get, HttpCode, Inject, ReadinessService, redisPing(), Injectable (+2 more)
 
 ### Community 108 - "8. 기능 테스트 매트릭스"
 Cohesion: 0.22
@@ -648,41 +662,69 @@ Nodes (3): extends, include, ../../tsconfig.base.json
 Cohesion: 0.50
 Nodes (3): OutboxEvent, OutboxEventType, ProblemDetails
 
+### Community 159 - "ProductService"
+Cohesion: 0.22
+Nodes (3): Inject, ProductService, Injectable
+
 ### Community 161 - "@nestjs/platform-express"
 Cohesion: 0.18
 Nodes (10): 1. 수정 결과, 2.1 경쟁 구매 제어, 2.2 미결제 예약 해제, 2.3 결제 취소 기간, 2.4 기존 데이터 보정, 2. 서버와 데이터 정합성, 3. 거래 화면, 4. 검증 결과 (+2 more)
+
+### Community 162 - "NeighborhoodController"
+Cohesion: 0.33
+Nodes (4): NeighborhoodController, Controller, Get, Param
+
+### Community 187 - "8. 기능 테스트 매트릭스"
+Cohesion: 0.29
+Nodes (7): 8.1 회원과 계정, 8.2 상품과 검색, 8.3 채팅, 신고와 차단, 8.4 직거래와 시간 정책, 8.5 결제, 웹훅과 정산, 8.6 최고관리자, 8. 기능 테스트 매트릭스
 
 ### Community 190 - "@nestjs/platform-socket.io"
 Cohesion: 0.40
 Nodes (4): name, private, type, version
 
+### Community 198 - "요구사항·화면 추적표"
+Cohesion: 0.40
+Nodes (4): M0 인수 기준, 기준선 검사, 변경 규칙, 요구사항·화면 추적표
+
 ### Community 199 - "TradeActionDto"
-Cohesion: 0.11
-Nodes (18): AuthenticatedRequest, TradeController, Body, Controller, Get, Inject, Param, Post (+10 more)
+Cohesion: 0.21
+Nodes (14): AuthenticatedRequest, TradeController, Body, Controller, Get, Param, Post, Req (+6 more)
 
 ### Community 200 - "취약 비밀번호 차단 기능 구현·검증 보고서"
 Cohesion: 0.33
 Nodes (5): 1. 문제와 위험, 2. 변경 내용, 3. 보안 검증, 4. 잔여 위험과 유지보수, 취약 비밀번호 차단 기능 구현·검증 보고서
 
+### Community 201 - "11. 성능, 복원력과 관측성"
+Cohesion: 0.50
+Nodes (4): 11.1 성능, 11.2 장애 주입, 11.3 관측성 판정, 11. 성능, 복원력과 관측성
+
+### Community 202 - "13. 진입·종료와 출시 판정"
+Cohesion: 0.50
+Nodes (4): 13.1 테스트 진입 조건, 13.2 작업 종료 조건, 13.3 출시 차단 기준, 13. 진입·종료와 출시 판정
+
+### Community 204 - "10. 채팅 페이지"
+Cohesion: 0.67
+Nodes (3): 10.1 CHAT-01 채팅 목록, 10.2 CHAT-02 1:1 상품 채팅, 10. 채팅 페이지
+
 ## Knowledge Gaps
-- **2926 isolated node(s):** `name`, `version`, `private`, `dev`, `build` (+2921 more)
+- **2928 isolated node(s):** `name`, `version`, `private`, `dev`, `build` (+2923 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **75 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **77 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `ProductStatus` connect `enums.ts` to `ReadinessService`, `ProductController`?**
+- **Why does `ProductStatus` connect `enums.ts` to `ReadinessService`, `AuthenticatedRequest`?**
   _High betweenness centrality (0.039) - this node is a cross-community bridge._
-- **Why does `UserStatus` connect `enums.ts` to `ReadinessService`?**
-  _High betweenness centrality (0.031) - this node is a cross-community bridge._
 - **Why does `argon2` connect `enums.ts` to `scripts`?**
   _High betweenness centrality (0.030) - this node is a cross-community bridge._
 - **What connects `name`, `version`, `private` to the rest of the system?**
-  _2926 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _2928 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `User.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.0091324200913242 - nodes in this community are weakly interconnected._
 - **Should `prismaNamespace.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.012738853503184714 - nodes in this community are weakly interconnected._
 - **Should `Trade.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.014705882352941176 - nodes in this community are weakly interconnected._
+- **Should `Product.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.014925373134328358 - nodes in this community are weakly interconnected._

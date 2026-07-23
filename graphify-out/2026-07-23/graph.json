@@ -1176,8 +1176,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_src_admin_admin_dto",
-      "community": 45,
-      "community_name": "AdminService",
+      "community": 81,
+      "community_name": "ChatController",
       "norm_label": "admin.dto.ts"
     },
     {
@@ -1308,8 +1308,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_admin_admin_service_ts_inject",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 45,
+      "community_name": "AdminService",
       "norm_label": "inject"
     },
     {
@@ -1319,8 +1319,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "apps_api_src_admin_admin_service_adminservice_constructor",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 45,
+      "community_name": "AdminService",
       "norm_label": ".constructor()"
     },
     {
@@ -1957,8 +1957,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "apps_api_src_auth_auth_service_authenticateduser",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 43,
+      "community_name": "enums.ts",
       "norm_label": "authenticateduser"
     },
     {
@@ -2672,8 +2672,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_src_chats_chat_gateway",
-      "community": 35,
-      "community_name": "ChatGateway",
+      "community": 43,
+      "community_name": "enums.ts",
       "norm_label": "chat.gateway.ts"
     },
     {
@@ -2749,8 +2749,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_chats_chat_gateway_ts_inject",
-      "community": 121,
-      "community_name": "api/package.json",
+      "community": 35,
+      "community_name": "ChatGateway",
       "norm_label": "inject"
     },
     {
@@ -2793,8 +2793,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "apps_api_src_chats_chat_gateway_chatgateway_constructor",
-      "community": 121,
-      "community_name": "api/package.json",
+      "community": 35,
+      "community_name": "ChatGateway",
       "norm_label": ".constructor()"
     },
     {
@@ -3211,8 +3211,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_src_neighborhoods_neighborhood_controller",
-      "community": 162,
-      "community_name": "11. \uc131\ub2a5, \ubcf5\uc6d0\ub825\uacfc \uad00\uce21\uc131",
+      "community": 81,
+      "community_name": "ChatController",
       "norm_label": "neighborhood.controller.ts"
     },
     {
@@ -3222,8 +3222,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "apps_api_src_neighborhoods_neighborhood_controller_neighborhoodcontroller",
-      "community": 162,
-      "community_name": "11. \uc131\ub2a5, \ubcf5\uc6d0\ub825\uacfc \uad00\uce21\uc131",
+      "community": 81,
+      "community_name": "ChatController",
       "norm_label": "neighborhoodcontroller"
     },
     {
@@ -3233,8 +3233,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_neighborhoods_neighborhood_controller_ts_controller",
-      "community": 162,
-      "community_name": "11. \uc131\ub2a5, \ubcf5\uc6d0\ub825\uacfc \uad00\uce21\uc131",
+      "community": 81,
+      "community_name": "ChatController",
       "norm_label": "controller"
     },
     {
@@ -3244,8 +3244,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_neighborhoods_neighborhood_controller_ts_get",
-      "community": 162,
-      "community_name": "11. \uc131\ub2a5, \ubcf5\uc6d0\ub825\uacfc \uad00\uce21\uc131",
+      "community": 81,
+      "community_name": "ChatController",
       "norm_label": "get"
     },
     {
@@ -3255,8 +3255,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_neighborhoods_neighborhood_controller_ts_param",
-      "community": 162,
-      "community_name": "11. \uc131\ub2a5, \ubcf5\uc6d0\ub825\uacfc \uad00\uce21\uc131",
+      "community": 81,
+      "community_name": "ChatController",
       "norm_label": "param"
     },
     {
@@ -3266,8 +3266,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "apps_api_src_neighborhoods_neighborhood_controller_neighborhoodcontroller_list",
-      "community": 162,
-      "community_name": "11. \uc131\ub2a5, \ubcf5\uc6d0\ub825\uacfc \uad00\uce21\uc131",
+      "community": 81,
+      "community_name": "ChatController",
       "norm_label": ".list()"
     },
     {
@@ -3277,8 +3277,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_api_src_neighborhoods_neighborhood_controller_neighborhoodcontroller_nearby",
-      "community": 162,
-      "community_name": "11. \uc131\ub2a5, \ubcf5\uc6d0\ub825\uacfc \uad00\uce21\uc131",
+      "community": 81,
+      "community_name": "ChatController",
       "norm_label": ".nearby()"
     },
     {
@@ -3288,8 +3288,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_src_observability_service",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 75,
+      "community_name": "AdminController",
       "norm_label": "observability.service.ts"
     },
     {
@@ -3299,8 +3299,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "apps_api_src_observability_service_logger",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 75,
+      "community_name": "AdminController",
       "norm_label": "logger"
     },
     {
@@ -3310,8 +3310,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "apps_api_src_observability_service_observabilityservice",
-      "community": 187,
-      "community_name": "10. \ucc44\ud305 \ud398\uc774\uc9c0",
+      "community": 75,
+      "community_name": "AdminController",
       "norm_label": "observabilityservice"
     },
     {
@@ -3321,8 +3321,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_observability_service_ts_injectable",
-      "community": 187,
-      "community_name": "10. \ucc44\ud305 \ud398\uc774\uc9c0",
+      "community": 75,
+      "community_name": "AdminController",
       "norm_label": "injectable"
     },
     {
@@ -3332,8 +3332,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "apps_api_src_observability_service_observabilityservice_constructor",
-      "community": 187,
-      "community_name": "10. \ucc44\ud305 \ud398\uc774\uc9c0",
+      "community": 75,
+      "community_name": "AdminController",
       "norm_label": ".constructor()"
     },
     {
@@ -3343,8 +3343,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "apps_api_src_observability_service_observabilityservice_log",
-      "community": 187,
-      "community_name": "10. \ucc44\ud305 \ud398\uc774\uc9c0",
+      "community": 75,
+      "community_name": "AdminController",
       "norm_label": ".log()"
     },
     {
@@ -3365,8 +3365,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "apps_api_src_observability_service_observabilityservice_warn",
-      "community": 187,
-      "community_name": "10. \ucc44\ud305 \ud398\uc774\uc9c0",
+      "community": 75,
+      "community_name": "AdminController",
       "norm_label": ".warn()"
     },
     {
@@ -3376,8 +3376,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "apps_api_src_observability_service_observabilityservice_debug",
-      "community": 187,
-      "community_name": "10. \ucc44\ud305 \ud398\uc774\uc9c0",
+      "community": 75,
+      "community_name": "AdminController",
       "norm_label": ".debug()"
     },
     {
@@ -3387,8 +3387,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "apps_api_src_observability_service_observabilityservice_verbose",
-      "community": 187,
-      "community_name": "10. \ucc44\ud305 \ud398\uc774\uc9c0",
+      "community": 75,
+      "community_name": "AdminController",
       "norm_label": ".verbose()"
     },
     {
@@ -3398,8 +3398,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "payment.controller.ts"
     },
     {
@@ -3409,8 +3409,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_paymentcontroller",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "paymentcontroller"
     },
     {
@@ -3420,8 +3420,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_ts_controller",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "controller"
     },
     {
@@ -3442,8 +3442,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_ts_post",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "post"
     },
     {
@@ -3453,8 +3453,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_ts_useguards",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "useguards"
     },
     {
@@ -3464,8 +3464,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_ts_req",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "req"
     },
     {
@@ -3475,8 +3475,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "headers",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "headers"
     },
     {
@@ -3486,8 +3486,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_ts_body",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "body"
     },
     {
@@ -3497,8 +3497,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_ts_param",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "param"
     },
     {
@@ -3508,8 +3508,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_ts_get",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "get"
     },
     {
@@ -3519,8 +3519,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_ts_httpcode",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "httpcode"
     },
     {
@@ -3541,8 +3541,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_paymentcontroller_createorder",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": ".createorder()"
     },
     {
@@ -3552,8 +3552,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_paymentcontroller_confirm",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": ".confirm()"
     },
     {
@@ -3563,8 +3563,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_paymentcontroller_cancel",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": ".cancel()"
     },
     {
@@ -3574,8 +3574,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_paymentcontroller_refund",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": ".refund()"
     },
     {
@@ -3585,8 +3585,8 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_paymentcontroller_detail",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": ".detail()"
     },
     {
@@ -3596,8 +3596,8 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_controller_paymentcontroller_webhook",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": ".webhook()"
     },
     {
@@ -3607,8 +3607,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_dto",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "payment.dto.ts"
     },
     {
@@ -3618,8 +3618,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_dto_createpaymentorderdto",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "createpaymentorderdto"
     },
     {
@@ -3629,8 +3629,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_dto_ts_isstring",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "isstring"
     },
     {
@@ -3640,8 +3640,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_dto_confirmpaymentdto",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "confirmpaymentdto"
     },
     {
@@ -3651,8 +3651,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_dto_ts_minlength",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "minlength"
     },
     {
@@ -3662,8 +3662,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_dto_ts_maxlength",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "maxlength"
     },
     {
@@ -3673,8 +3673,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_dto_ts_matches",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "matches"
     },
     {
@@ -3684,8 +3684,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_dto_paymentreasondto",
-      "community": 24,
-      "community_name": "PaymentService",
+      "community": 46,
+      "community_name": "AuthenticatedRequest",
       "norm_label": "paymentreasondto"
     },
     {
@@ -3695,8 +3695,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_service",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "payment.service.ts"
     },
     {
@@ -3706,8 +3706,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_service_paymentview",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "paymentview"
     },
     {
@@ -3717,8 +3717,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "apps_api_src_payments_payment_service_storedresponse",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "storedresponse"
     },
     {
@@ -3926,8 +3926,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_src_payments_toss_sandbox_adapter",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 24,
+      "community_name": "PaymentService",
       "norm_label": "toss-sandbox.adapter.ts"
     },
     {
@@ -3937,8 +3937,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "apps_api_src_payments_toss_sandbox_adapter_tosspayment",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 24,
+      "community_name": "PaymentService",
       "norm_label": "tosspayment"
     },
     {
@@ -3948,8 +3948,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "apps_api_src_payments_toss_sandbox_adapter_tossresponse",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 24,
+      "community_name": "PaymentService",
       "norm_label": "tossresponse"
     },
     {
@@ -4069,8 +4069,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_src_products_product_controller",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "product.controller.ts"
     },
     {
@@ -4080,8 +4080,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "apps_api_src_products_product_controller_optionalauthrequest",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "optionalauthrequest"
     },
     {
@@ -4113,8 +4113,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_products_product_controller_ts_inject",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "inject"
     },
     {
@@ -4245,8 +4245,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "apps_api_src_products_product_controller_productcontroller_constructor",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".constructor()"
     },
     {
@@ -4344,8 +4344,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_src_products_product_dto",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "product.dto.ts"
     },
     {
@@ -4355,8 +4355,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "apps_api_src_products_product_dto_productimagedto",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "productimagedto"
     },
     {
@@ -4366,8 +4366,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_products_product_dto_ts_isstring",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "isstring"
     },
     {
@@ -4377,8 +4377,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_products_product_dto_ts_maxlength",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "maxlength"
     },
     {
@@ -4388,8 +4388,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_products_product_dto_ts_minlength",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "minlength"
     },
     {
@@ -4399,8 +4399,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "apps_api_src_products_product_dto_createproductdto",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "createproductdto"
     },
     {
@@ -4410,8 +4410,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_products_product_dto_ts_matches",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "matches"
     },
     {
@@ -4421,8 +4421,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "isarray",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "isarray"
     },
     {
@@ -4432,8 +4432,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "arrayminsize",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "arrayminsize"
     },
     {
@@ -4443,8 +4443,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "arraymaxsize",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "arraymaxsize"
     },
     {
@@ -4454,8 +4454,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "validatenested",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "validatenested"
     },
     {
@@ -4465,8 +4465,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "type",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "type"
     },
     {
@@ -4476,8 +4476,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "apps_api_src_products_product_dto_updateproductdto",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "updateproductdto"
     },
     {
@@ -4487,8 +4487,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_products_product_dto_ts_isoptional",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "isoptional"
     },
     {
@@ -4498,8 +4498,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "apps_api_src_products_product_dto_productstatusdto",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "productstatusdto"
     },
     {
@@ -4509,8 +4509,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "isin",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "isin"
     },
     {
@@ -4520,8 +4520,8 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "apps_api_src_products_product_dto_productquerydto",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "productquerydto"
     },
     {
@@ -4531,8 +4531,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "product.service.ts"
     },
     {
@@ -4542,8 +4542,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productrecord",
-      "community": 159,
-      "community_name": "helmet",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "productrecord"
     },
     {
@@ -4553,8 +4553,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "productservice"
     },
     {
@@ -4564,8 +4564,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_ts_injectable",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": "injectable"
     },
     {
@@ -4575,8 +4575,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_imagemime",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".imagemime()"
     },
     {
@@ -4586,8 +4586,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_imagesforstorage",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".imagesforstorage()"
     },
     {
@@ -4597,8 +4597,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_serialize",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".serialize()"
     },
     {
@@ -4608,8 +4608,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_ensureneighborhood",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".ensureneighborhood()"
     },
     {
@@ -4619,8 +4619,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_ownedproduct",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".ownedproduct()"
     },
     {
@@ -4630,8 +4630,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_create",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".create()"
     },
     {
@@ -4641,8 +4641,8 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_update",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".update()"
     },
     {
@@ -4652,8 +4652,8 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_setstatus",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".setstatus()"
     },
     {
@@ -4663,8 +4663,8 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_remove",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".remove()"
     },
     {
@@ -4674,8 +4674,8 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_detail",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".detail()"
     },
     {
@@ -4685,8 +4685,8 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_decodecursor",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".decodecursor()"
     },
     {
@@ -4696,8 +4696,8 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_list",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".list()"
     },
     {
@@ -4707,8 +4707,8 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "apps_api_src_products_product_service_productservice_mine",
-      "community": 104,
-      "community_name": "[chatId]/page.tsx",
+      "community": 39,
+      "community_name": "ProductController",
       "norm_label": ".mine()"
     },
     {
@@ -4971,8 +4971,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_dto",
-      "community": 81,
-      "community_name": "ChatController",
+      "community": 52,
+      "community_name": "SafetyController",
       "norm_label": "safety.dto.ts"
     },
     {
@@ -4982,8 +4982,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_dto_blockuserdto",
-      "community": 81,
-      "community_name": "ChatController",
+      "community": 52,
+      "community_name": "SafetyController",
       "norm_label": "blockuserdto"
     },
     {
@@ -4993,8 +4993,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_dto_ts_isstring",
-      "community": 81,
-      "community_name": "ChatController",
+      "community": 52,
+      "community_name": "SafetyController",
       "norm_label": "isstring"
     },
     {
@@ -5004,8 +5004,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_dto_createreportdto",
-      "community": 81,
-      "community_name": "ChatController",
+      "community": 52,
+      "community_name": "SafetyController",
       "norm_label": "createreportdto"
     },
     {
@@ -5015,8 +5015,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "isenum",
-      "community": 81,
-      "community_name": "ChatController",
+      "community": 52,
+      "community_name": "SafetyController",
       "norm_label": "isenum"
     },
     {
@@ -5026,8 +5026,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_dto_ts_minlength",
-      "community": 81,
-      "community_name": "ChatController",
+      "community": 52,
+      "community_name": "SafetyController",
       "norm_label": "minlength"
     },
     {
@@ -5037,8 +5037,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_dto_ts_maxlength",
-      "community": 81,
-      "community_name": "ChatController",
+      "community": 52,
+      "community_name": "SafetyController",
       "norm_label": "maxlength"
     },
     {
@@ -5048,8 +5048,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_dto_ts_matches",
-      "community": 81,
-      "community_name": "ChatController",
+      "community": 52,
+      "community_name": "SafetyController",
       "norm_label": "matches"
     },
     {
@@ -5059,8 +5059,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_dto_ts_isoptional",
-      "community": 81,
-      "community_name": "ChatController",
+      "community": 52,
+      "community_name": "SafetyController",
       "norm_label": "isoptional"
     },
     {
@@ -5092,8 +5092,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_service_isuniqueconstrainterror",
-      "community": 52,
-      "community_name": "SafetyController",
+      "community": 43,
+      "community_name": "enums.ts",
       "norm_label": "isuniqueconstrainterror()"
     },
     {
@@ -5103,8 +5103,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_service_safetyservice",
-      "community": 52,
-      "community_name": "SafetyController",
+      "community": 43,
+      "community_name": "enums.ts",
       "norm_label": "safetyservice"
     },
     {
@@ -5114,8 +5114,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_service_ts_injectable",
-      "community": 52,
-      "community_name": "SafetyController",
+      "community": 43,
+      "community_name": "enums.ts",
       "norm_label": "injectable"
     },
     {
@@ -5136,8 +5136,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_service_safetyservice_relationshipchanged",
-      "community": 52,
-      "community_name": "SafetyController",
+      "community": 43,
+      "community_name": "enums.ts",
       "norm_label": ".relationshipchanged()"
     },
     {
@@ -5158,8 +5158,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_service_safetyservice_block",
-      "community": 52,
-      "community_name": "SafetyController",
+      "community": 43,
+      "community_name": "enums.ts",
       "norm_label": ".block()"
     },
     {
@@ -5169,8 +5169,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_service_safetyservice_unblock",
-      "community": 52,
-      "community_name": "SafetyController",
+      "community": 43,
+      "community_name": "enums.ts",
       "norm_label": ".unblock()"
     },
     {
@@ -5180,8 +5180,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_service_safetyservice_listblocks",
-      "community": 52,
-      "community_name": "SafetyController",
+      "community": 43,
+      "community_name": "enums.ts",
       "norm_label": ".listblocks()"
     },
     {
@@ -5191,8 +5191,8 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_service_safetyservice_report",
-      "community": 52,
-      "community_name": "SafetyController",
+      "community": 43,
+      "community_name": "enums.ts",
       "norm_label": ".report()"
     },
     {
@@ -5202,8 +5202,8 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "apps_api_src_safety_safety_service_safetyservice_reports",
-      "community": 52,
-      "community_name": "SafetyController",
+      "community": 43,
+      "community_name": "enums.ts",
       "norm_label": ".reports()"
     },
     {
@@ -5279,8 +5279,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_controller_ts_inject",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": "inject"
     },
     {
@@ -5345,8 +5345,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_controller_tradecontroller_constructor",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".constructor()"
     },
     {
@@ -5543,8 +5543,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": "tradeservice"
     },
     {
@@ -5554,8 +5554,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_ts_injectable",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": "injectable"
     },
     {
@@ -5565,8 +5565,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_ts_inject",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": "inject"
     },
     {
@@ -5576,8 +5576,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_constructor",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".constructor()"
     },
     {
@@ -5587,8 +5587,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_serialize",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".serialize()"
     },
     {
@@ -5598,8 +5598,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_participanttrade",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".participanttrade()"
     },
     {
@@ -5609,8 +5609,8 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_request",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".request()"
     },
     {
@@ -5620,8 +5620,8 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_accept",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".accept()"
     },
     {
@@ -5631,8 +5631,8 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_reject",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".reject()"
     },
     {
@@ -5642,8 +5642,8 @@
       "source_location": "L147",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_deliver",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".deliver()"
     },
     {
@@ -5653,8 +5653,8 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_confirm",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".confirm()"
     },
     {
@@ -5664,8 +5664,8 @@
       "source_location": "L187",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_dispute",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".dispute()"
     },
     {
@@ -5675,8 +5675,8 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_cancel",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".cancel()"
     },
     {
@@ -5686,8 +5686,8 @@
       "source_location": "L248",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_list",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".list()"
     },
     {
@@ -5697,8 +5697,8 @@
       "source_location": "L269",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_detail",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".detail()"
     },
     {
@@ -5708,8 +5708,8 @@
       "source_location": "L273",
       "_origin": "ast",
       "id": "apps_api_src_trades_trade_service_tradeservice_processdueautoconfirmations",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 199,
+      "community_name": "TradeActionDto",
       "norm_label": ".processdueautoconfirmations()"
     },
     {
@@ -5851,8 +5851,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "apps_api_test_trade_integration_spec_signupandlogin",
-      "community": 46,
-      "community_name": "AuthenticatedRequest",
+      "community": 75,
+      "community_name": "AdminController",
       "norm_label": "signupandlogin()"
     },
     {
@@ -6335,8 +6335,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "apps_web_app_chats_chatid_page_chatpage",
-      "community": 121,
-      "community_name": "api/package.json",
+      "community": 92,
+      "community_name": "trade-client.tsx",
       "norm_label": "chatpage()"
     },
     {
@@ -8777,8 +8777,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "apps_worker_src_settlement_maintenance",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "settlement-maintenance.ts"
     },
     {
@@ -8788,8 +8788,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "apps_worker_src_settlement_maintenance_processduesettlements",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "processduesettlements()"
     },
     {
@@ -8799,8 +8799,8 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "apps_worker_src_settlement_maintenance_requestpayout",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "requestpayout()"
     },
     {
@@ -12220,8 +12220,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "packages_database_prisma_generated_enums",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "enums.ts"
     },
     {
@@ -12231,8 +12231,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "packages_database_prisma_generated_enums_outboxstatus",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "outboxstatus"
     },
     {
@@ -12242,8 +12242,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "packages_database_prisma_generated_enums_userrole",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "userrole"
     },
     {
@@ -12286,8 +12286,8 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "packages_database_prisma_generated_enums_reporttargettype",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "reporttargettype"
     },
     {
@@ -12297,8 +12297,8 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "packages_database_prisma_generated_enums_reportstatus",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "reportstatus"
     },
     {
@@ -12308,8 +12308,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "packages_database_prisma_generated_enums_tradestatus",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "tradestatus"
     },
     {
@@ -12319,8 +12319,8 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "packages_database_prisma_generated_enums_paymentstatus",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "paymentstatus"
     },
     {
@@ -12330,8 +12330,8 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "packages_database_prisma_generated_enums_settlementstatus",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "settlementstatus"
     },
     {
@@ -12352,8 +12352,8 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "packages_database_prisma_generated_enums_webhookprocessingstatus",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "webhookprocessingstatus"
     },
     {
@@ -12363,8 +12363,8 @@
       "source_location": "L139",
       "_origin": "ast",
       "id": "packages_database_prisma_generated_enums_ledgerentrytype",
-      "community": 43,
-      "community_name": "enums.ts",
+      "community": 88,
+      "community_name": "ReadinessService",
       "norm_label": "ledgerentrytype"
     },
     {
@@ -43592,8 +43592,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "readme",
-      "community": 135,
-      "community_name": "Gamja Market",
+      "community": 89,
+      "community_name": "test_plan.md",
       "norm_label": "readme.md"
     },
     {
@@ -43608,21 +43608,98 @@
       "norm_label": "gamja market"
     },
     {
-      "label": "\uc2dc\uc791\ud558\uae30",
+      "label": "\uad6c\uc131",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L5",
+      "source_location": "L12",
       "_origin": "ast",
-      "id": "readme_\uc2dc\uc791\ud558\uae30",
+      "id": "readme_\uad6c\uc131",
       "community": 135,
       "community_name": "Gamja Market",
-      "norm_label": "\u1109\u1175\u110c\u1161\u11a8\u1112\u1161\u1100\u1175"
+      "norm_label": "\u1100\u116e\u1109\u1165\u11bc"
+    },
+    {
+      "label": "\uc0ac\uc804 \uc900\ube44",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "readme_\uc0ac\uc804_\uc900\ube44",
+      "community": 135,
+      "community_name": "Gamja Market",
+      "norm_label": "\u1109\u1161\u110c\u1165\u11ab \u110c\u116e\u11ab\u1107\u1175"
+    },
+    {
+      "label": "\ube60\ub978 \uc2e4\ud589",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "readme_\ube60\ub978_\uc2e4\ud589",
+      "community": 135,
+      "community_name": "Gamja Market",
+      "norm_label": "\u1108\u1161\u1105\u1173\u11ab \u1109\u1175\u11af\u1112\u1162\u11bc"
+    },
+    {
+      "label": "\ud658\uacbd \uc124\uc815",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L82",
+      "_origin": "ast",
+      "id": "readme_\ud658\uacbd_\uc124\uc815",
+      "community": 135,
+      "community_name": "Gamja Market",
+      "norm_label": "\u1112\u116a\u11ab\u1100\u1167\u11bc \u1109\u1165\u11af\u110c\u1165\u11bc"
+    },
+    {
+      "label": "\uae30\ubcf8 \uc5f0\uacb0\uacfc \uc778\uc99d",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L87",
+      "_origin": "ast",
+      "id": "readme_\uae30\ubcf8_\uc5f0\uacb0\uacfc_\uc778\uc99d",
+      "community": 135,
+      "community_name": "Gamja Market",
+      "norm_label": "\u1100\u1175\u1107\u1169\u11ab \u110b\u1167\u11ab\u1100\u1167\u11af\u1100\u116a \u110b\u1175\u11ab\u110c\u1173\u11bc"
+    },
+    {
+      "label": "\uacb0\uc81c\u00b7\uc815\uc0b0",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L103",
+      "_origin": "ast",
+      "id": "readme_\uacb0\uc81c_\uc815\uc0b0",
+      "community": 135,
+      "community_name": "Gamja Market",
+      "norm_label": "\u1100\u1167\u11af\u110c\u1166\u00b7\u110c\u1165\u11bc\u1109\u1161\u11ab"
+    },
+    {
+      "label": "\uc5f0\ub77d\ucc98 \uc804\ub2ec\uacfc \uad00\uce21",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L134",
+      "_origin": "ast",
+      "id": "readme_\uc5f0\ub77d\ucc98_\uc804\ub2ec\uacfc_\uad00\uce21",
+      "community": 135,
+      "community_name": "Gamja Market",
+      "norm_label": "\u110b\u1167\u11ab\u1105\u1161\u11a8\u110e\u1165 \u110c\u1165\u11ab\u1103\u1161\u11af\u1100\u116a \u1100\u116a\u11ab\u110e\u1173\u11a8"
+    },
+    {
+      "label": "\uc678\ubd80 \uc8fc\uc18c\uc5d0\uc11c \uc2e4\ud589",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L147",
+      "_origin": "ast",
+      "id": "readme_\uc678\ubd80_\uc8fc\uc18c\uc5d0\uc11c_\uc2e4\ud589",
+      "community": 135,
+      "community_name": "Gamja Market",
+      "norm_label": "\u110b\u116c\u1107\u116e \u110c\u116e\u1109\u1169\u110b\u1166\u1109\u1165 \u1109\u1175\u11af\u1112\u1162\u11bc"
     },
     {
       "label": "\ud638\uc2a4\ud2b8 \uac1c\ubc1c \ubaa8\ub4dc",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L28",
+      "source_location": "L163",
       "_origin": "ast",
       "id": "readme_\ud638\uc2a4\ud2b8_\uac1c\ubc1c_\ubaa8\ub4dc",
       "community": 135,
@@ -43630,15 +43707,48 @@
       "norm_label": "\u1112\u1169\u1109\u1173\u1110\u1173 \u1100\u1162\u1107\u1161\u11af \u1106\u1169\u1103\u1173"
     },
     {
-      "label": "\ud488\uc9c8 \uba85\ub839",
+      "label": "\ub370\uc774\ud130\ubca0\uc774\uc2a4",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L47",
+      "source_location": "L180",
       "_origin": "ast",
-      "id": "readme_\ud488\uc9c8_\uba85\ub839",
+      "id": "readme_\ub370\uc774\ud130\ubca0\uc774\uc2a4",
       "community": 135,
       "community_name": "Gamja Market",
-      "norm_label": "\u1111\u116e\u11b7\u110c\u1175\u11af \u1106\u1167\u11bc\u1105\u1167\u11bc"
+      "norm_label": "\u1103\u1166\u110b\u1175\u1110\u1165\u1107\u1166\u110b\u1175\u1109\u1173"
+    },
+    {
+      "label": "\ud488\uc9c8\uacfc \ud14c\uc2a4\ud2b8",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L197",
+      "_origin": "ast",
+      "id": "readme_\ud488\uc9c8\uacfc_\ud14c\uc2a4\ud2b8",
+      "community": 135,
+      "community_name": "Gamja Market",
+      "norm_label": "\u1111\u116e\u11b7\u110c\u1175\u11af\u1100\u116a \u1110\u1166\u1109\u1173\u1110\u1173"
+    },
+    {
+      "label": "\ubcf4\uc548 \uc6b4\uc601 \uc8fc\uc758\uc0ac\ud56d",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L226",
+      "_origin": "ast",
+      "id": "readme_\ubcf4\uc548_\uc6b4\uc601_\uc8fc\uc758\uc0ac\ud56d",
+      "community": 135,
+      "community_name": "Gamja Market",
+      "norm_label": "\u1107\u1169\u110b\u1161\u11ab \u110b\u116e\u11ab\u110b\u1167\u11bc \u110c\u116e\u110b\u1174\u1109\u1161\u1112\u1161\u11bc"
+    },
+    {
+      "label": "\uc8fc\uc694 \ubb38\uc11c",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L237",
+      "_origin": "ast",
+      "id": "readme_\uc8fc\uc694_\ubb38\uc11c",
+      "community": 135,
+      "community_name": "Gamja Market",
+      "norm_label": "\u110c\u116e\u110b\u116d \u1106\u116e\u11ab\u1109\u1165"
     },
     {
       "label": "design.md",
@@ -46215,32 +46325,32 @@
       "norm_label": "\u1100\u1161\u11b7\u110c\u1161\u1106\u1161\u110f\u1166\u11ba \u1111\u1173\u11af\u1105\u1162\u11ba\u1111\u1169\u11b7 \u1109\u1175\u110f\u1172\u110b\u1165\u110f\u1169\u1103\u1175\u11bc \u1100\u1162\u1107\u1161\u11af \u1107\u1169\u1100\u1169\u1109\u1165"
     },
     {
-      "label": "1. \ubcf4\uace0\uc11c \ubaa9\uc801\uacfc \uacb0\ub860",
+      "label": "1. \uac1c\uc694\uc640 \ucd5c\uc885 \ud310\uc815",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L9",
+      "source_location": "L11",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_1_\ubcf4\uace0\uc11c_\ubaa9\uc801\uacfc_\uacb0\ub860",
+      "id": "docs_secure_coding_development_report_1_\uac1c\uc694\uc640_\ucd5c\uc885_\ud310\uc815",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "1. \u1107\u1169\u1100\u1169\u1109\u1165 \u1106\u1169\u11a8\u110c\u1165\u11a8\u1100\u116a \u1100\u1167\u11af\u1105\u1169\u11ab"
+      "norm_label": "1. \u1100\u1162\u110b\u116d\u110b\u116a \u110e\u116c\u110c\u1169\u11bc \u1111\u1161\u11ab\u110c\u1165\u11bc"
     },
     {
-      "label": "2. \uac1c\ubc1c \ubc29\ubc95\uacfc \ucd94\uc801\uc131",
+      "label": "2. \uac1c\ubc1c \uc804 \uacfc\uc815",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L24",
+      "source_location": "L33",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_2_\uac1c\ubc1c_\ubc29\ubc95\uacfc_\ucd94\uc801\uc131",
+      "id": "docs_secure_coding_development_report_2_\uac1c\ubc1c_\uc804_\uacfc\uc815",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "2. \u1100\u1162\u1107\u1161\u11af \u1107\u1161\u11bc\u1107\u1165\u11b8\u1100\u116a \u110e\u116e\u110c\u1165\u11a8\u1109\u1165\u11bc"
+      "norm_label": "2. \u1100\u1162\u1107\u1161\u11af \u110c\u1165\u11ab \u1100\u116a\u110c\u1165\u11bc"
     },
     {
       "label": "3. \uc694\uad6c\uc0ac\ud56d \ubd84\uc11d",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L38",
+      "source_location": "L50",
       "_origin": "ast",
       "id": "docs_secure_coding_development_report_3_\uc694\uad6c\uc0ac\ud56d_\ubd84\uc11d",
       "community": 27,
@@ -46248,43 +46358,43 @@
       "norm_label": "3. \u110b\u116d\u1100\u116e\u1109\u1161\u1112\u1161\u11bc \u1107\u116e\u11ab\u1109\u1165\u11a8"
     },
     {
-      "label": "3.1 \uae30\ub2a5 \uc694\uad6c\uc0ac\ud56d",
+      "label": "3.1 \uc694\uad6c\uc0ac\ud56d \ubc94\uc704\uc640 \ucda9\uc871 \ud604\ud669",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L40",
+      "source_location": "L52",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_3_1_\uae30\ub2a5_\uc694\uad6c\uc0ac\ud56d",
+      "id": "docs_secure_coding_development_report_3_1_\uc694\uad6c\uc0ac\ud56d_\ubc94\uc704\uc640_\ucda9\uc871_\ud604\ud669",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "3.1 \u1100\u1175\u1102\u1173\u11bc \u110b\u116d\u1100\u116e\u1109\u1161\u1112\u1161\u11bc"
+      "norm_label": "3.1 \u110b\u116d\u1100\u116e\u1109\u1161\u1112\u1161\u11bc \u1107\u1165\u11b7\u110b\u1171\u110b\u116a \u110e\u116e\u11bc\u110c\u1169\u11a8 \u1112\u1167\u11ab\u1112\u116a\u11bc"
     },
     {
-      "label": "3.2 \ud575\uc2ec \ubcf4\uc548 \uc694\uad6c\uc0ac\ud56d",
+      "label": "3.2 \uc5ed\ud560\uacfc \uad8c\ud55c",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L51",
+      "source_location": "L69",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_3_2_\ud575\uc2ec_\ubcf4\uc548_\uc694\uad6c\uc0ac\ud56d",
+      "id": "docs_secure_coding_development_report_3_2_\uc5ed\ud560\uacfc_\uad8c\ud55c",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "3.2 \u1112\u1162\u11a8\u1109\u1175\u11b7 \u1107\u1169\u110b\u1161\u11ab \u110b\u116d\u1100\u116e\u1109\u1161\u1112\u1161\u11bc"
+      "norm_label": "3.2 \u110b\u1167\u11a8\u1112\u1161\u11af\u1100\u116a \u1100\u116f\u11ab\u1112\u1161\u11ab"
     },
     {
-      "label": "3.3 \uc704\ud611 \ubd84\uc11d",
+      "label": "3.3 \ubcf4\uc548\u00b7\ube44\uae30\ub2a5 \uc694\uad6c\uc0ac\ud56d",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L64",
+      "source_location": "L80",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_3_3_\uc704\ud611_\ubd84\uc11d",
+      "id": "docs_secure_coding_development_report_3_3_\ubcf4\uc548_\ube44\uae30\ub2a5_\uc694\uad6c\uc0ac\ud56d",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "3.3 \u110b\u1171\u1112\u1167\u11b8 \u1107\u116e\u11ab\u1109\u1165\u11a8"
+      "norm_label": "3.3 \u1107\u1169\u110b\u1161\u11ab\u00b7\u1107\u1175\u1100\u1175\u1102\u1173\u11bc \u110b\u116d\u1100\u116e\u1109\u1161\u1112\u1161\u11bc"
     },
     {
       "label": "4. \uc2dc\uc2a4\ud15c \uc124\uacc4",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L82",
+      "source_location": "L92",
       "_origin": "ast",
       "id": "docs_secure_coding_development_report_4_\uc2dc\uc2a4\ud15c_\uc124\uacc4",
       "community": 27,
@@ -46295,7 +46405,7 @@
       "label": "4.1 \uc544\ud0a4\ud14d\ucc98",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L84",
+      "source_location": "L94",
       "_origin": "ast",
       "id": "docs_secure_coding_development_report_4_1_\uc544\ud0a4\ud14d\ucc98",
       "community": 27,
@@ -46303,43 +46413,54 @@
       "norm_label": "4.1 \u110b\u1161\u110f\u1175\u1110\u1166\u11a8\u110e\u1165"
     },
     {
-      "label": "4.2 \ubcf4\uc548 \uc124\uacc4 \uc6d0\uce59",
+      "label": "4.2 \ud575\uc2ec \uc124\uacc4 \uacb0\uc815",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L95",
+      "source_location": "L114",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_4_2_\ubcf4\uc548_\uc124\uacc4_\uc6d0\uce59",
+      "id": "docs_secure_coding_development_report_4_2_\ud575\uc2ec_\uc124\uacc4_\uacb0\uc815",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "4.2 \u1107\u1169\u110b\u1161\u11ab \u1109\u1165\u11af\u1100\u1168 \u110b\u116f\u11ab\u110e\u1175\u11a8"
+      "norm_label": "4.2 \u1112\u1162\u11a8\u1109\u1175\u11b7 \u1109\u1165\u11af\u1100\u1168 \u1100\u1167\u11af\u110c\u1165\u11bc"
     },
     {
-      "label": "5. \uad6c\ud604 \ub0b4\uc6a9",
+      "label": "4.3 \ub370\uc774\ud130 \ubb34\uacb0\uc131 \uc124\uacc4",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L108",
+      "source_location": "L129",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_5_\uad6c\ud604_\ub0b4\uc6a9",
+      "id": "docs_secure_coding_development_report_4_3_\ub370\uc774\ud130_\ubb34\uacb0\uc131_\uc124\uacc4",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "5. \u1100\u116e\u1112\u1167\u11ab \u1102\u1162\u110b\u116d\u11bc"
+      "norm_label": "4.3 \u1103\u1166\u110b\u1175\u1110\u1165 \u1106\u116e\u1100\u1167\u11af\u1109\u1165\u11bc \u1109\u1165\u11af\u1100\u1168"
     },
     {
-      "label": "5.1 \uacc4\uc815\uacfc \uc778\uc99d",
+      "label": "5. \uad6c\ud604",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L110",
+      "source_location": "L140",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_5_1_\uacc4\uc815\uacfc_\uc778\uc99d",
+      "id": "docs_secure_coding_development_report_5_\uad6c\ud604",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "5.1 \u1100\u1168\u110c\u1165\u11bc\u1100\u116a \u110b\u1175\u11ab\u110c\u1173\u11bc"
+      "norm_label": "5. \u1100\u116e\u1112\u1167\u11ab"
+    },
+    {
+      "label": "5.1 \ud68c\uc6d0\uacfc \uc778\uc99d",
+      "file_type": "document",
+      "source_file": "docs/secure-coding-development-report.md",
+      "source_location": "L142",
+      "_origin": "ast",
+      "id": "docs_secure_coding_development_report_5_1_\ud68c\uc6d0\uacfc_\uc778\uc99d",
+      "community": 27,
+      "community_name": "app.module.ts",
+      "norm_label": "5.1 \u1112\u116c\u110b\u116f\u11ab\u1100\u116a \u110b\u1175\u11ab\u110c\u1173\u11bc"
     },
     {
       "label": "5.2 \uc0c1\ud488\uacfc \uac80\uc0c9",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L118",
+      "source_location": "L155",
       "_origin": "ast",
       "id": "docs_secure_coding_development_report_5_2_\uc0c1\ud488\uacfc_\uac80\uc0c9",
       "community": 27,
@@ -46350,7 +46471,7 @@
       "label": "5.3 \ucc44\ud305, \uc2e0\uace0\uc640 \ucc28\ub2e8",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L126",
+      "source_location": "L168",
       "_origin": "ast",
       "id": "docs_secure_coding_development_report_5_3_\ucc44\ud305_\uc2e0\uace0\uc640_\ucc28\ub2e8",
       "community": 27,
@@ -46361,7 +46482,7 @@
       "label": "5.4 \uac70\ub798, \uacb0\uc81c\uc640 \uc815\uc0b0",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L134",
+      "source_location": "L181",
       "_origin": "ast",
       "id": "docs_secure_coding_development_report_5_4_\uac70\ub798_\uacb0\uc81c\uc640_\uc815\uc0b0",
       "community": 27,
@@ -46369,43 +46490,43 @@
       "norm_label": "5.4 \u1100\u1165\u1105\u1162, \u1100\u1167\u11af\u110c\u1166\u110b\u116a \u110c\u1165\u11bc\u1109\u1161\u11ab"
     },
     {
-      "label": "5.5 \uad00\ub9ac\uc790\uc640 \uac10\uc0ac",
+      "label": "5.5 \uad00\ub9ac\uc790\uc640 \uc6b4\uc601",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L150",
+      "source_location": "L201",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_5_5_\uad00\ub9ac\uc790\uc640_\uac10\uc0ac",
+      "id": "docs_secure_coding_development_report_5_5_\uad00\ub9ac\uc790\uc640_\uc6b4\uc601",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "5.5 \u1100\u116a\u11ab\u1105\u1175\u110c\u1161\u110b\u116a \u1100\u1161\u11b7\u1109\u1161"
+      "norm_label": "5.5 \u1100\u116a\u11ab\u1105\u1175\u110c\u1161\u110b\u116a \u110b\u116e\u11ab\u110b\u1167\u11bc"
     },
     {
-      "label": "6. \uac1c\ubc1c \uc911 \ud655\uc778\ud55c \ubcf4\uc548 \uc57d\uc810\uacfc \ubcc0\uacbd \ub0b4\uc6a9",
+      "label": "6. \uac1c\ubc1c \uc911 \ubc1c\uacac\ud55c \ubcf4\uc548 \uc57d\uc810\uacfc \ubcc0\uacbd",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L157",
+      "source_location": "L212",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_6_\uac1c\ubc1c_\uc911_\ud655\uc778\ud55c_\ubcf4\uc548_\uc57d\uc810\uacfc_\ubcc0\uacbd_\ub0b4\uc6a9",
+      "id": "docs_secure_coding_development_report_6_\uac1c\ubc1c_\uc911_\ubc1c\uacac\ud55c_\ubcf4\uc548_\uc57d\uc810\uacfc_\ubcc0\uacbd",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "6. \u1100\u1162\u1107\u1161\u11af \u110c\u116e\u11bc \u1112\u116a\u11a8\u110b\u1175\u11ab\u1112\u1161\u11ab \u1107\u1169\u110b\u1161\u11ab \u110b\u1163\u11a8\u110c\u1165\u11b7\u1100\u116a \u1107\u1167\u11ab\u1100\u1167\u11bc \u1102\u1162\u110b\u116d\u11bc"
+      "norm_label": "6. \u1100\u1162\u1107\u1161\u11af \u110c\u116e\u11bc \u1107\u1161\u11af\u1100\u1167\u11ab\u1112\u1161\u11ab \u1107\u1169\u110b\u1161\u11ab \u110b\u1163\u11a8\u110c\u1165\u11b7\u1100\u116a \u1107\u1167\u11ab\u1100\u1167\u11bc"
     },
     {
-      "label": "7. \uccb4\ud06c\ub9ac\uc2a4\ud2b8 \uc791\uc131\uacfc \ud14c\uc2a4\ud305",
+      "label": "7. \uccb4\ud06c\ub9ac\uc2a4\ud2b8\uc640 \ud14c\uc2a4\ud305",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L184",
+      "source_location": "L245",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_7_\uccb4\ud06c\ub9ac\uc2a4\ud2b8_\uc791\uc131\uacfc_\ud14c\uc2a4\ud305",
+      "id": "docs_secure_coding_development_report_7_\uccb4\ud06c\ub9ac\uc2a4\ud2b8\uc640_\ud14c\uc2a4\ud305",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "7. \u110e\u1166\u110f\u1173\u1105\u1175\u1109\u1173\u1110\u1173 \u110c\u1161\u11a8\u1109\u1165\u11bc\u1100\u116a \u1110\u1166\u1109\u1173\u1110\u1175\u11bc"
+      "norm_label": "7. \u110e\u1166\u110f\u1173\u1105\u1175\u1109\u1173\u1110\u1173\u110b\u116a \u1110\u1166\u1109\u1173\u1110\u1175\u11bc"
     },
     {
       "label": "7.1 \uccb4\ud06c\ub9ac\uc2a4\ud2b8 \uad6c\uc131",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L186",
+      "source_location": "L247",
       "_origin": "ast",
       "id": "docs_secure_coding_development_report_7_1_\uccb4\ud06c\ub9ac\uc2a4\ud2b8_\uad6c\uc131",
       "community": 27,
@@ -46413,103 +46534,103 @@
       "norm_label": "7.1 \u110e\u1166\u110f\u1173\u1105\u1175\u1109\u1173\u1110\u1173 \u1100\u116e\u1109\u1165\u11bc"
     },
     {
-      "label": "7.2 2026-07-21 \ubc30\ud3ec \uc804 \uc2dc\ud5d8 \uacb0\uacfc",
+      "label": "7.2 \uc790\ub3d9\u00b7\uc2e4\uc0ac\uc6a9 \uac80\uc99d \uacb0\uacfc",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L204",
+      "source_location": "L265",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_7_2_2026_07_21_\ubc30\ud3ec_\uc804_\uc2dc\ud5d8_\uacb0\uacfc",
+      "id": "docs_secure_coding_development_report_7_2_\uc790\ub3d9_\uc2e4\uc0ac\uc6a9_\uac80\uc99d_\uacb0\uacfc",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "7.2 2026-07-21 \u1107\u1162\u1111\u1169 \u110c\u1165\u11ab \u1109\u1175\u1112\u1165\u11b7 \u1100\u1167\u11af\u1100\u116a"
+      "norm_label": "7.2 \u110c\u1161\u1103\u1169\u11bc\u00b7\u1109\u1175\u11af\u1109\u1161\u110b\u116d\u11bc \u1100\u1165\u11b7\u110c\u1173\u11bc \u1100\u1167\u11af\u1100\u116a"
     },
     {
-      "label": "7.3 \uc544\uc9c1 \ud544\uc694\ud55c \ubcf4\uc548 \uc2dc\ud5d8",
+      "label": "7.3 \uc2e4\uc81c \uc0ac\uc6a9\uacfc DB \ub300\uc870",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L227",
+      "source_location": "L285",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_7_3_\uc544\uc9c1_\ud544\uc694\ud55c_\ubcf4\uc548_\uc2dc\ud5d8",
+      "id": "docs_secure_coding_development_report_7_3_\uc2e4\uc81c_\uc0ac\uc6a9\uacfc_db_\ub300\uc870",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "7.3 \u110b\u1161\u110c\u1175\u11a8 \u1111\u1175\u11af\u110b\u116d\u1112\u1161\u11ab \u1107\u1169\u110b\u1161\u11ab \u1109\u1175\u1112\u1165\u11b7"
+      "norm_label": "7.3 \u1109\u1175\u11af\u110c\u1166 \u1109\u1161\u110b\u116d\u11bc\u1100\u116a db \u1103\u1162\u110c\u1169"
     },
     {
-      "label": "8. \uc720\uc9c0\ubcf4\uc218\uc640 \uc6b4\uc601 \uacc4\ud68d",
+      "label": "8. \uc720\uc9c0\ubcf4\uc218 \uacc4\ud68d",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L241",
+      "source_location": "L299",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_8_\uc720\uc9c0\ubcf4\uc218\uc640_\uc6b4\uc601_\uacc4\ud68d",
+      "id": "docs_secure_coding_development_report_8_\uc720\uc9c0\ubcf4\uc218_\uacc4\ud68d",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "8. \u110b\u1172\u110c\u1175\u1107\u1169\u1109\u116e\u110b\u116a \u110b\u116e\u11ab\u110b\u1167\u11bc \u1100\u1168\u1112\u116c\u11a8"
+      "norm_label": "8. \u110b\u1172\u110c\u1175\u1107\u1169\u1109\u116e \u1100\u1168\u1112\u116c\u11a8"
     },
     {
-      "label": "8.1 \ucde8\uc57d\uc810 \uad00\ub9ac",
+      "label": "8.1 \ubcc0\uacbd\uacfc \ud68c\uadc0 \uad00\ub9ac",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L243",
+      "source_location": "L301",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_8_1_\ucde8\uc57d\uc810_\uad00\ub9ac",
+      "id": "docs_secure_coding_development_report_8_1_\ubcc0\uacbd\uacfc_\ud68c\uadc0_\uad00\ub9ac",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "8.1 \u110e\u1171\u110b\u1163\u11a8\u110c\u1165\u11b7 \u1100\u116a\u11ab\u1105\u1175"
+      "norm_label": "8.1 \u1107\u1167\u11ab\u1100\u1167\u11bc\u1100\u116a \u1112\u116c\u1100\u1171 \u1100\u116a\u11ab\u1105\u1175"
     },
     {
-      "label": "8.2 CI/CD \ubcf4\uc548 \uac8c\uc774\ud2b8 \ud655\ub300",
+      "label": "8.2 \ucde8\uc57d\uc810\uacfc \uc758\uc874\uc131 \uad00\ub9ac",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L250",
+      "source_location": "L308",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_8_2_ci_cd_\ubcf4\uc548_\uac8c\uc774\ud2b8_\ud655\ub300",
+      "id": "docs_secure_coding_development_report_8_2_\ucde8\uc57d\uc810\uacfc_\uc758\uc874\uc131_\uad00\ub9ac",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "8.2 ci/cd \u1107\u1169\u110b\u1161\u11ab \u1100\u1166\u110b\u1175\u1110\u1173 \u1112\u116a\u11a8\u1103\u1162"
+      "norm_label": "8.2 \u110e\u1171\u110b\u1163\u11a8\u110c\u1165\u11b7\u1100\u116a \u110b\u1174\u110c\u1169\u11ab\u1109\u1165\u11bc \u1100\u116a\u11ab\u1105\u1175"
     },
     {
-      "label": "8.3 \uad00\uce21\uacfc \uc0ac\uace0 \ub300\uc751",
+      "label": "8.3 \uc6b4\uc601\uacfc \uc0ac\uace0 \ub300\uc751",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L257",
+      "source_location": "L315",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_8_3_\uad00\uce21\uacfc_\uc0ac\uace0_\ub300\uc751",
+      "id": "docs_secure_coding_development_report_8_3_\uc6b4\uc601\uacfc_\uc0ac\uace0_\ub300\uc751",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "8.3 \u1100\u116a\u11ab\u110e\u1173\u11a8\u1100\u116a \u1109\u1161\u1100\u1169 \u1103\u1162\u110b\u1173\u11bc"
+      "norm_label": "8.3 \u110b\u116e\u11ab\u110b\u1167\u11bc\u1100\u116a \u1109\u1161\u1100\u1169 \u1103\u1162\u110b\u1173\u11bc"
     },
     {
-      "label": "8.4 \ub370\uc774\ud130\uc640 \ube44\ubc00 \uad00\ub9ac",
+      "label": "9. \uc6b4\uc601 \uc804 \uc794\uc5ec \uc2dc\ud5d8\uacfc \uc704\ud5d8",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L264",
+      "source_location": "L325",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_8_4_\ub370\uc774\ud130\uc640_\ube44\ubc00_\uad00\ub9ac",
+      "id": "docs_secure_coding_development_report_9_\uc6b4\uc601_\uc804_\uc794\uc5ec_\uc2dc\ud5d8\uacfc_\uc704\ud5d8",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "8.4 \u1103\u1166\u110b\u1175\u1110\u1165\u110b\u116a \u1107\u1175\u1106\u1175\u11af \u1100\u116a\u11ab\u1105\u1175"
+      "norm_label": "9. \u110b\u116e\u11ab\u110b\u1167\u11bc \u110c\u1165\u11ab \u110c\u1161\u11ab\u110b\u1167 \u1109\u1175\u1112\u1165\u11b7\u1100\u116a \u110b\u1171\u1112\u1165\u11b7"
     },
     {
-      "label": "9. \ucd5c\uc885 \ud3c9\uac00\uc640 \ud5a5\ud6c4 \uc870\uce58",
+      "label": "10. \uacb0\ub860",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L271",
+      "source_location": "L349",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_9_\ucd5c\uc885_\ud3c9\uac00\uc640_\ud5a5\ud6c4_\uc870\uce58",
+      "id": "docs_secure_coding_development_report_10_\uacb0\ub860",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "9. \u110e\u116c\u110c\u1169\u11bc \u1111\u1167\u11bc\u1100\u1161\u110b\u116a \u1112\u1163\u11bc\u1112\u116e \u110c\u1169\u110e\u1175"
+      "norm_label": "10. \u1100\u1167\u11af\u1105\u1169\u11ab"
     },
     {
-      "label": "\ubd80\ub85d A. \uc8fc\uc694 \uadfc\uac70 \ubb38\uc11c",
+      "label": "\ubd80\ub85d A. \uadfc\uac70 \ubb38\uc11c",
       "file_type": "document",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L294",
+      "source_location": "L361",
       "_origin": "ast",
-      "id": "docs_secure_coding_development_report_\ubd80\ub85d_a_\uc8fc\uc694_\uadfc\uac70_\ubb38\uc11c",
+      "id": "docs_secure_coding_development_report_\ubd80\ub85d_a_\uadfc\uac70_\ubb38\uc11c",
       "community": 27,
       "community_name": "app.module.ts",
-      "norm_label": "\u1107\u116e\u1105\u1169\u11a8 a. \u110c\u116e\u110b\u116d \u1100\u1173\u11ab\u1100\u1165 \u1106\u116e\u11ab\u1109\u1165"
+      "norm_label": "\u1107\u116e\u1105\u1169\u11a8 a. \u1100\u1173\u11ab\u1100\u1165 \u1106\u116e\u11ab\u1109\u1165"
     },
     {
       "label": "tech_stack.md",
@@ -46562,8 +46683,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "docs_tech_stack_3_\ud655\uc815_\uae30\uc220_\uae30\uc900\uc120",
-      "community": 107,
-      "community_name": "3. \ud655\uc815 \uae30\uc220 \uae30\uc900\uc120",
+      "community": 94,
+      "community_name": "\uac10\uc790\ub9c8\ucf13 \uae30\uc220 \uc2a4\ud0dd \ubc0f \uac1c\ubc1c \uacc4\ud68d",
       "norm_label": "3. \u1112\u116a\u11a8\u110c\u1165\u11bc \u1100\u1175\u1109\u116e\u11af \u1100\u1175\u110c\u116e\u11ab\u1109\u1165\u11ab"
     },
     {
@@ -46573,8 +46694,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "docs_tech_stack_3_1_\ucf54\uc5b4_\ub7f0\ud0c0\uc784",
-      "community": 107,
-      "community_name": "3. \ud655\uc815 \uae30\uc220 \uae30\uc900\uc120",
+      "community": 94,
+      "community_name": "\uac10\uc790\ub9c8\ucf13 \uae30\uc220 \uc2a4\ud0dd \ubc0f \uac1c\ubc1c \uacc4\ud68d",
       "norm_label": "3.1 \u110f\u1169\u110b\u1165 \u1105\u1165\u11ab\u1110\u1161\u110b\u1175\u11b7"
     },
     {
@@ -46584,8 +46705,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "docs_tech_stack_3_2_\ud504\ub7f0\ud2b8\uc5d4\ub4dc",
-      "community": 107,
-      "community_name": "3. \ud655\uc815 \uae30\uc220 \uae30\uc900\uc120",
+      "community": 94,
+      "community_name": "\uac10\uc790\ub9c8\ucf13 \uae30\uc220 \uc2a4\ud0dd \ubc0f \uac1c\ubc1c \uacc4\ud68d",
       "norm_label": "3.2 \u1111\u1173\u1105\u1165\u11ab\u1110\u1173\u110b\u1166\u11ab\u1103\u1173"
     },
     {
@@ -46595,8 +46716,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "docs_tech_stack_3_3_\ubc31\uc5d4\ub4dc",
-      "community": 107,
-      "community_name": "3. \ud655\uc815 \uae30\uc220 \uae30\uc900\uc120",
+      "community": 94,
+      "community_name": "\uac10\uc790\ub9c8\ucf13 \uae30\uc220 \uc2a4\ud0dd \ubc0f \uac1c\ubc1c \uacc4\ud68d",
       "norm_label": "3.3 \u1107\u1162\u11a8\u110b\u1166\u11ab\u1103\u1173"
     },
     {
@@ -46606,8 +46727,8 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "docs_tech_stack_3_4_\ub370\uc774\ud130\uc640_\uac80\uc0c9",
-      "community": 107,
-      "community_name": "3. \ud655\uc815 \uae30\uc220 \uae30\uc900\uc120",
+      "community": 94,
+      "community_name": "\uac10\uc790\ub9c8\ucf13 \uae30\uc220 \uc2a4\ud0dd \ubc0f \uac1c\ubc1c \uacc4\ud68d",
       "norm_label": "3.4 \u1103\u1166\u110b\u1175\u1110\u1165\u110b\u116a \u1100\u1165\u11b7\u1109\u1162\u11a8"
     },
     {
@@ -46617,8 +46738,8 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "docs_tech_stack_3_5_\ud050\uc640_\uc2e4\uc2dc\uac04_\ucc98\ub9ac",
-      "community": 107,
-      "community_name": "3. \ud655\uc815 \uae30\uc220 \uae30\uc900\uc120",
+      "community": 94,
+      "community_name": "\uac10\uc790\ub9c8\ucf13 \uae30\uc220 \uc2a4\ud0dd \ubc0f \uac1c\ubc1c \uacc4\ud68d",
       "norm_label": "3.5 \u110f\u1172\u110b\u116a \u1109\u1175\u11af\u1109\u1175\u1100\u1161\u11ab \u110e\u1165\u1105\u1175"
     },
     {
@@ -46628,8 +46749,8 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "docs_tech_stack_3_6_\ubcf4\uc548\uacfc_\uad00\uce21\uc131",
-      "community": 107,
-      "community_name": "3. \ud655\uc815 \uae30\uc220 \uae30\uc900\uc120",
+      "community": 94,
+      "community_name": "\uac10\uc790\ub9c8\ucf13 \uae30\uc220 \uc2a4\ud0dd \ubc0f \uac1c\ubc1c \uacc4\ud68d",
       "norm_label": "3.6 \u1107\u1169\u110b\u1161\u11ab\u1100\u116a \u1100\u116a\u11ab\u110e\u1173\u11a8\u1109\u1165\u11bc"
     },
     {
@@ -101300,6 +101421,94 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L244",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_deep_functional_test_report_2026_07_23",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L234",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_operations_runbook",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L240",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_page_desc",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L239",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_requirements",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_secure_coding_development_report",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L241",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_tech_stack",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L242",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_test_plan",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L220",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme",
+      "target": "docs_user_test_checklist",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
@@ -101314,33 +101523,143 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L5",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_gamja_market",
-      "target": "readme_\uc2dc\uc791\ud558\uae30",
+      "target": "readme_\uad6c\uc131",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L47",
+      "source_location": "L180",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_gamja_market",
-      "target": "readme_\ud488\uc9c8_\uba85\ub839",
+      "target": "readme_\ub370\uc774\ud130\ubca0\uc774\uc2a4",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L28",
+      "source_location": "L226",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "readme_\uc2dc\uc791\ud558\uae30",
+      "source": "readme_gamja_market",
+      "target": "readme_\ubcf4\uc548_\uc6b4\uc601_\uc8fc\uc758\uc0ac\ud56d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_gamja_market",
+      "target": "readme_\ube60\ub978_\uc2e4\ud589",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_gamja_market",
+      "target": "readme_\uc0ac\uc804_\uc900\ube44",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L147",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_gamja_market",
+      "target": "readme_\uc678\ubd80_\uc8fc\uc18c\uc5d0\uc11c_\uc2e4\ud589",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L237",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_gamja_market",
+      "target": "readme_\uc8fc\uc694_\ubb38\uc11c",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L197",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_gamja_market",
+      "target": "readme_\ud488\uc9c8\uacfc_\ud14c\uc2a4\ud2b8",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L163",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_gamja_market",
       "target": "readme_\ud638\uc2a4\ud2b8_\uac1c\ubc1c_\ubaa8\ub4dc",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_gamja_market",
+      "target": "readme_\ud658\uacbd_\uc124\uc815",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L103",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_\ud658\uacbd_\uc124\uc815",
+      "target": "readme_\uacb0\uc81c_\uc815\uc0b0",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L87",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_\ud658\uacbd_\uc124\uc815",
+      "target": "readme_\uae30\ubcf8_\uc5f0\uacb0\uacfc_\uc778\uc99d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L134",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "readme_\ud658\uacbd_\uc124\uc815",
+      "target": "readme_\uc5f0\ub77d\ucc98_\uc804\ub2ec\uacfc_\uad00\uce21",
       "confidence_score": 1.0
     },
     {
@@ -103745,29 +104064,40 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L9",
+      "source_location": "L349",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_\uac10\uc790\ub9c8\ucf13_\ud50c\ub7ab\ud3fc_\uc2dc\ud050\uc5b4\ucf54\ub529_\uac1c\ubc1c_\ubcf4\uace0\uc11c",
-      "target": "docs_secure_coding_development_report_1_\ubcf4\uace0\uc11c_\ubaa9\uc801\uacfc_\uacb0\ub860",
+      "target": "docs_secure_coding_development_report_10_\uacb0\ub860",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L24",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_\uac10\uc790\ub9c8\ucf13_\ud50c\ub7ab\ud3fc_\uc2dc\ud050\uc5b4\ucf54\ub529_\uac1c\ubc1c_\ubcf4\uace0\uc11c",
-      "target": "docs_secure_coding_development_report_2_\uac1c\ubc1c_\ubc29\ubc95\uacfc_\ucd94\uc801\uc131",
+      "target": "docs_secure_coding_development_report_1_\uac1c\uc694\uc640_\ucd5c\uc885_\ud310\uc815",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L38",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_secure_coding_development_report_\uac10\uc790\ub9c8\ucf13_\ud50c\ub7ab\ud3fc_\uc2dc\ud050\uc5b4\ucf54\ub529_\uac1c\ubc1c_\ubcf4\uace0\uc11c",
+      "target": "docs_secure_coding_development_report_2_\uac1c\ubc1c_\uc804_\uacfc\uc815",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/secure-coding-development-report.md",
+      "source_location": "L50",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_\uac10\uc790\ub9c8\ucf13_\ud50c\ub7ab\ud3fc_\uc2dc\ud050\uc5b4\ucf54\ub529_\uac1c\ubc1c_\ubcf4\uace0\uc11c",
@@ -103778,7 +104108,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L82",
+      "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_\uac10\uc790\ub9c8\ucf13_\ud50c\ub7ab\ud3fc_\uc2dc\ud050\uc5b4\ucf54\ub529_\uac1c\ubc1c_\ubcf4\uace0\uc11c",
@@ -103789,106 +104119,106 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L108",
+      "source_location": "L140",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_\uac10\uc790\ub9c8\ucf13_\ud50c\ub7ab\ud3fc_\uc2dc\ud050\uc5b4\ucf54\ub529_\uac1c\ubc1c_\ubcf4\uace0\uc11c",
-      "target": "docs_secure_coding_development_report_5_\uad6c\ud604_\ub0b4\uc6a9",
+      "target": "docs_secure_coding_development_report_5_\uad6c\ud604",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L157",
+      "source_location": "L212",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_\uac10\uc790\ub9c8\ucf13_\ud50c\ub7ab\ud3fc_\uc2dc\ud050\uc5b4\ucf54\ub529_\uac1c\ubc1c_\ubcf4\uace0\uc11c",
-      "target": "docs_secure_coding_development_report_6_\uac1c\ubc1c_\uc911_\ud655\uc778\ud55c_\ubcf4\uc548_\uc57d\uc810\uacfc_\ubcc0\uacbd_\ub0b4\uc6a9",
+      "target": "docs_secure_coding_development_report_6_\uac1c\ubc1c_\uc911_\ubc1c\uacac\ud55c_\ubcf4\uc548_\uc57d\uc810\uacfc_\ubcc0\uacbd",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L184",
+      "source_location": "L245",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_\uac10\uc790\ub9c8\ucf13_\ud50c\ub7ab\ud3fc_\uc2dc\ud050\uc5b4\ucf54\ub529_\uac1c\ubc1c_\ubcf4\uace0\uc11c",
-      "target": "docs_secure_coding_development_report_7_\uccb4\ud06c\ub9ac\uc2a4\ud2b8_\uc791\uc131\uacfc_\ud14c\uc2a4\ud305",
+      "target": "docs_secure_coding_development_report_7_\uccb4\ud06c\ub9ac\uc2a4\ud2b8\uc640_\ud14c\uc2a4\ud305",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L241",
+      "source_location": "L299",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_\uac10\uc790\ub9c8\ucf13_\ud50c\ub7ab\ud3fc_\uc2dc\ud050\uc5b4\ucf54\ub529_\uac1c\ubc1c_\ubcf4\uace0\uc11c",
-      "target": "docs_secure_coding_development_report_8_\uc720\uc9c0\ubcf4\uc218\uc640_\uc6b4\uc601_\uacc4\ud68d",
+      "target": "docs_secure_coding_development_report_8_\uc720\uc9c0\ubcf4\uc218_\uacc4\ud68d",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L271",
+      "source_location": "L325",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_\uac10\uc790\ub9c8\ucf13_\ud50c\ub7ab\ud3fc_\uc2dc\ud050\uc5b4\ucf54\ub529_\uac1c\ubc1c_\ubcf4\uace0\uc11c",
-      "target": "docs_secure_coding_development_report_9_\ucd5c\uc885_\ud3c9\uac00\uc640_\ud5a5\ud6c4_\uc870\uce58",
+      "target": "docs_secure_coding_development_report_9_\uc6b4\uc601_\uc804_\uc794\uc5ec_\uc2dc\ud5d8\uacfc_\uc704\ud5d8",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L294",
+      "source_location": "L361",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_\uac10\uc790\ub9c8\ucf13_\ud50c\ub7ab\ud3fc_\uc2dc\ud050\uc5b4\ucf54\ub529_\uac1c\ubc1c_\ubcf4\uace0\uc11c",
-      "target": "docs_secure_coding_development_report_\ubd80\ub85d_a_\uc8fc\uc694_\uadfc\uac70_\ubb38\uc11c",
+      "target": "docs_secure_coding_development_report_\ubd80\ub85d_a_\uadfc\uac70_\ubb38\uc11c",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L40",
+      "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_3_\uc694\uad6c\uc0ac\ud56d_\ubd84\uc11d",
-      "target": "docs_secure_coding_development_report_3_1_\uae30\ub2a5_\uc694\uad6c\uc0ac\ud56d",
+      "target": "docs_secure_coding_development_report_3_1_\uc694\uad6c\uc0ac\ud56d_\ubc94\uc704\uc640_\ucda9\uc871_\ud604\ud669",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L51",
+      "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_3_\uc694\uad6c\uc0ac\ud56d_\ubd84\uc11d",
-      "target": "docs_secure_coding_development_report_3_2_\ud575\uc2ec_\ubcf4\uc548_\uc694\uad6c\uc0ac\ud56d",
+      "target": "docs_secure_coding_development_report_3_2_\uc5ed\ud560\uacfc_\uad8c\ud55c",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L64",
+      "source_location": "L80",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_3_\uc694\uad6c\uc0ac\ud56d_\ubd84\uc11d",
-      "target": "docs_secure_coding_development_report_3_3_\uc704\ud611_\ubd84\uc11d",
+      "target": "docs_secure_coding_development_report_3_3_\ubcf4\uc548_\ube44\uae30\ub2a5_\uc694\uad6c\uc0ac\ud56d",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L84",
+      "source_location": "L94",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_4_\uc2dc\uc2a4\ud15c_\uc124\uacc4",
@@ -103899,32 +104229,43 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L95",
+      "source_location": "L114",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_secure_coding_development_report_4_\uc2dc\uc2a4\ud15c_\uc124\uacc4",
-      "target": "docs_secure_coding_development_report_4_2_\ubcf4\uc548_\uc124\uacc4_\uc6d0\uce59",
+      "target": "docs_secure_coding_development_report_4_2_\ud575\uc2ec_\uc124\uacc4_\uacb0\uc815",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L110",
+      "source_location": "L129",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_secure_coding_development_report_5_\uad6c\ud604_\ub0b4\uc6a9",
-      "target": "docs_secure_coding_development_report_5_1_\uacc4\uc815\uacfc_\uc778\uc99d",
+      "source": "docs_secure_coding_development_report_4_\uc2dc\uc2a4\ud15c_\uc124\uacc4",
+      "target": "docs_secure_coding_development_report_4_3_\ub370\uc774\ud130_\ubb34\uacb0\uc131_\uc124\uacc4",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L118",
+      "source_location": "L142",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_secure_coding_development_report_5_\uad6c\ud604_\ub0b4\uc6a9",
+      "source": "docs_secure_coding_development_report_5_\uad6c\ud604",
+      "target": "docs_secure_coding_development_report_5_1_\ud68c\uc6d0\uacfc_\uc778\uc99d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/secure-coding-development-report.md",
+      "source_location": "L155",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_secure_coding_development_report_5_\uad6c\ud604",
       "target": "docs_secure_coding_development_report_5_2_\uc0c1\ud488\uacfc_\uac80\uc0c9",
       "confidence_score": 1.0
     },
@@ -103932,10 +104273,10 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L126",
+      "source_location": "L168",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_secure_coding_development_report_5_\uad6c\ud604_\ub0b4\uc6a9",
+      "source": "docs_secure_coding_development_report_5_\uad6c\ud604",
       "target": "docs_secure_coding_development_report_5_3_\ucc44\ud305_\uc2e0\uace0\uc640_\ucc28\ub2e8",
       "confidence_score": 1.0
     },
@@ -103943,10 +104284,10 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L134",
+      "source_location": "L181",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_secure_coding_development_report_5_\uad6c\ud604_\ub0b4\uc6a9",
+      "source": "docs_secure_coding_development_report_5_\uad6c\ud604",
       "target": "docs_secure_coding_development_report_5_4_\uac70\ub798_\uacb0\uc81c\uc640_\uc815\uc0b0",
       "confidence_score": 1.0
     },
@@ -103954,21 +104295,21 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L150",
+      "source_location": "L201",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_secure_coding_development_report_5_\uad6c\ud604_\ub0b4\uc6a9",
-      "target": "docs_secure_coding_development_report_5_5_\uad00\ub9ac\uc790\uc640_\uac10\uc0ac",
+      "source": "docs_secure_coding_development_report_5_\uad6c\ud604",
+      "target": "docs_secure_coding_development_report_5_5_\uad00\ub9ac\uc790\uc640_\uc6b4\uc601",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L186",
+      "source_location": "L247",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_secure_coding_development_report_7_\uccb4\ud06c\ub9ac\uc2a4\ud2b8_\uc791\uc131\uacfc_\ud14c\uc2a4\ud305",
+      "source": "docs_secure_coding_development_report_7_\uccb4\ud06c\ub9ac\uc2a4\ud2b8\uc640_\ud14c\uc2a4\ud305",
       "target": "docs_secure_coding_development_report_7_1_\uccb4\ud06c\ub9ac\uc2a4\ud2b8_\uad6c\uc131",
       "confidence_score": 1.0
     },
@@ -103976,66 +104317,55 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L204",
+      "source_location": "L265",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_secure_coding_development_report_7_\uccb4\ud06c\ub9ac\uc2a4\ud2b8_\uc791\uc131\uacfc_\ud14c\uc2a4\ud305",
-      "target": "docs_secure_coding_development_report_7_2_2026_07_21_\ubc30\ud3ec_\uc804_\uc2dc\ud5d8_\uacb0\uacfc",
+      "source": "docs_secure_coding_development_report_7_\uccb4\ud06c\ub9ac\uc2a4\ud2b8\uc640_\ud14c\uc2a4\ud305",
+      "target": "docs_secure_coding_development_report_7_2_\uc790\ub3d9_\uc2e4\uc0ac\uc6a9_\uac80\uc99d_\uacb0\uacfc",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L227",
+      "source_location": "L285",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_secure_coding_development_report_7_\uccb4\ud06c\ub9ac\uc2a4\ud2b8_\uc791\uc131\uacfc_\ud14c\uc2a4\ud305",
-      "target": "docs_secure_coding_development_report_7_3_\uc544\uc9c1_\ud544\uc694\ud55c_\ubcf4\uc548_\uc2dc\ud5d8",
+      "source": "docs_secure_coding_development_report_7_\uccb4\ud06c\ub9ac\uc2a4\ud2b8\uc640_\ud14c\uc2a4\ud305",
+      "target": "docs_secure_coding_development_report_7_3_\uc2e4\uc81c_\uc0ac\uc6a9\uacfc_db_\ub300\uc870",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L243",
+      "source_location": "L301",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_secure_coding_development_report_8_\uc720\uc9c0\ubcf4\uc218\uc640_\uc6b4\uc601_\uacc4\ud68d",
-      "target": "docs_secure_coding_development_report_8_1_\ucde8\uc57d\uc810_\uad00\ub9ac",
+      "source": "docs_secure_coding_development_report_8_\uc720\uc9c0\ubcf4\uc218_\uacc4\ud68d",
+      "target": "docs_secure_coding_development_report_8_1_\ubcc0\uacbd\uacfc_\ud68c\uadc0_\uad00\ub9ac",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L250",
+      "source_location": "L308",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_secure_coding_development_report_8_\uc720\uc9c0\ubcf4\uc218\uc640_\uc6b4\uc601_\uacc4\ud68d",
-      "target": "docs_secure_coding_development_report_8_2_ci_cd_\ubcf4\uc548_\uac8c\uc774\ud2b8_\ud655\ub300",
+      "source": "docs_secure_coding_development_report_8_\uc720\uc9c0\ubcf4\uc218_\uacc4\ud68d",
+      "target": "docs_secure_coding_development_report_8_2_\ucde8\uc57d\uc810\uacfc_\uc758\uc874\uc131_\uad00\ub9ac",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L257",
+      "source_location": "L315",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_secure_coding_development_report_8_\uc720\uc9c0\ubcf4\uc218\uc640_\uc6b4\uc601_\uacc4\ud68d",
-      "target": "docs_secure_coding_development_report_8_3_\uad00\uce21\uacfc_\uc0ac\uace0_\ub300\uc751",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/secure-coding-development-report.md",
-      "source_location": "L264",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_secure_coding_development_report_8_\uc720\uc9c0\ubcf4\uc218\uc640_\uc6b4\uc601_\uacc4\ud68d",
-      "target": "docs_secure_coding_development_report_8_4_\ub370\uc774\ud130\uc640_\ube44\ubc00_\uad00\ub9ac",
+      "source": "docs_secure_coding_development_report_8_\uc720\uc9c0\ubcf4\uc218_\uacc4\ud68d",
+      "target": "docs_secure_coding_development_report_8_3_\uc6b4\uc601\uacfc_\uc0ac\uace0_\ub300\uc751",
       "confidence_score": 1.0
     },
     {
