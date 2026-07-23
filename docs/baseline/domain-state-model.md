@@ -32,8 +32,8 @@ P0에서는 `DRAFT`를 외부에 노출하지 않는다. 소유자만 수정·�
 | 명령 | 허용 상태 | 행위자 | 결과 |
 | --- | --- | --- | --- |
 | 거래 요청 | 상품 `LISTED` | 구매자 | `REQUESTED` |
-| 수락·거절 | `REQUESTED` | 판매자 | `ACCEPTED`·`REJECTED` |
-| 서버 승인 확인 | `ACCEPTED` | 서버 | `PAID_IN_ESCROW`, 상품 `RESERVED` |
+| 수락·거절 | `REQUESTED` | 판매자 | `ACCEPTED`·`REJECTED`, 수락 시 상품 `RESERVED` 및 경쟁 요청 종료 |
+| 서버 승인 확인 | `ACCEPTED`, 상품 `RESERVED` | 서버 | `PAID_IN_ESCROW` |
 | 인도 완료 | `PAID_IN_ESCROW` | 판매자 | `DELIVERED` |
 | 구매확정 | `DELIVERED` | 구매자 또는 자동 작업 | `CONFIRMED` |
 | 정산 보류 시작 | `CONFIRMED` | 서버 | `SETTLEMENT_PENDING` |
@@ -43,6 +43,13 @@ P0에서는 `DRAFT`를 외부에 노출하지 않는다. 소유자만 수정·�
 후 7일 동안 정산을 보류한다. 취소·환불·분쟁 접수는 정산을 중지한다. 분쟁은
 재인증된 최고관리자 1인의 사유 있는 도메인 명령으로만 최종 처리한다. DEC-01에
 따라 실정산은 구현하지 않고 Toss sandbox와 테스트 UI만 연결한다.
+
+한 상품의 한 요청만 `ACCEPTED`가 될 수 있다. 선택된 요청과 상품 예약 변경,
+경쟁 `REQUESTED` 거래의 사유 있는 거절은 같은 트랜잭션에서 처리한다. 수락 후
+결제 주문을 생성하지 않은 상태로 7일이 지나면 worker가 거래를 `CANCELLED`로
+바꾸고 상품을 다시 `LISTED`로 되돌린다. 결제 전 수동 취소는 구매자와 판매자
+모두 가능하며, 결제 후 취소 기간은 거래 생성일이 아니라 결제 승인 시각부터
+계산한다.
 
 ## 신고와 차단
 

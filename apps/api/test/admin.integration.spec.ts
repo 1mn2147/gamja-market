@@ -5,7 +5,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { requestContextMiddleware } from '../src/common/request-context.middleware';
 
-const password = 'a-password-that-is-long-enough';
+const password = 'Orchid!Vault2026-Safe';
 
 async function signup(app: INestApplication, email: string) {
   const response = await request(app.getHttpServer()).post('/api/v1/auth/signups')
@@ -67,5 +67,43 @@ describe('WBS-07 super administrator boundary', () => {
     expect(suspended.body.status).toBe('SUSPENDED');
     const audit = await prisma.auditLog.findFirst({ where: { targetId: target.id, action: 'USER_SUSPENDED' }, orderBy: { occurredAt: 'desc' } });
     expect(audit).toMatchObject({ actorId: expect.any(String), reason: '운영 정책 위반' });
+  });
+
+  it('API-ADMIN-009: serializes payment and nested trade amounts for the administrator screen', async () => {
+    const adminAccount = await prisma.user.findUniqueOrThrow({ where: { email: adminEmail } });
+    const managedAccount = await prisma.user.findUniqueOrThrow({ where: { email: userEmail } });
+    const neighborhood = await prisma.neighborhood.findUniqueOrThrow({ where: { code: 'KR-CH-UC-SARIM' } });
+    const product = await prisma.product.create({
+      data: {
+        authorId: managedAccount.id,
+        neighborhoodId: neighborhood.id,
+        title: `admin payment ${run}`,
+        description: 'administrator payment serialization regression fixture',
+        priceKrw: 12_345n,
+        category: 'test',
+      },
+    });
+    const trade = await prisma.trade.create({
+      data: {
+        productId: product.id,
+        buyerId: adminAccount.id,
+        sellerId: managedAccount.id,
+        priceKrw: 12_345n,
+        status: 'ACCEPTED',
+      },
+    });
+    const payment = await prisma.payment.create({
+      data: { tradeId: trade.id, orderId: `admin-order-${run}`, amountKrw: 12_345n },
+    });
+
+    const admin = request.agent(app.getHttpServer());
+    await admin.post('/api/v1/auth/login').send({ identifier: adminEmail, password });
+    const response = await admin.get('/api/v1/admin/payments');
+    expect(response.status).toBe(200);
+    const listed = response.body.payments.find((item: { id: string }) => item.id === payment.id) as {
+      amountKrw: string;
+      trade: { priceKrw: string };
+    };
+    expect(listed).toMatchObject({ amountKrw: '12345', trade: { priceKrw: '12345' } });
   });
 });

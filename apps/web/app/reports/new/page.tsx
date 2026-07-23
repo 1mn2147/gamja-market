@@ -2,8 +2,6 @@
 
 import { FormEvent, useState } from 'react';
 
-const origin = process.env.NEXT_PUBLIC_API_ORIGIN ?? 'http://localhost:4000';
-
 const messages: Record<string, string> = {
   DUPLICATE_REPORT: '이미 접수된 대상입니다. 내 신고 내역에서 상태를 확인해 주세요.',
   REPORT_RATE_LIMITED: '신고 요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.',
@@ -16,7 +14,7 @@ export default function ReportPage() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const response = await fetch(`${origin}/api/v1/reports`, {
+    const response = await fetch('/api/v1/reports', {
       method: 'POST',
       credentials: 'include',
       headers: { 'content-type': 'application/json' },

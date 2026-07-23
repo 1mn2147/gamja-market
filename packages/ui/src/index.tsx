@@ -1,6 +1,8 @@
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 
-export function SiteShell({ children }: PropsWithChildren) {
+type SiteShellProps = PropsWithChildren<{ headerAction?: ReactNode }>;
+
+export function SiteShell({ children, headerAction }: SiteShellProps) {
   return (
     <div className="site-shell">
       <header className="site-header">
@@ -15,6 +17,7 @@ export function SiteShell({ children }: PropsWithChildren) {
             <li><a href="/me">내 활동</a></li>
           </ul>
         </nav>
+        {headerAction}
       </header>
       <div id="main-content">{children}</div>
     </div>

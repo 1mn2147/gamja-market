@@ -1,13 +1,16 @@
 import type { NextConfig } from 'next';
 
+const apiOrigin = process.env.NEXT_PUBLIC_API_ORIGIN ?? 'http://localhost:4000';
+const apiSocketOrigin = apiOrigin.replace(/^http/, 'ws');
+
 const securityHeaders = [
   { key: 'Content-Security-Policy', value: [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline' https://js.tosspayments.com",
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob: http://localhost:4000",
-    "connect-src 'self' http://localhost:4000 ws://localhost:4000",
-    "frame-src https://payment-gateway-sandbox.tosspayments.com",
+    `img-src 'self' data: blob: ${apiOrigin}`,
+    `connect-src 'self' ${apiOrigin} ${apiSocketOrigin} https://*.tosspayments.com`,
+    "frame-src https://*.tosspayments.com",
     "object-src 'none'",
     "base-uri 'self'",
     "frame-ancestors 'none'",

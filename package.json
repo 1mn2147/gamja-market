@@ -13,6 +13,7 @@
     "test:e2e": "corepack pnpm --filter @gamja/web test:e2e",
     "test:a11y": "corepack pnpm --filter @gamja/web test:a11y",
     "test:security": "node packages/config/scripts/security-check.mjs",
+    "test:performance": "node scripts/performance-smoke.mjs",
     "test:release": "corepack pnpm lint && corepack pnpm typecheck && corepack pnpm build && corepack pnpm test:unit && corepack pnpm test:integration && corepack pnpm test:contract && node scripts/verify-baseline.mjs && corepack pnpm test:e2e && corepack pnpm test:a11y && corepack pnpm test:security"
   },
   "engines": {
@@ -26,6 +27,7 @@
       "esbuild",
       "sharp",
       "msgpackr-extract",
+      "protobufjs",
       "@scarf/scarf",
       "argon2"
     ]

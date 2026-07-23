@@ -31,6 +31,12 @@ export class AuthController {
     return this.authService.confirmContact(body.identifier, body.code);
   }
 
+  @Post('contact-confirmations/request')
+  @HttpCode(202)
+  requestContactConfirmation(@Body() body: PasswordResetRequestDto) {
+    return this.authService.resendContactConfirmation(body.identifier);
+  }
+
   @Post('login')
   async login(@Body() body: LoginDto, @Res({ passthrough: true }) response: Response) {
     const result = await this.authService.login(body.identifier, body.password);

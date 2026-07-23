@@ -1,8 +1,8 @@
 openapi: 3.1.0
 info:
   title: Gamja Market API
-  version: 0.8.0
-  description: WBS-02 through WBS-07 implemented account, product, chat, safety, trade, sandbox payment, and administrator REST contract. Authentication uses an opaque HttpOnly session cookie.
+  version: 0.9.0
+  description: Account, product, chat, safety, trade, configurable Toss payment, durable webhook, settlement, and administrator operations contract. Authentication uses an opaque HttpOnly session cookie.
 servers:
   - url: /api/v1
 paths:
@@ -36,6 +36,15 @@ paths:
       responses:
         '201': { description: Account is active. }
         '400': { $ref: '#/components/responses/Problem' }
+  /auth/contact-confirmations/request:
+    post:
+      operationId: resendContactConfirmation
+      description: Reissues a contact verification through the configured delivery provider without revealing account existence.
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/IdentifierRequest' } } } }
+      responses:
+        '202': { description: Always accepted when not rate limited. }
+        '429': { $ref: '#/components/responses/Problem' }
+        '503': { $ref: '#/components/responses/Problem' }
   /auth/login:
     post:
       operationId: login
@@ -264,11 +273,11 @@ paths:
         '401': { $ref: '#/components/responses/Problem' }
     post:
       operationId: requestTrade
-      description: Requests a trade after product, neighborhood, ownership, duplicate, and block checks.
+      description: Requests a trade and creates or returns its buyer-seller product chat in the same transaction after product, neighborhood, ownership, duplicate, and block checks.
       security: [{ sessionCookie: [] }]
       requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/CreateTradeRequest' } } } }
       responses:
-        '201': { description: Trade requested with a server-side price snapshot. }
+        '201': { description: Trade requested with a server-side price snapshot and chatId. }
         '400': { $ref: '#/components/responses/Problem' }
         '401': { $ref: '#/components/responses/Problem' }
         '403': { $ref: '#/components/responses/Problem' }
@@ -277,7 +286,7 @@ paths:
   /trades/{tradeId}:
     get:
       operationId: getTrade
-      description: Returns a trade only to its buyer or seller.
+      description: Returns a trade and its safe payment summary only to its buyer or seller.
       security: [{ sessionCookie: [] }]
       parameters:
         - { name: tradeId, in: path, required: true, schema: { type: string } }
@@ -288,7 +297,7 @@ paths:
   /trades/{tradeId}/accept:
     post:
       operationId: acceptTrade
-      description: Allows the seller to accept a requested trade and reserve the active product.
+      description: Allows the seller to atomically accept one requested trade, reserve the active product, and reject competing pending requests with history.
       security: [{ sessionCookie: [] }]
       parameters:
         - { name: tradeId, in: path, required: true, schema: { type: string } }
@@ -348,7 +357,7 @@ paths:
   /trades/{tradeId}/cancel:
     post:
       operationId: cancelTrade
-      description: Cancels a requested trade, or an accepted trade by its buyer, within the server-side window.
+      description: Allows either participant to cancel before payment approval and releases any accepted reservation. Approved payments use the payment cancellation endpoint and its approval-time window.
       security: [{ sessionCookie: [] }]
       parameters:
         - { name: tradeId, in: path, required: true, schema: { type: string } }
@@ -363,8 +372,7 @@ paths:
   /payments/orders:
     post:
       operationId: createPaymentOrder
-      description: Creates a sandbox-only payment order from the accepted trade server-side KRW price.
-      x-sandbox-only: true
+      description: Creates a payment order from the accepted trade server-side KRW price.
       security: [{ sessionCookie: [] }]
       parameters:
         - { name: Idempotency-Key, in: header, required: true, schema: { type: string, minLength: 8, maxLength: 200 } }
@@ -380,8 +388,7 @@ paths:
   /payments/{orderId}/confirm:
     post:
       operationId: confirmPayment
-      description: Confirms a sandbox-only payment after matching the buyer, path order ID, and server-side amount.
-      x-sandbox-only: true
+      description: Confirms a provider payment after matching the buyer, path order ID, and server-side amount.
       security: [{ sessionCookie: [] }]
       parameters:
         - { name: orderId, in: path, required: true, schema: { type: string, minLength: 1 } }
@@ -398,8 +405,7 @@ paths:
   /payments/{orderId}/cancel:
     post:
       operationId: cancelPayment
-      description: Cancels an approved sandbox payment for its buyer while the trade remains accepted.
-      x-sandbox-only: true
+      description: Cancels an approved provider payment for its buyer while the trade remains accepted.
       security: [{ sessionCookie: [] }]
       parameters:
         - { name: orderId, in: path, required: true, schema: { type: string, minLength: 1 } }
@@ -417,8 +423,7 @@ paths:
   /payments/{orderId}/refund:
     post:
       operationId: refundPayment
-      description: Refunds an approved sandbox payment for a confirmed or disputed participant trade.
-      x-sandbox-only: true
+      description: Refunds an approved provider payment for a confirmed or disputed participant trade.
       security: [{ sessionCookie: [] }]
       parameters:
         - { name: orderId, in: path, required: true, schema: { type: string, minLength: 1 } }
@@ -435,33 +440,33 @@ paths:
   /payments/{orderId}:
     get:
       operationId: getPayment
-      description: Returns sandbox payment detail only to the trade buyer or seller.
-      x-sandbox-only: true
+      description: Returns payment detail only to the trade buyer or seller.
       security: [{ sessionCookie: [] }]
       parameters:
         - { name: orderId, in: path, required: true, schema: { type: string, minLength: 1 } }
       responses:
         '200':
-          description: Participant-visible sandbox payment detail.
+          description: Participant-visible payment detail.
           content: { application/json: { schema: { $ref: '#/components/schemas/PaymentView' } } }
         '401': { $ref: '#/components/responses/Problem' }
         '404': { $ref: '#/components/responses/Problem' }
   /payments/webhooks/toss:
     post:
       operationId: receiveTossPaymentWebhook
-      description: Accepts a sandbox-only Toss payment webhook, durably preserving the exact raw JSON body before lookup verification and duplicate or sequence handling.
-      x-sandbox-only: true
+      description: Accepts a signed Toss payment webhook, durably preserving the exact raw JSON body before asynchronous lookup verification and duplicate or sequence handling.
       x-raw-body-required: true
       security: []
       parameters:
         - { name: toss-transmission-id, in: header, required: true, schema: { type: string, minLength: 1 } }
+        - { name: toss-transmission-time, in: header, required: true, schema: { type: string, minLength: 1 } }
+        - { name: toss-transmission-signature, in: header, required: true, schema: { type: string, minLength: 32 } }
       requestBody:
         required: true
         description: JSON is parsed for processing while its exact raw UTF-8 bytes are retained for the webhook record.
         content: { application/json: { schema: { $ref: '#/components/schemas/TossPaymentWebhookRequest' } } }
       responses:
         '202':
-          description: Webhook durably accepted; processing status reports processed, ignored, duplicate, or failed sandbox verification.
+          description: Webhook durably accepted for asynchronous provider verification, or reported as duplicate.
           content: { application/json: { schema: { $ref: '#/components/schemas/PaymentWebhookReceipt' } } }
         '400': { $ref: '#/components/responses/Problem' }
   /admin/overview:
@@ -509,6 +514,48 @@ paths:
         '200': { description: Up to 200 audit records ordered by occurrence time. }
         '401': { $ref: '#/components/responses/Problem' }
         '403': { $ref: '#/components/responses/Problem' }
+  /admin/payments:
+    get:
+      operationId: listAdminPayments
+      description: SUPER_ADMIN-only payment, settlement, and recent webhook operations view with masked provider identifiers.
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: Up to 100 recent payments. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+  /admin/outbox-events:
+    get:
+      operationId: listFailedOutboxEvents
+      description: SUPER_ADMIN-only failed and dead-letter durable event queue.
+      security: [{ sessionCookie: [] }]
+      responses:
+        '200': { description: Up to 100 failed durable events. }
+        '401': { $ref: '#/components/responses/Problem' }
+        '403': { $ref: '#/components/responses/Problem' }
+  /admin/outbox-events/{eventId}/retry:
+    post:
+      operationId: retryOutboxEvent
+      description: SUPER_ADMIN-only audited retry of a failed or dead-letter durable event.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: eventId, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/AdminActionRequest' } } } }
+      responses:
+        '201': { description: Event queued for a fresh audited retry. }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /admin/payments/{paymentId}/reconcile:
+    post:
+      operationId: reconcileAdminPayment
+      description: SUPER_ADMIN-only provider lookup and audited comparison with internal payment state.
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - { name: paymentId, in: path, required: true, schema: { type: string } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/AdminActionRequest' } } } }
+      responses:
+        '201': { description: Provider lookup comparison and audit record completed. }
+        '403': { $ref: '#/components/responses/Problem' }
+        '404': { $ref: '#/components/responses/Problem' }
   /admin/users/{userId}/suspend:
     post:
       operationId: suspendAdminUser
@@ -593,7 +640,13 @@ components:
       properties:
         email: { type: string, format: email }
         phone: { type: string }
-        password: { type: string, minLength: 12, writeOnly: true }
+        password:
+          type: string
+          minLength: 12
+          maxLength: 128
+          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9\s]).{12,128}$'
+          description: Server additionally rejects common or predictable strings, four repeated characters, and account identifier inclusion.
+          writeOnly: true
         adultConfirmed: { type: boolean, const: true }
     IdentifierRequest:
       type: object
@@ -610,7 +663,14 @@ components:
         - $ref: '#/components/schemas/CodeConfirmationRequest'
         - type: object
           required: [newPassword]
-          properties: { newPassword: { type: string, minLength: 12, writeOnly: true } }
+          properties:
+            newPassword:
+              type: string
+              minLength: 12
+              maxLength: 128
+              pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9\s]).{12,128}$'
+              description: Uses the same server-enforced strength policy as signup.
+              writeOnly: true
     LoginRequest:
       allOf:
         - $ref: '#/components/schemas/IdentifierRequest'
@@ -726,11 +786,14 @@ components:
         paymentKey: { type: [string, 'null'] }
         amountKrw: { type: string, pattern: '^[0-9]+$' }
         status: { type: string, enum: [READY, APPROVED, UNCONFIRMED, FAILED, CANCEL_PENDING, CANCELLED, REFUND_PENDING, REFUNDED] }
-        settlementStatus: { type: string, enum: [HOLD, PAUSED, READY, SANDBOX_SETTLED] }
+        settlementStatus: { type: string, enum: [HOLD, PAUSED, READY, PROCESSING, SETTLED, FAILED, SANDBOX_SETTLED] }
         methodMasked: { type: [string, 'null'] }
         approvedAt: { type: [string, 'null'], format: date-time }
         cancelledAt: { type: [string, 'null'], format: date-time }
         refundedAt: { type: [string, 'null'], format: date-time }
+        settlementAvailableAt: { type: [string, 'null'], format: date-time }
+        settledAt: { type: [string, 'null'], format: date-time }
+        failureCode: { type: [string, 'null'] }
     PaymentWebhookReceipt:
       type: object
       additionalProperties: false

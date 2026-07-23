@@ -1,11 +1,13 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { prisma, ProductStatus, UserStatus } from '@gamja/database';
+import { ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { OutboxStatus, PaymentStatus, prisma, ProductStatus, UserStatus } from '@gamja/database';
 import * as argon2 from 'argon2';
 import type { AuthenticatedUser } from '../auth/auth.service.js';
 import { requestContext } from '../common/request-context.middleware.js';
+import { TossSandboxAdapter } from '../payments/toss-sandbox.adapter.js';
 
 @Injectable()
 export class AdminService {
+  constructor(@Inject(TossSandboxAdapter) private readonly toss: TossSandboxAdapter) {}
   private async reauthenticate(user: AuthenticatedUser, password: string) {
     const account = await prisma.user.findUnique({ where: { id: user.id }, select: { passwordHash: true, role: true } });
     if (!account || account.role !== 'SUPER_ADMIN' || !await argon2.verify(account.passwordHash, password)) {
@@ -76,6 +78,68 @@ export class AdminService {
 
   async auditLogs() {
     return { auditLogs: await prisma.auditLog.findMany({ orderBy: { occurredAt: 'desc' }, take: 200 }) };
+  }
+
+  async payments() {
+    const payments = await prisma.payment.findMany({
+      include: {
+        trade: { include: { product: { select: { id: true, title: true } } } },
+        webhooks: { orderBy: { receivedAt: 'desc' }, take: 5 },
+      },
+      orderBy: { updatedAt: 'desc' },
+      take: 100,
+    });
+    return {
+      payments: payments.map((payment) => ({
+        ...payment,
+        amountKrw: payment.amountKrw.toString(),
+        paymentKey: payment.paymentKey ? `${payment.paymentKey.slice(0, 6)}…${payment.paymentKey.slice(-4)}` : null,
+        trade: { ...payment.trade, priceKrw: payment.trade.priceKrw.toString() },
+      })),
+    };
+  }
+
+  async outboxEvents() {
+    return {
+      events: await prisma.outboxEvent.findMany({
+        where: { status: { in: [OutboxStatus.FAILED, OutboxStatus.DEAD_LETTER] } },
+        orderBy: { occurredAt: 'desc' },
+        take: 100,
+      }),
+    };
+  }
+
+  async retryOutbox(admin: AuthenticatedUser, eventId: string, reason: string, password: string) {
+    await this.reauthenticate(admin, password);
+    const event = await prisma.outboxEvent.findUnique({ where: { id: eventId } });
+    if (!event) throw new NotFoundException({ code: 'OUTBOX_EVENT_NOT_FOUND' });
+    await prisma.outboxEvent.update({
+      where: { id: eventId },
+      data: { status: OutboxStatus.PENDING, attempts: 0, availableAt: new Date(), claimedAt: null, lastError: null },
+    });
+    await this.audit({ actorId: admin.id, action: 'OUTBOX_RETRY_REQUESTED', targetType: 'OUTBOX_EVENT', targetId: eventId, reason, before: { status: event.status }, after: { status: OutboxStatus.PENDING } });
+    return { id: eventId, status: OutboxStatus.PENDING };
+  }
+
+  async reconcilePayment(admin: AuthenticatedUser, paymentId: string, reason: string, password: string) {
+    await this.reauthenticate(admin, password);
+    const payment = await prisma.payment.findUnique({ where: { id: paymentId } });
+    if (!payment?.paymentKey) throw new NotFoundException({ code: 'PAYMENT_NOT_RECONCILABLE' });
+    const provider = await this.toss.lookup(payment.paymentKey);
+    const expected = provider?.status === 'DONE'
+      ? PaymentStatus.APPROVED
+      : provider?.status === 'CANCELED'
+        ? PaymentStatus.CANCELLED
+        : provider?.status === 'REFUNDED'
+          ? PaymentStatus.REFUNDED
+          : undefined;
+    const matched = Boolean(provider && provider.orderId === payment.orderId && provider.amountKrw === payment.amountKrw && expected === payment.status);
+    await prisma.payment.update({
+      where: { id: paymentId },
+      data: { reconciliationCheckedAt: new Date(), failureCode: matched ? null : 'RECONCILIATION_MISMATCH' },
+    });
+    await this.audit({ actorId: admin.id, action: 'PAYMENT_RECONCILED', targetType: 'PAYMENT', targetId: paymentId, reason, before: { status: payment.status }, after: { matched, providerStatus: provider?.status ?? null } });
+    return { id: paymentId, matched, internalStatus: payment.status, providerStatus: provider?.status ?? null };
   }
 
   async setUserStatus(admin: AuthenticatedUser, targetId: string, status: 'ACTIVE' | 'SUSPENDED', reason: string, password: string) {

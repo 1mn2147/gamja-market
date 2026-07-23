@@ -11,15 +11,14 @@ type Chat = {
   unreadCount: number;
 };
 
-const origin = process.env.NEXT_PUBLIC_API_ORIGIN ?? 'http://localhost:4000';
-
 export default function ChatsPage() {
   const [chats, setChats] = useState<Chat[]>([]);
   const [message, setMessage] = useState('채팅을 불러오는 중입니다.');
+  const [connectionMessage, setConnectionMessage] = useState('실시간 연결을 확인하는 중입니다.');
 
   const load = useCallback(async () => {
     try {
-      const response = await fetch(`${origin}/api/v1/chats`, { credentials: 'include' });
+      const response = await fetch('/api/v1/chats', { credentials: 'include' });
       if (!response.ok) throw new Error();
       const data = await response.json() as { chats: Chat[] };
       setChats(data.chats);
@@ -32,25 +31,48 @@ export default function ChatsPage() {
 
   useEffect(() => {
     void load();
-    const socket = io(`${origin}/chats`, { withCredentials: true, retries: 3, ackTimeout: 5_000 });
+    const socket = io('/chats', {
+      path: '/socket.io',
+      addTrailingSlash: false,
+      transports: ['polling'],
+      withCredentials: true,
+      retries: 3,
+      ackTimeout: 5_000,
+    });
+    const refresh = () => void load();
+    const interval = window.setInterval(refresh, 15_000);
+    window.addEventListener('focus', refresh);
+    socket.on('connect', () => {
+      setConnectionMessage('실시간 채팅에 연결되었습니다.');
+      void load();
+    });
     socket.on('chat:message', () => void load());
+    socket.on('chat:created', () => void load());
     socket.on('safety:relationship', () => void load());
-    socket.on('connect_error', () => setMessage('실시간 연결을 복구하는 중입니다.'));
-    return () => { socket.disconnect(); };
+    socket.on('disconnect', () => setConnectionMessage('실시간 연결이 끊어졌습니다. 목록은 자동으로 갱신됩니다.'));
+    socket.on('connect_error', () => setConnectionMessage('실시간 연결을 복구하는 중입니다. 목록은 자동으로 갱신됩니다.'));
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener('focus', refresh);
+      socket.disconnect();
+    };
   }, [load]);
 
   return (
     <main>
       <h1>채팅</h1>
       <p role="status">{message}</p>
-      <ul>
+      <p className="connection-status" aria-live="polite">{connectionMessage}</p>
+      <ul className="chat-list">
         {chats.map((chat) => (
           <li key={chat.id}>
             <Link href={`/chats/${chat.id}`}>
               {chat.product.title}
               {chat.unreadCount > 0 && <strong aria-label={`읽지 않은 메시지 ${chat.unreadCount}개`}> {chat.unreadCount}</strong>}
             </Link>
+            <p>{Number(chat.product.priceKrw).toLocaleString('ko-KR')}원 · {chat.product.status}</p>
             <p>{chat.latestMessage?.body ?? '메시지를 시작해 보세요.'}</p>
+            {chat.latestMessage && <time dateTime={chat.latestMessage.createdAt}>{new Date(chat.latestMessage.createdAt).toLocaleString('ko-KR')}</time>}
           </li>
         ))}
       </ul>

@@ -25,6 +25,22 @@ export class AdminController {
   @Get('audit-logs')
   auditLogs() { return this.admin.auditLogs(); }
 
+  @Get('payments')
+  payments() { return this.admin.payments(); }
+
+  @Get('outbox-events')
+  outboxEvents() { return this.admin.outboxEvents(); }
+
+  @Post('outbox-events/:eventId/retry')
+  retryOutbox(@Req() request: AuthenticatedRequest, @Param('eventId') eventId: string, @Body() input: AdminActionDto) {
+    return this.admin.retryOutbox(request.user, eventId, input.reason, input.password);
+  }
+
+  @Post('payments/:paymentId/reconcile')
+  reconcilePayment(@Req() request: AuthenticatedRequest, @Param('paymentId') paymentId: string, @Body() input: AdminActionDto) {
+    return this.admin.reconcilePayment(request.user, paymentId, input.reason, input.password);
+  }
+
   @Post('users/:userId/suspend')
   suspend(@Req() request: AuthenticatedRequest, @Param('userId') userId: string, @Body() input: AdminActionDto) {
     return this.admin.setUserStatus(request.user, userId, 'SUSPENDED', input.reason, input.password);

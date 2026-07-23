@@ -21,7 +21,7 @@ describe('OpenAPI baseline', () => {
   it('CONTRACT-F3-001: defines the versioned API, session security, and safe problem response', async () => {
     const openapi = await readFile('../../docs/baseline/openapi.yaml', 'utf8');
     expect(openapi).toContain('openapi: 3.1.0');
-    expect(openapi).toContain('version: 0.8.0');
+    expect(openapi).toContain('version: 0.9.0');
     expect(openapi).toContain('/healthz:');
     expect(openapi).toContain('/readyz:');
     expect(openapi).toContain('application/problem+json');
@@ -29,6 +29,12 @@ describe('OpenAPI baseline', () => {
     expect(pathBlock(openapi, '/auth/signups')).toContain('operationId: signUp');
     expect(pathBlock(openapi, '/neighborhoods/{code}/nearby')).toContain('operationId: listNearbyNeighborhoods');
     expect(pathBlock(openapi, '/products')).toContain("$ref: '#/components/schemas/CreateProductRequest'");
+    const signup = schemaBlock(openapi, 'SignUpRequest');
+    expect(signup).toContain('minLength: 12');
+    expect(signup).toContain('maxLength: 128');
+    expect(signup).toContain('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])');
+    const reset = schemaBlock(openapi, 'PasswordResetConfirmRequest');
+    expect(reset).toContain('Uses the same server-enforced strength policy as signup.');
   });
 
   it('CONTRACT-F3-002: covers every WBS-04 REST operation with opaque-session protection', async () => {
@@ -106,7 +112,7 @@ describe('OpenAPI baseline', () => {
     expect(action).toContain('reason: { type: string, minLength: 2, maxLength: 500 }');
   });
 
-  it('CONTRACT-WBS06-006: locks sandbox payment routes, DTOs, headers, raw webhook, and response shapes', async () => {
+  it('CONTRACT-WBS06-006: locks configurable payment routes, DTOs, signatures, raw webhook, and response shapes', async () => {
     const openapi = await readFile('../../docs/baseline/openapi.yaml', 'utf8');
     const participantOperations = [
       ['/payments/orders', 'post', 'createPaymentOrder'],
@@ -121,7 +127,6 @@ describe('OpenAPI baseline', () => {
       expect(block).toContain('    ' + method + ':');
       expect(block).toContain('operationId: ' + operationId);
       expect(block).toContain('security: [{ sessionCookie: [] }]');
-      expect(block).toContain('x-sandbox-only: true');
       expect(block).toContain("$ref: '#/components/schemas/PaymentView'");
     }
 
@@ -147,21 +152,22 @@ describe('OpenAPI baseline', () => {
 
     const view = schemaBlock(openapi, 'PaymentView');
     expect(view).toContain('status: { type: string, enum: [READY, APPROVED, UNCONFIRMED, FAILED, CANCEL_PENDING, CANCELLED, REFUND_PENDING, REFUNDED] }');
-    expect(view).toContain('settlementStatus: { type: string, enum: [HOLD, PAUSED, READY, SANDBOX_SETTLED] }');
+    expect(view).toContain('settlementStatus: { type: string, enum: [HOLD, PAUSED, READY, PROCESSING, SETTLED, FAILED, SANDBOX_SETTLED] }');
 
     const webhook = pathBlock(openapi, '/payments/webhooks/toss');
     expect(webhook).toContain('operationId: receiveTossPaymentWebhook');
-    expect(webhook).toContain('x-sandbox-only: true');
     expect(webhook).toContain('x-raw-body-required: true');
     expect(webhook).toContain('security: []');
     expect(webhook).toContain('name: toss-transmission-id');
+    expect(webhook).toContain('name: toss-transmission-time');
+    expect(webhook).toContain('name: toss-transmission-signature');
     expect(webhook).toContain("$ref: '#/components/schemas/TossPaymentWebhookRequest'");
     expect(webhook).toContain("'202':");
     expect(webhook).toContain("$ref: '#/components/schemas/PaymentWebhookReceipt'");
     expect(schemaBlock(openapi, 'PaymentWebhookReceipt')).toContain('status: { type: string, enum: [RECEIVED, PROCESSED, IGNORED, FAILED] }');
   });
 
-  it('CONTRACT-WBS07-005: covers SUPER_ADMIN reads and reauthenticated actions without admin payment routes', async () => {
+  it('CONTRACT-WBS07-005: covers SUPER_ADMIN reads, payment operations, and reauthenticated actions', async () => {
     const openapi = await readFile('../../docs/baseline/openapi.yaml', 'utf8');
     const operations = [
       ['/admin/overview', 'get', 'getAdminOverview'],
@@ -169,6 +175,10 @@ describe('OpenAPI baseline', () => {
       ['/admin/reports', 'get', 'listAdminReports'],
       ['/admin/trades', 'get', 'listAdminTrades'],
       ['/admin/audit-logs', 'get', 'listAdminAuditLogs'],
+      ['/admin/payments', 'get', 'listAdminPayments'],
+      ['/admin/outbox-events', 'get', 'listFailedOutboxEvents'],
+      ['/admin/outbox-events/{eventId}/retry', 'post', 'retryOutboxEvent'],
+      ['/admin/payments/{paymentId}/reconcile', 'post', 'reconcileAdminPayment'],
       ['/admin/users/{userId}/suspend', 'post', 'suspendAdminUser'],
       ['/admin/users/{userId}/activate', 'post', 'activateAdminUser'],
       ['/admin/products/{productId}/hide', 'post', 'hideAdminProduct'],
@@ -192,6 +202,6 @@ describe('OpenAPI baseline', () => {
     expect(action).toContain('required: [reason, password]');
     expect(action).toContain('reason: { type: string, minLength: 2, maxLength: 500 }');
     expect(action).toContain('password: { type: string, minLength: 12, maxLength: 200, writeOnly: true }');
-    expect(openapi).not.toContain('/admin/payments:');
+    expect(pathBlock(openapi, '/auth/contact-confirmations/request')).toContain('operationId: resendContactConfirmation');
   });
 });

@@ -1,28 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { prisma } from '@gamja/database';
-import { createConnection } from 'node:net';
+import { createClient } from 'redis';
 
 function redisPing(redisUrl: string) {
-  const url = new URL(redisUrl);
-  const port = Number(url.port || 6379);
-  return new Promise<void>((resolve, reject) => {
-    const socket = createConnection({ host: url.hostname, port });
-    const timeout = setTimeout(() => {
-      socket.destroy();
-      reject(new Error('REDIS_READY_TIMEOUT'));
-    }, 2_000);
-    socket.once('connect', () => socket.write('*1\r\n$4\r\nPING\r\n'));
-    socket.once('data', (data) => {
-      clearTimeout(timeout);
-      socket.end();
-      if (data.toString().startsWith('+PONG')) resolve();
-      else reject(new Error('REDIS_READY_INVALID_RESPONSE'));
-    });
-    socket.once('error', (error) => {
-      clearTimeout(timeout);
-      reject(error);
-    });
-  });
+  // Readiness is a bounded probe, not a long-lived Redis client. Disable the
+  // default reconnect loop so an unavailable dependency produces a prompt 503
+  // instead of holding the health request open indefinitely.
+  const client = createClient({ url: redisUrl, socket: { connectTimeout: 2_000, reconnectStrategy: false } });
+  client.on('error', () => undefined);
+  return client.connect()
+    .then(() => client.ping())
+    .then((reply) => { if (reply !== 'PONG') throw new Error('REDIS_READY_INVALID_RESPONSE'); })
+    .finally(() => client.isOpen ? client.quit() : client.destroy());
 }
 
 @Injectable()

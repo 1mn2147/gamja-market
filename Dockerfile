@@ -31,6 +31,10 @@ FROM workspace AS build
 
 ARG NEXT_PUBLIC_API_ORIGIN=http://localhost:4000
 ENV NEXT_PUBLIC_API_ORIGIN=$NEXT_PUBLIC_API_ORIGIN
+ARG NEXT_PUBLIC_TOSS_CLIENT_KEY=
+ENV NEXT_PUBLIC_TOSS_CLIENT_KEY=$NEXT_PUBLIC_TOSS_CLIENT_KEY
+ARG NEXT_PUBLIC_PAYMENT_SANDBOX_MODE=false
+ENV NEXT_PUBLIC_PAYMENT_SANDBOX_MODE=$NEXT_PUBLIC_PAYMENT_SANDBOX_MODE
 
 RUN corepack pnpm build
 
@@ -54,3 +58,9 @@ WORKDIR /workspace/apps/web
 ENV PORT=3000
 EXPOSE 3000
 CMD ["node", "node_modules/next/dist/bin/next", "start", "-H", "0.0.0.0", "-p", "3000"]
+
+FROM build AS test
+
+RUN corepack pnpm --filter @gamja/web exec playwright install --with-deps chromium
+
+CMD ["sh", "-c", "corepack pnpm test:release"]

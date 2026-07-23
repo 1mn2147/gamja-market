@@ -6,6 +6,7 @@ const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL ?? "postgresql://gamja:gamja@localhost:5432/gamja_market?schema=public" });
 export {
   LedgerEntryType,
+  OutboxStatus,
   PaymentAction,
   PaymentStatus,
   Prisma,

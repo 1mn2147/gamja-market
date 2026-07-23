@@ -95,6 +95,32 @@ describe('WBS-04 live chat gateway', () => {
     expect(chats.send).toHaveBeenCalledWith('chat-a', user, '안녕하세요', sent.id);
     expect(broadcast.emit).toHaveBeenCalledWith('chat:message', sent);
   });
+
+  it('subscribes both participants and announces a newly opened chat', async () => {
+    const auth = { getActiveSession: vi.fn().mockResolvedValue(user) };
+    const chats = {
+      list: vi.fn(),
+      detail: vi.fn().mockResolvedValue({ buyerId: user.id, sellerId: 'user-b' }),
+      send: vi.fn(),
+    };
+    const safety = { onRelationshipChanged: vi.fn() };
+    const broadcast = { emit: vi.fn() };
+    const socketsJoin = vi.fn();
+    const gateway = new ChatGateway(auth as never, chats as never, safety as never);
+    gateway.server = {
+      in: vi.fn().mockReturnValue({ socketsJoin }),
+      to: vi.fn().mockReturnValue(broadcast),
+    } as never;
+    const socket = {
+      data: { sessionToken: 'session-token' },
+      join: vi.fn(),
+      disconnect: vi.fn(),
+    };
+
+    await expect(gateway.join(socket as never, { chatId: 'chat-a' })).resolves.toEqual({ chatId: 'chat-a' });
+    expect(socketsJoin).toHaveBeenCalledWith('chat:chat-a');
+    expect(broadcast.emit).toHaveBeenCalledWith('chat:created', { chatId: 'chat-a' });
+  });
 });
 
 describe('WBS-04 safety behavior', () => {

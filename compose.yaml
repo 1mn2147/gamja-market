@@ -47,6 +47,8 @@ services:
       target: api
       args:
         NEXT_PUBLIC_API_ORIGIN: ${NEXT_PUBLIC_API_ORIGIN:-http://localhost:4000}
+        NEXT_PUBLIC_TOSS_CLIENT_KEY: ${NEXT_PUBLIC_TOSS_CLIENT_KEY:-}
+        NEXT_PUBLIC_PAYMENT_SANDBOX_MODE: ${NEXT_PUBLIC_PAYMENT_SANDBOX_MODE:-true}
     environment:
       NODE_ENV: development
       API_PORT: 4000
@@ -55,10 +57,16 @@ services:
       WEB_ORIGIN: ${WEB_ORIGIN:-http://localhost:3000}
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
       AUTH_CODE_PEPPER: ${AUTH_CODE_PEPPER:-local-compose-pepper}
+      AUTH_DEBUG_CODES: ${AUTH_DEBUG_CODES:-true}
       LOG_LEVEL: ${LOG_LEVEL:-info}
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-}
       TOSS_SANDBOX_CLIENT_KEY: ${TOSS_SANDBOX_CLIENT_KEY:-}
       TOSS_SANDBOX_SECRET_KEY: ${TOSS_SANDBOX_SECRET_KEY:-}
+      TOSS_SANDBOX_MODE: ${TOSS_SANDBOX_MODE:-true}
+      TOSS_WEBHOOK_SECRET: ${TOSS_WEBHOOK_SECRET:-}
+      TOSS_API_ORIGIN: ${TOSS_API_ORIGIN:-https://api.tosspayments.com}
+      CONTACT_DELIVERY_WEBHOOK_URL: ${CONTACT_DELIVERY_WEBHOOK_URL:-}
+      CONTACT_DELIVERY_WEBHOOK_SECRET: ${CONTACT_DELIVERY_WEBHOOK_SECRET:-}
     ports:
       - "4000:4000"
     depends_on:
@@ -85,6 +93,11 @@ services:
       DATABASE_URL: postgresql://gamja:gamja@postgres:5432/gamja_market?schema=public
       REDIS_URL: redis://redis:6379
       LOG_LEVEL: ${LOG_LEVEL:-info}
+      TOSS_SANDBOX_SECRET_KEY: ${TOSS_SANDBOX_SECRET_KEY:-}
+      TOSS_API_ORIGIN: ${TOSS_API_ORIGIN:-https://api.tosspayments.com}
+      TOSS_SANDBOX_MODE: ${TOSS_SANDBOX_MODE:-true}
+      SETTLEMENT_PAYOUT_WEBHOOK_URL: ${SETTLEMENT_PAYOUT_WEBHOOK_URL:-}
+      SETTLEMENT_PAYOUT_WEBHOOK_SECRET: ${SETTLEMENT_PAYOUT_WEBHOOK_SECRET:-}
     depends_on:
       db-init:
         condition: service_completed_successfully
@@ -98,9 +111,12 @@ services:
       target: web
       args:
         NEXT_PUBLIC_API_ORIGIN: ${NEXT_PUBLIC_API_ORIGIN:-http://localhost:4000}
+        NEXT_PUBLIC_TOSS_CLIENT_KEY: ${NEXT_PUBLIC_TOSS_CLIENT_KEY:-}
+        NEXT_PUBLIC_PAYMENT_SANDBOX_MODE: ${NEXT_PUBLIC_PAYMENT_SANDBOX_MODE:-true}
     environment:
       NODE_ENV: production
       NEXT_PUBLIC_API_ORIGIN: ${NEXT_PUBLIC_API_ORIGIN:-http://localhost:4000}
+      INTERNAL_API_ORIGIN: http://api:4000
     ports:
       - "3000:3000"
     depends_on:

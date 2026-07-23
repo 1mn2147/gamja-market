@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, ConflictException, ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import {
   LedgerEntryType,
   PaymentAction,
@@ -10,7 +10,7 @@ import {
   WebhookProcessingStatus,
   prisma,
 } from '@gamja/database';
-import { createHash, randomUUID } from 'node:crypto';
+import { createHash, createHmac, randomUUID, timingSafeEqual } from 'node:crypto';
 import type { AuthenticatedUser } from '../auth/auth.service.js';
 import { TossSandboxAdapter } from './toss-sandbox.adapter.js';
 
@@ -26,6 +26,9 @@ type PaymentView = {
   approvedAt: Date | null;
   cancelledAt: Date | null;
   refundedAt: Date | null;
+  settlementAvailableAt: Date | null;
+  settledAt: Date | null;
+  failureCode: string | null;
 };
 
 type StoredResponse = Record<string, string | null>;
@@ -59,6 +62,9 @@ export class PaymentService {
       approvedAt: payment.approvedAt?.toISOString() ?? null,
       cancelledAt: payment.cancelledAt?.toISOString() ?? null,
       refundedAt: payment.refundedAt?.toISOString() ?? null,
+      settlementAvailableAt: payment.settlementAvailableAt?.toISOString() ?? null,
+      settledAt: payment.settledAt?.toISOString() ?? null,
+      failureCode: payment.failureCode,
     };
   }
 
@@ -101,6 +107,7 @@ export class PaymentService {
         }
         return existingOperation.response as StoredResponse;
       }
+      await tx.$queryRaw`SELECT "id" FROM "Trade" WHERE "id" = ${tradeId} FOR UPDATE`;
       const trade = await tx.trade.findFirst({
         where: { id: tradeId, buyerId: user.id, status: TradeStatus.ACCEPTED },
         include: { payment: true, product: { select: { status: true } } },
@@ -142,7 +149,10 @@ export class PaymentService {
       throw new ConflictException({ code: 'TRADE_PRODUCT_STATE_MISMATCH' });
     }
 
-    const approved = this.toss.confirm({ paymentKey: input.paymentKey, orderId, amountKrw: existing.amountKrw });
+    const approved = await this.toss.confirm({ paymentKey: input.paymentKey, orderId, amountKrw: existing.amountKrw, idempotencyKey });
+    if (approved.paymentKey !== input.paymentKey || approved.orderId !== orderId || approved.amountKrw !== existing.amountKrw || approved.status !== 'DONE') {
+      throw new BadGatewayException({ code: 'PAYMENT_PROVIDER_CONFIRMATION_MISMATCH' });
+    }
     return prisma.$transaction(async (tx) => {
       const changed = await tx.payment.updateMany({
         where: { id: existing.id, status: PaymentStatus.READY },
@@ -203,6 +213,12 @@ export class PaymentService {
       throw new ForbiddenException({ code: 'PAYMENT_CANCELLATION_NOT_ALLOWED' });
     }
     if (
+      action === PaymentAction.CANCEL
+      && (!existing.approvedAt || existing.approvedAt.getTime() + 7 * 24 * 60 * 60 * 1000 < Date.now())
+    ) {
+      throw new ConflictException({ code: 'PAYMENT_CANCELLATION_WINDOW_EXPIRED' });
+    }
+    if (
       action === PaymentAction.REFUND
       && existing.trade.status !== TradeStatus.CONFIRMED
       && existing.trade.status !== TradeStatus.DISPUTED
@@ -210,7 +226,9 @@ export class PaymentService {
       throw new ConflictException({ code: 'PAYMENT_REFUND_NOT_ALLOWED' });
     }
 
-    const sandbox = action === PaymentAction.CANCEL ? this.toss.cancel(existing.paymentKey) : this.toss.refund(existing.paymentKey);
+    const sandbox = action === PaymentAction.CANCEL
+      ? await this.toss.cancel(existing.paymentKey, reason, idempotencyKey)
+      : await this.toss.refund(existing.paymentKey, reason, idempotencyKey);
     if (!sandbox) throw new ConflictException({ code: 'SANDBOX_PAYMENT_NOT_FOUND' });
     const targetStatus = action === PaymentAction.CANCEL ? PaymentStatus.CANCELLED : PaymentStatus.REFUNDED;
     const entryType = action === PaymentAction.CANCEL ? LedgerEntryType.CANCELLATION : LedgerEntryType.REFUND;
@@ -259,9 +277,33 @@ export class PaymentService {
     return this.serialize(payment);
   }
 
-  async receiveWebhook(transmissionIdInput: string | undefined, rawBody: string) {
+  private verifyWebhook(rawBody: string, transmissionTime?: string, signature?: string) {
+    const secret = process.env.TOSS_WEBHOOK_SECRET;
+    if (!secret && (process.env.NODE_ENV === 'test' || process.env.TOSS_SANDBOX_MODE === 'true')) return;
+    if (!secret || !transmissionTime || !signature) {
+      throw new BadRequestException({ code: 'WEBHOOK_SIGNATURE_REQUIRED' });
+    }
+    const value = /^\d+$/.test(transmissionTime) ? Number(transmissionTime) : Date.parse(transmissionTime);
+    const transmittedMs = value < 10_000_000_000 ? value * 1000 : value;
+    if (!Number.isFinite(transmittedMs) || Math.abs(Date.now() - transmittedMs) > 5 * 60 * 1000) {
+      throw new BadRequestException({ code: 'WEBHOOK_TIMESTAMP_INVALID' });
+    }
+    const expected = createHmac('sha256', secret).update(`${transmissionTime}.${rawBody}`).digest();
+    const actual = Buffer.from(signature, /^[0-9a-f]{64}$/i.test(signature) ? 'hex' : 'base64');
+    if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) {
+      throw new BadRequestException({ code: 'WEBHOOK_SIGNATURE_INVALID' });
+    }
+  }
+
+  async receiveWebhook(
+    transmissionIdInput: string | undefined,
+    rawBody: string,
+    transmissionTime?: string,
+    signature?: string,
+  ) {
     const transmissionId = transmissionIdInput?.trim();
     if (!transmissionId) throw new BadRequestException({ code: 'WEBHOOK_TRANSMISSION_ID_REQUIRED' });
+    this.verifyWebhook(rawBody, transmissionTime, signature);
     const duplicate = await prisma.paymentWebhook.findUnique({ where: { transmissionId } });
     if (duplicate) return { accepted: true, duplicate: true, status: duplicate.processingStatus };
 
@@ -286,20 +328,41 @@ export class PaymentService {
     }
 
     const payment = await prisma.payment.findUnique({ where: { orderId: payload.data.orderId } });
-    const webhook = await prisma.paymentWebhook.create({
-      data: {
-        ...(payment ? { paymentId: payment.id } : {}),
-        transmissionId,
-        eventType: payload.eventType,
-        eventStatus: payload.data.status,
-        sequence: payload.sequence,
-        rawBody,
-      },
-    });
+    let webhook;
+    try {
+      webhook = await prisma.$transaction(async (tx) => {
+        const stored = await tx.paymentWebhook.create({
+          data: {
+            ...(payment ? { paymentId: payment.id } : {}),
+            transmissionId,
+            eventType: payload.eventType,
+            eventStatus: payload.data.status,
+            sequence: payload.sequence,
+            rawBody,
+          },
+        });
+        await tx.outboxEvent.create({
+          data: {
+            type: 'webhook.received',
+            aggregateType: 'PaymentWebhook',
+            aggregateId: stored.id,
+            payload: { webhookId: stored.id },
+          },
+        });
+        return stored;
+      });
+    } catch (error) {
+      if ((error as { code?: string }).code !== 'P2002') throw error;
+      const raced = await prisma.paymentWebhook.findUniqueOrThrow({ where: { transmissionId } });
+      return { accepted: true, duplicate: true, status: raced.processingStatus };
+    }
+    if (process.env.NODE_ENV !== 'test') {
+      return { accepted: true, duplicate: false, status: WebhookProcessingStatus.RECEIVED };
+    }
     if (!payment) return this.finishWebhook(webhook.id, WebhookProcessingStatus.FAILED, 'PAYMENT_NOT_FOUND');
     if (payload.sequence <= payment.lastWebhookSequence) return this.finishWebhook(webhook.id, WebhookProcessingStatus.IGNORED, 'OUT_OF_ORDER');
 
-    const verified = this.toss.lookup(payload.data.paymentKey);
+    const verified = await this.toss.lookup(payload.data.paymentKey);
     if (
       !verified
       || verified.orderId !== payment.orderId

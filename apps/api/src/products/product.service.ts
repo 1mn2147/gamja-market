@@ -1,5 +1,5 @@
 import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma, prisma, ProductStatus } from '@gamja/database';
+import { Prisma, prisma, ProductStatus, TradeStatus } from '@gamja/database';
 import type { AuthenticatedUser } from '../auth/auth.service.js';
 import type { CreateProductDto, ProductImageDto, ProductQueryDto, UpdateProductDto } from './product.dto.js';
 
@@ -30,7 +30,7 @@ export class ProductService {
     });
   }
 
-  private serialize(product: ProductRecord) {
+  private serialize(product: ProductRecord, viewerId?: string) {
     return {
       id: product.id,
       title: product.title,
@@ -38,6 +38,7 @@ export class ProductService {
       priceKrw: product.priceKrw.toString(),
       category: product.category,
       status: product.status,
+      isMine: product.authorId === viewerId,
       neighborhood: product.neighborhood,
       createdAt: product.createdAt.toISOString(),
       updatedAt: product.updatedAt.toISOString(),
@@ -76,7 +77,7 @@ export class ProductService {
       },
       include: { neighborhood: { select: { code: true, name: true } }, images: { select: { id: true, altText: true, mimeType: true, position: true }, orderBy: { position: 'asc' } } },
     });
-    return this.serialize(product);
+    return this.serialize(product, user.id);
   }
 
   async update(id: string, user: AuthenticatedUser, input: UpdateProductDto) {
@@ -87,7 +88,7 @@ export class ProductService {
       data: { ...(input.title ? { title: input.title.trim() } : {}), ...(input.description ? { description: input.description.trim() } : {}), ...(input.priceKrw ? { priceKrw: BigInt(input.priceKrw) } : {}), ...(input.category ? { category: input.category.trim() } : {}) },
       include: { neighborhood: { select: { code: true, name: true } }, images: { select: { id: true, altText: true, mimeType: true, position: true }, orderBy: { position: 'asc' } } },
     });
-    return this.serialize(product);
+    return this.serialize(product, user.id);
   }
 
   async setStatus(id: string, user: AuthenticatedUser, status: 'ACTIVE' | 'HIDDEN') {
@@ -96,12 +97,19 @@ export class ProductService {
       where: { id }, data: { status },
       include: { neighborhood: { select: { code: true, name: true } }, images: { select: { id: true, altText: true, mimeType: true, position: true }, orderBy: { position: 'asc' } } },
     });
-    return this.serialize(product);
+    return this.serialize(product, user.id);
   }
 
   async remove(id: string, user: AuthenticatedUser) {
     const existing = await this.ownedProduct(id, user.id);
-    if (existing.status === ProductStatus.RESERVED) throw new ConflictException({ code: "PRODUCT_LOCKED_BY_ACTIVE_TRADE" });
+    const activeTrade = await prisma.trade.findFirst({
+      where: {
+        productId: id,
+        status: { in: [TradeStatus.REQUESTED, TradeStatus.ACCEPTED, TradeStatus.DELIVERED, TradeStatus.DISPUTED] },
+      },
+      select: { id: true },
+    });
+    if (existing.status === ProductStatus.RESERVED || activeTrade) throw new ConflictException({ code: 'PRODUCT_LOCKED_BY_ACTIVE_TRADE' });
     await prisma.product.update({ where: { id }, data: { status: ProductStatus.DELETED } });
   }
 
@@ -111,7 +119,7 @@ export class ProductService {
       include: { neighborhood: { select: { code: true, name: true } }, images: { select: { id: true, altText: true, mimeType: true, position: true }, orderBy: { position: 'asc' } } },
     });
     if (!product) throw new NotFoundException({ code: 'PRODUCT_NOT_FOUND' });
-    return this.serialize(product);
+    return this.serialize(product, user?.id);
   }
 
   private decodeCursor(value: string | undefined) {
@@ -125,14 +133,13 @@ export class ProductService {
   async list(query: ProductQueryDto, user?: AuthenticatedUser) {
     const neighborhood = await this.ensureNeighborhood(user ?? { id: '', email: null, phone: null, role: 'USER', status: 'ACTIVE', neighborhood: null });
     const accessibleIds = [neighborhood.id, ...(await prisma.neighborhoodLink.findMany({ where: { fromId: neighborhood.id }, select: { toId: true } })).map((link) => link.toId)];
-    const search = query.query?.trim();
-    const matchingIds = search ? await prisma.$queryRaw<Array<{ id: string }>>(Prisma.sql`
-      SELECT p.id FROM "Product" p
-      WHERE p."status" = 'ACTIVE'
-        AND p."neighborhoodId" IN (${Prisma.join(accessibleIds)})
-        AND to_tsvector('simple', coalesce(p."title", '') || ' ' || coalesce(p."description", '')) @@ websearch_to_tsquery('simple', ${search})
-    `) : undefined;
-    if (matchingIds && matchingIds.length === 0) return { products: [], nextCursor: null };
+    const searchTokens = query.query?.trim().split(/\s+/).filter(Boolean) ?? [];
+    const searchConditions: Prisma.ProductWhereInput[] = searchTokens.map((token) => ({
+      OR: [
+        { title: { contains: token, mode: 'insensitive' } },
+        { description: { contains: token, mode: 'insensitive' } },
+      ],
+    }));
     const cursor = this.decodeCursor(query.cursor);
     const sort = query.sort ?? 'latest';
     const orderBy = sort === 'price_asc' ? [{ priceKrw: 'asc' as const }, { id: 'asc' as const }] : sort === 'price_desc' ? [{ priceKrw: 'desc' as const }, { id: 'desc' as const }] : [{ createdAt: 'desc' as const }, { id: 'desc' as const }];
@@ -141,7 +148,7 @@ export class ProductService {
       where: {
         status: ProductStatus.ACTIVE,
         neighborhoodId: { in: accessibleIds },
-        ...(matchingIds ? { id: { in: matchingIds.map((row) => row.id) } } : {}),
+        ...(searchConditions.length ? { AND: searchConditions } : {}),
         ...(query.category ? { category: query.category } : {}),
         ...(query.minPrice || query.maxPrice ? { priceKrw: { ...(query.minPrice ? { gte: BigInt(query.minPrice) } : {}), ...(query.maxPrice ? { lte: BigInt(query.maxPrice) } : {}) } } : {}),
       },
@@ -153,7 +160,7 @@ export class ProductService {
     const hasMore = products.length > limit;
     if (hasMore) products.pop();
     const last = hasMore ? products.at(-1) : undefined;
-    return { products: products.map((product) => this.serialize(product)), nextCursor: last ? Buffer.from(JSON.stringify({ id: last.id })).toString('base64url') : null };
+    return { products: products.map((product) => this.serialize(product, user?.id)), nextCursor: last ? Buffer.from(JSON.stringify({ id: last.id })).toString('base64url') : null };
   }
 
   async mine(user: AuthenticatedUser) {
@@ -161,7 +168,7 @@ export class ProductService {
       where: { authorId: user.id, status: { not: ProductStatus.DELETED } }, orderBy: { createdAt: 'desc' },
       include: { neighborhood: { select: { code: true, name: true } }, images: { select: { id: true, altText: true, mimeType: true, position: true }, orderBy: { position: 'asc' }, take: 1 } },
     });
-    return { products: products.map((product) => this.serialize(product)) };
+    return { products: products.map((product) => this.serialize(product, user.id)) };
   }
 
   async image(productId: string, imageId: string, user?: AuthenticatedUser) {

@@ -67,7 +67,21 @@ export class ChatService {
       where: { chatRoomId_userId: { chatRoomId: id, userId: user.id } },
       data: { lastReadAt: viewedAt },
     });
-    return { ...room, product: { ...room.product, priceKrw: room.product.priceKrw.toString() } };
+    const trade = await prisma.trade.findFirst({
+      where: {
+        productId: room.productId,
+        buyerId: room.buyerId,
+        sellerId: room.sellerId,
+      },
+      orderBy: { updatedAt: 'desc' },
+      select: { id: true, status: true },
+    });
+    return {
+      ...room,
+      viewerId: user.id,
+      product: { ...room.product, priceKrw: room.product.priceKrw.toString() },
+      trade,
+    };
   }
 
   async send(id: string, user: AuthenticatedUser, body: string, clientMessageId?: string) {

@@ -6,7 +6,7 @@
   작업 단위로 분해한다.
 - 기준 문서: [제품 요구사항](./requirements.md), [페이지 구성 설계](./page_desc.md),
   [기술 스택 및 개발 계획](./tech_stack.md)
-- 기준 범위: 요구사항 88개와 페이지 29개
+- 기준 범위: 요구사항 89개와 페이지 29개
 - 작업 원칙: 한 작업은 명시된 요구사항 ID, 변경 범위, 검증 방법, 완료 증거를
   가져야 한다.
 - 일정 표기: 팀 가용성이 정해지지 않았으므로 달력 일수 대신 `S`, `M`, `L`,
@@ -151,7 +151,7 @@ flowchart LR
 
 | ID | 작업 | 산출물·인수 조건 | 근거 | 선행 | 규모 |
 | --- | --- | --- | --- | --- | --- |
-| WBS-00.01 | 요구사항 기준선 고정 | 88개 요구사항과 29개 페이지의 중복·누락 검사, 추적표 생성 | 전체 | 없음 | S |
+| WBS-00.01 | 요구사항 기준선 고정 | 89개 요구사항과 29개 페이지의 중복·누락 검사, 추적표 생성 | 전체 | 없음 | S |
 | WBS-00.02 | 보류 정책 결정 관리 | DEC-01~06 소유자, 기한, 출시 차단 여부 기록 | 요구사항 10장, 화면 21장 | 없음 | S |
 | WBS-00.03 | 기술 스택 기준선 검증 | `tech_stack.md`의 버전 호환성, 모듈형 모놀리스와 독립 배포 구조를 ADR로 고정 | SEC-008, SEC-014 | 없음 | M |
 | WBS-00.04 | 도메인·상태 ADR | 사용자, 상품, 신고, 거래, 결제, 정산 상태 및 허용 전이 정의 | 요구사항 6장 | WBS-00.03 | M |
@@ -327,12 +327,13 @@ flowchart LR
 | WBS-01.01~07 | 검토중 | `README.md`, `apps/`, `packages/`, `compose.yaml` | F0-QUALITY-001~008 | 린트·타입·빌드·단위·계약·보안·E2E·접근성 통과 | 운영 환경 의존성 실연결, 원격 관측 백엔드 연동은 후속 검토 |
 | WBS-02.01~06 | 검토중 | `apps/api/src/auth`, `apps/api/src/neighborhoods`, `apps/web/app` | E2E-AUTH-001~005, API-AUTH-003·006, SEC-AUTH-004, API-REGION-001 | 가입·세션·재설정·탈퇴·행정동 API/화면 통과 | 샌드박스 인증 어댑터, 사림동 단일 지역, Argon2id 19MiB/2/1 적용 |
 | WBS-03.01~06 | 검토중 | apps/api/src/products, apps/web/app/products, packages/database | API-PRODUCT-001~006, E2E-PRODUCT-001~004 | 상품·검색·이미지·권한·예약 잠금·axe 검사 통과 | DEC-06 PostgreSQL 이미지 저장·자유입력 카테고리 반영; 검색 성능 증적과 M1 승인 필요 |
-| WBS-04.01~06 | 진행중 | `apps/api/src/chats`, `apps/api/src/safety`, `apps/web/app/chats`, `apps/web/app/reports`, `apps/web/app/me` | API-WBS04-001~006, E2E-CHAT-001, CONTRACT-F3-001~003 | UUID 메시지 멱등성, 읽지 않은 수, 소켓 재인증·재연결, 차단·해제 전파, 신고 권한·빈도 제한과 5개 화면 axe 검사 통과 | 알림 설정·제재 이의제기, 다중 인스턴스 소켓 전파 운영 검증 필요 |
-| WBS-05.01~07 | 진행중 | `apps/api/src/trades`, `apps/web/app/trades`, `apps/worker/src/trade-maintenance.ts`, `packages/database` | API-WBS05-001~002, CONTRACT-WBS05-004 | 역할별 요청·수락·거절·인도·확정·분쟁·취소, 시간 경계와 자동 확정 통합 검사 통과 | 동시성 부하 검증과 인증된 브라우저 거래 완료 여정 필요 |
-| WBS-06.01~10 | 진행중 | `apps/api/src/payments`, `packages/database` | CONTRACT-WBS06-006 | sandbox 주문·승인·취소·환불·상세·raw 웹훅과 멱등 헤더 REST 계약 반영 | 실제 Toss SDK·서명/조회 연동, 비동기 웹훅 SLA, 자동 정산·지급·대사 운영 검증 필요 |
-| WBS-07.01~06 | 진행중 | `apps/api/src/admin`, `apps/web/app/admin`, `packages/database` | API-WBS07-001~002, CONTRACT-WBS07-005 | 관리자 인가·Argon2 재인증, 사용자 마스킹, 정지·복구·세션 회수, 상품 숨김, 신고 처리와 감사 로그 통합 검사 통과 | 결제 운영 조회·조치 API와 인증된 관리자 브라우저 여정 필요 |
+| WBS-04.01~06 | 검토중 | `apps/api/src/chats`, `apps/api/src/safety`, `apps/web/app/chats`, `apps/web/app/reports`, `apps/web/app/me` | API-WBS04-001~006, E2E-CHAT-001, CONTRACT-F3-001~003 | UUID 멱등성, 읽지 않은 수, 재연결, Redis Socket.IO adapter, 사용자별 제재 이벤트와 차단·신고 검사 통과 | 실제 다중 인스턴스 전파는 UT-OPS-001 증거 필요 |
+| WBS-05.01~07 | 검토중 | `apps/api/src/trades`, `apps/web/app/trades`, `apps/worker/src/trade-maintenance.ts`, `packages/database` | API-WBS05-001~002, CONTRACT-WBS05-004, E2E-MARKET-001 | 에스크로 승인 강제, 역할별 상태 전이, 자동 확정, 정산 기한 설정과 두 사용자 브라우저 거래 여정 구현 | 운영 부하·7일 실시간 경계는 UT-EXT-003·UT-OPS-001 필요 |
+| WBS-06.01~10 | 검토중 | `apps/api/src/payments`, `apps/worker/src/payment-events.ts`, `apps/worker/src/settlement-maintenance.ts`, `packages/database` | CONTRACT-WBS06-006, API-WBS06-001~002 | Toss HTTP/Widget 경계, 제공자 멱등 키, 서명 웹훅, DB+Outbox 저장, 재시도/dead-letter, 정산 지급 브리지와 대사 구현 | 실제 Toss·지급 계정 검증은 UT-EXT-001·003 필요 |
+| WBS-07.01~06 | 검토중 | `apps/api/src/admin`, `apps/web/app/admin`, `packages/database` | API-WBS07-001~002, CONTRACT-WBS07-005 | 기존 조치 외 결제·정산·최근 웹훅 조회, 제공자 대사, 실패 outbox 재처리와 감사 로그 구현 | 운영자 수동 여정과 권한 검수 필요 |
 | WBS-08.01~06 | 검토중 | `packages/ui`, `apps/web/app`, `apps/web/tests` | E2E-A11Y-001~020 | 공통 반응형 셸, 모바일 내비게이션, 44px 입력 대상, skip link와 20개 화면 axe 검사 통과 | 실기기·수동 키보드·스크린리더 검수 필요 |
-| WBS-09.01~07 | 진행중 | `apps/api/src/readiness.service.ts`, `apps/api/src/health.controller.ts`, `apps/web/next.config.ts`, `.github/workflows/ci.yml` | API-READY-001~008, E2E-SECURITY-001 | DB·Redis readiness 200/503, CSP·Referrer·Permissions·nosniff, 전체 릴리스 게이트 통과 | 성능 수치 측정, 백업·복구 훈련, 외부 관측·경보 연동 필요 |
+| WBS-09.01~07 | 검토중 | `apps/api/src/readiness.service.ts`, `apps/api/src/telemetry.ts`, `infra/observability`, `.github/workflows/ci.yml`, `docs/operations-runbook.md` | API-READY-001~008, E2E-SECURITY-001 | 인증/TLS Redis readiness, OTLP trace·metric exporter, 결제·outbox·정산 경보, 성능 smoke, CI와 복구 실행서 구현 | 실제 수집 백엔드·복원 훈련·성능 증거는 UT-OPS-001 필요 |
+| WBS-10.01~06 | 진행중 | `apps/web/tests/market-journey.e2e.spec.ts`, `docs/user-test-checklist.md` | E2E-MARKET-001, UT-EXT-001~003, UT-UX-001, UT-OPS-001 | 자동 릴리스 게이트와 전체 에스크로 브라우저 여정 구현 | 외부 계정·실기기·운영 환경 사용자 테스트 후 출시 판정 가능 |
 
 상태는 `대기`, `진행중`, `검토중`, `완료`, `차단`만 사용한다. `완료`는 코드
 작성 여부가 아니라 이 문서의 작업 완료 정의와 테스트 문서의 종료 기준을 모두

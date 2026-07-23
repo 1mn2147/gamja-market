@@ -5,8 +5,9 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { requestContextMiddleware } from '../src/common/request-context.middleware';
 import { TradeService } from '../src/trades/trade.service';
+import { randomUUID } from 'node:crypto';
 
-const password = 'a-password-that-is-long-enough';
+const password = 'Orchid!Vault2026-Safe';
 const image = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScL9WAAAAABJRU5ErkJggg==';
 
 async function signUpAndLogin(app: INestApplication, email: string) {
@@ -34,12 +35,25 @@ async function createProduct(agent: ReturnType<typeof request.agent>, title: str
   return response.body as { id: string };
 }
 
+async function payForTrade(agent: ReturnType<typeof request.agent>, tradeId: string) {
+  const order = await agent.post('/api/v1/payments/orders').set('idempotency-key', `create-${randomUUID()}`).send({ tradeId });
+  expect(order.status).toBe(201);
+  const paymentKey = `sandbox_${randomUUID()}`;
+  const confirmed = await agent.post(`/api/v1/payments/${order.body.orderId}/confirm`)
+    .set('idempotency-key', `confirm-${randomUUID()}`)
+    .send({ paymentKey, orderId: order.body.orderId, amountKrw: order.body.amountKrw });
+  expect(confirmed.body.status).toBe('APPROVED');
+}
+
 describe('WBS-05 trade state machine API', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
     process.env.NODE_ENV = 'test';
     process.env.COOKIE_SECURE = 'false';
+    await prisma.paymentWebhook.deleteMany();
+    await prisma.paymentOperation.deleteMany();
+    await prisma.payment.deleteMany();
     await prisma.tradeHistory.deleteMany();
     await prisma.trade.deleteMany();
     await prisma.session.deleteMany();
@@ -78,8 +92,31 @@ describe('WBS-05 trade state machine API', () => {
 
     const requested = await buyer.post('/api/v1/trades').send({ productId: product.id });
     expect(requested.status).toBe(201);
-    expect(requested.body).toMatchObject({ status: 'REQUESTED', priceKrw: '15000', role: 'BUYER' });
+    expect(requested.body).toMatchObject({
+      status: 'REQUESTED',
+      priceKrw: '15000',
+      role: 'BUYER',
+      chatId: expect.any(String),
+    });
     const tradeId = requested.body.id as string;
+    const chat = await prisma.chatRoom.findUniqueOrThrow({
+      where: { id: requested.body.chatId as string },
+      include: { participants: { orderBy: { userId: 'asc' } } },
+    });
+    expect(chat).toMatchObject({
+      productId: product.id,
+      buyerId: requested.body.buyerId,
+      sellerId: requested.body.sellerId,
+    });
+    expect(chat.participants.map((participant) => participant.userId).sort())
+      .toEqual([requested.body.buyerId, requested.body.sellerId].sort());
+    expect((await buyer.get('/api/v1/chats')).body.chats)
+      .toEqual(expect.arrayContaining([expect.objectContaining({ id: chat.id })]));
+    expect((await seller.get('/api/v1/chats')).body.chats)
+      .toEqual(expect.arrayContaining([expect.objectContaining({ id: chat.id })]));
+    const deleteDuringTrade = await seller.delete(`/api/v1/products/${product.id}`);
+    expect(deleteDuringTrade.status).toBe(409);
+    expect(deleteDuringTrade.body.code).toBe('PRODUCT_LOCKED_BY_ACTIVE_TRADE');
 
     expect((await outsider.get(`/api/v1/trades/${tradeId}`)).status).toBe(404);
     expect((await buyer.post(`/api/v1/trades/${tradeId}/accept`)).status).toBe(404);
@@ -87,6 +124,7 @@ describe('WBS-05 trade state machine API', () => {
     const accepted = await seller.post(`/api/v1/trades/${tradeId}/accept`);
     expect(accepted.body.status).toBe('ACCEPTED');
     expect((await prisma.product.findUniqueOrThrow({ where: { id: product.id } })).status).toBe('RESERVED');
+    await payForTrade(buyer, tradeId);
 
     const delivered = await seller.post(`/api/v1/trades/${tradeId}/deliver`);
     expect(delivered.body.status).toBe('DELIVERED');
@@ -114,6 +152,7 @@ describe('WBS-05 trade state machine API', () => {
     const autoProduct = await createProduct(seller, '자동 확정 상품');
     const requested = await buyer.post('/api/v1/trades').send({ productId: autoProduct.id });
     await seller.post(`/api/v1/trades/${requested.body.id}/accept`);
+    await payForTrade(buyer, requested.body.id);
     await seller.post(`/api/v1/trades/${requested.body.id}/deliver`);
     await prisma.trade.update({ where: { id: requested.body.id }, data: { autoConfirmAt: new Date(Date.now() - 1) } });
 
@@ -121,5 +160,50 @@ describe('WBS-05 trade state machine API', () => {
     expect(await trades.processDueAutoConfirmations()).toEqual({ confirmed: 1 });
     expect(await trades.processDueAutoConfirmations()).toEqual({ confirmed: 0 });
     expect((await prisma.trade.findUniqueOrThrow({ where: { id: requested.body.id } })).status).toBe('CONFIRMED');
+  });
+
+  it('API-TRADE-004: accepts only one competing buyer and closes every other request', async () => {
+    const seller = await signUpAndLogin(app, `race-seller-${randomUUID()}@example.test`);
+    const buyerA = await signUpAndLogin(app, `race-buyer-a-${randomUUID()}@example.test`);
+    const buyerB = await signUpAndLogin(app, `race-buyer-b-${randomUUID()}@example.test`);
+    const product = await createProduct(seller, '경쟁 구매 상품');
+    const [requestA, requestB] = await Promise.all([
+      buyerA.post('/api/v1/trades').send({ productId: product.id }),
+      buyerB.post('/api/v1/trades').send({ productId: product.id }),
+    ]);
+    expect(requestA.status).toBe(201);
+    expect(requestB.status).toBe(201);
+
+    const attempts = await Promise.all([
+      seller.post(`/api/v1/trades/${requestA.body.id}/accept`),
+      seller.post(`/api/v1/trades/${requestB.body.id}/accept`),
+    ]);
+    expect(attempts.filter((response) => response.status === 201)).toHaveLength(1);
+    expect(attempts.filter((response) => response.status !== 201)).toHaveLength(1);
+
+    const trades = await prisma.trade.findMany({
+      where: { productId: product.id },
+      include: { history: { orderBy: { occurredAt: 'asc' } } },
+      orderBy: { id: 'asc' },
+    });
+    expect(trades.map((trade) => trade.status).sort()).toEqual(['ACCEPTED', 'REJECTED']);
+    const rejected = trades.find((trade) => trade.status === 'REJECTED');
+    expect(rejected).toMatchObject({ reason: 'PRODUCT_RESERVED_BY_ANOTHER_TRADE' });
+    expect(rejected?.history.at(-1)).toMatchObject({
+      fromStatus: 'REQUESTED',
+      toStatus: 'REJECTED',
+      reason: 'PRODUCT_RESERVED_BY_ANOTHER_TRADE',
+    });
+    expect((await prisma.product.findUniqueOrThrow({ where: { id: product.id } })).status).toBe('RESERVED');
+
+    const accepted = trades.find((trade) => trade.status === 'ACCEPTED');
+    expect(accepted).toBeDefined();
+    if (!accepted) throw new Error('ACCEPTED_TRADE_REQUIRED');
+    const cancelled = await seller
+      .post(`/api/v1/trades/${accepted.id}/cancel`)
+      .send({ reason: '판매자의 미결제 거래 취소' });
+    expect(cancelled.status).toBe(201);
+    expect(cancelled.body.status).toBe('CANCELLED');
+    expect((await prisma.product.findUniqueOrThrow({ where: { id: product.id } })).status).toBe('ACTIVE');
   });
 });

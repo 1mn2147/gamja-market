@@ -1,8 +1,9 @@
-import { BadRequestException, ConflictException, ForbiddenException, HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, HttpException, HttpStatus, Injectable, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
 import * as argon2 from 'argon2';
-import { createHash, randomBytes, randomInt, timingSafeEqual } from 'node:crypto';
+import { createHash, createHmac, randomBytes, randomInt, timingSafeEqual } from 'node:crypto';
 import { prisma, UserStatus, VerificationPurpose } from '@gamja/database';
 import { requestContext } from '../common/request-context.middleware.js';
+import { evaluatePassword } from './password-policy.js';
 
 const CODE_TTL_MS = 10 * 60 * 1000;
 const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
@@ -24,7 +25,8 @@ type VerificationResult = { accepted: true; debugCode?: string };
 @Injectable()
 export class AuthService {
   private normalizeIdentifier(identifier: string) {
-    return identifier.trim().toLowerCase();
+    const trimmed = identifier.trim();
+    return trimmed.includes('@') ? trimmed.toLowerCase() : trimmed.replace(/[ -]/g, '');
   }
 
   private identifierHash(identifier: string) {
@@ -39,6 +41,12 @@ export class AuthService {
     return argon2.hash(password, { type: argon2.argon2id, memoryCost: 19_456, timeCost: 2, parallelism: 1 });
   }
 
+  private assertStrongPassword(password: string, identifiers: string[]) {
+    if (!evaluatePassword(password, identifiers).valid) {
+      throw new BadRequestException({ code: 'WEAK_PASSWORD' });
+    }
+  }
+
   private serializeUser(user: AuthenticatedUser) {
     return {
       id: user.id,
@@ -51,6 +59,10 @@ export class AuthService {
   }
 
   private async issueCode(userId: string, identifier: string, purpose: VerificationPurpose): Promise<VerificationResult> {
+    const recent = await prisma.verificationCode.count({
+      where: { identifier, purpose, createdAt: { gt: new Date(Date.now() - 10 * 60 * 1000) } },
+    });
+    if (recent >= 3) throw new HttpException({ code: 'VERIFICATION_RATE_LIMITED' }, HttpStatus.TOO_MANY_REQUESTS);
     const code = randomInt(100_000, 1_000_000).toString();
     const now = new Date();
     await prisma.verificationCode.deleteMany({
@@ -59,7 +71,38 @@ export class AuthService {
     await prisma.verificationCode.create({
       data: { userId, identifier, purpose, codeHash: this.codeHash(code), expiresAt: new Date(now.getTime() + CODE_TTL_MS) },
     });
-    return process.env.NODE_ENV === 'test' ? { accepted: true, debugCode: code } : { accepted: true };
+    if (process.env.NODE_ENV === 'test' || process.env.AUTH_DEBUG_CODES === 'true') {
+      return { accepted: true, debugCode: code };
+    }
+    const url = process.env.CONTACT_DELIVERY_WEBHOOK_URL;
+    const secret = process.env.CONTACT_DELIVERY_WEBHOOK_SECRET;
+    if (!url || !secret) throw new ServiceUnavailableException({ code: 'CONTACT_DELIVERY_NOT_CONFIGURED' });
+    const body = JSON.stringify({ identifier, purpose, code });
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method: 'POST',
+        signal: AbortSignal.timeout(5_000),
+        headers: {
+          'content-type': 'application/json',
+          'x-gamja-signature': createHmac('sha256', secret).update(body).digest('hex'),
+        },
+        body,
+      });
+    } catch {
+      throw new ServiceUnavailableException({ code: 'CONTACT_DELIVERY_UNAVAILABLE' });
+    }
+    if (!response.ok) throw new ServiceUnavailableException({ code: 'CONTACT_DELIVERY_REJECTED' });
+    return { accepted: true };
+  }
+
+  async resendContactConfirmation(identifierInput: string) {
+    const identifier = this.normalizeIdentifier(identifierInput);
+    const user = await prisma.user.findFirst({
+      where: { OR: [{ email: identifier }, { phone: identifier }], status: UserStatus.PENDING },
+    });
+    if (!user) return { accepted: true };
+    return this.issueCode(user.id, identifier, VerificationPurpose.CONTACT_VERIFICATION);
   }
 
   private async consumeCode(identifier: string, purpose: VerificationPurpose, code: string) {
@@ -80,12 +123,20 @@ export class AuthService {
 
   async signUp(input: { email?: string; phone?: string; password: string; adultConfirmed: boolean }) {
     const email = input.email ? this.normalizeIdentifier(input.email) : undefined;
-    const phone = input.phone?.trim();
+    const phone = input.phone ? this.normalizeIdentifier(input.phone) : undefined;
     if (!email && !phone) throw new BadRequestException({ code: 'CONTACT_REQUIRED' });
     if (!input.adultConfirmed) throw new BadRequestException({ code: 'ADULT_CONFIRMATION_REQUIRED' });
+    this.assertStrongPassword(input.password, [email, phone].filter((value): value is string => Boolean(value)));
     const contacts = [...(email ? [{ email }] : []), ...(phone ? [{ phone }] : [])];
     const existing = await prisma.user.findFirst({ where: { OR: contacts } });
-    if (existing) throw new ConflictException({ code: 'CONTACT_ALREADY_REGISTERED' });
+    if (existing) {
+      // A user can safely resume an interrupted signup only by proving knowledge
+      // of the original password. Active/withdrawn accounts remain undisclosed.
+      if (existing.status === UserStatus.PENDING && await argon2.verify(existing.passwordHash, input.password)) {
+        return this.issueCode(existing.id, email ?? phone!, VerificationPurpose.CONTACT_VERIFICATION);
+      }
+      throw new ConflictException({ code: 'CONTACT_ALREADY_REGISTERED' });
+    }
     const user = await prisma.user.create({
       data: { email: email ?? null, phone: phone ?? null, passwordHash: await this.passwordHash(input.password), isAdult: true },
     });
@@ -111,7 +162,7 @@ export class AuthService {
     const throttle = await prisma.loginThrottle.findUnique({ where: { identifierHash: throttleKey } });
     if (throttle?.lockedUntil && throttle.lockedUntil > new Date()) throw new HttpException({ code: 'LOGIN_TEMPORARILY_LOCKED' }, HttpStatus.TOO_MANY_REQUESTS);
     const user = await prisma.user.findFirst({
-      where: { OR: [{ email: identifier }, { phone: identifierInput.trim() }] },
+      where: { OR: [{ email: identifier }, { phone: identifier }] },
       include: { neighborhood: { select: { code: true, name: true } } },
     });
     const verified = user ? await argon2.verify(user.passwordHash, password) : false;
@@ -153,13 +204,14 @@ export class AuthService {
   async requestPasswordReset(identifierInput: string) {
     const identifier = this.normalizeIdentifier(identifierInput);
     const user = await prisma.user.findFirst({
-      where: { OR: [{ email: identifier }, { phone: identifierInput.trim() }], status: UserStatus.ACTIVE, contactVerifiedAt: { not: null } },
+      where: { OR: [{ email: identifier }, { phone: identifier }], status: UserStatus.ACTIVE, contactVerifiedAt: { not: null } },
     });
     return user ? this.issueCode(user.id, identifier, VerificationPurpose.PASSWORD_RESET) : { accepted: true };
   }
 
   async resetPassword(identifierInput: string, code: string, newPassword: string) {
     const identifier = this.normalizeIdentifier(identifierInput);
+    this.assertStrongPassword(newPassword, [identifier]);
     const verification = await this.consumeCode(identifier, VerificationPurpose.PASSWORD_RESET, code);
     if (!verification.userId) throw new BadRequestException({ code: 'INVALID_OR_EXPIRED_CODE' });
     await prisma.$transaction([
@@ -171,12 +223,17 @@ export class AuthService {
 
   async withdraw(user: AuthenticatedUser) {
     const now = new Date();
-    await prisma.$transaction([
+    const [, , hiddenProducts] = await prisma.$transaction([
       prisma.user.update({ where: { id: user.id }, data: { status: UserStatus.WITHDRAWN, withdrawnAt: now, retentionUntil: new Date(now.getTime() + RETENTION_MS) } }),
       prisma.session.updateMany({ where: { userId: user.id, revokedAt: null }, data: { revokedAt: now } }),
+      prisma.product.updateMany({ where: { authorId: user.id, status: 'ACTIVE' }, data: { status: 'HIDDEN' } }),
       prisma.auditLog.create({ data: { actorId: user.id, action: 'ACCOUNT_WITHDRAWN', targetType: 'User', targetId: user.id, requestId: requestContext.getStore()?.requestId ?? 'unavailable' } }),
     ]);
-    return { status: UserStatus.WITHDRAWN, retentionUntil: new Date(now.getTime() + RETENTION_MS).toISOString() };
+    return {
+      status: UserStatus.WITHDRAWN,
+      retentionUntil: new Date(now.getTime() + RETENTION_MS).toISOString(),
+      hiddenProductCount: hiddenProducts.count,
+    };
   }
 
   async setNeighborhood(userId: string, neighborhoodCode: string) {

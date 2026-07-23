@@ -1,12 +1,12 @@
 import { ValidationPipe, type INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { randomUUID } from 'node:crypto';
+import { createHmac, randomUUID } from 'node:crypto';
 import request from 'supertest';
 import { prisma } from '@gamja/database';
 import { AppModule } from '../src/app.module';
 import { requestContextMiddleware } from '../src/common/request-context.middleware';
 
-const password = 'a-payment-test-password-long-enough';
+const password = 'Cobalt!River2026-Pay';
 const image = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScL9WAAAAABJRU5ErkJggg==';
 
 describe('WBS-06 Toss sandbox payments', () => {
@@ -135,10 +135,27 @@ describe('WBS-06 Toss sandbox payments', () => {
       data: { paymentKey, orderId: created.body.orderId, amountKrw: '32100', status: 'DONE' },
     });
     const transmissionId = `transmission-${randomUUID()}`;
+    const webhookSecret = 'integration-webhook-signature-secret';
+    process.env.TOSS_WEBHOOK_SECRET = webhookSecret;
+    const signedHeaders = (body: string) => {
+      const time = Date.now().toString();
+      return { time, signature: createHmac('sha256', webhookSecret).update(`${time}.${body}`).digest('hex') };
+    };
+    const firstSignature = signedHeaders(rawWebhook);
+    const rejectedSignature = await request(app.getHttpServer())
+      .post('/api/v1/payments/webhooks/toss')
+      .set('content-type', 'application/json')
+      .set('toss-transmission-id', `invalid-${randomUUID()}`)
+      .set('toss-transmission-time', firstSignature.time)
+      .set('toss-transmission-signature', '0'.repeat(64))
+      .send(rawWebhook);
+    expect(rejectedSignature.status).toBe(400);
     const webhook = await request(app.getHttpServer())
       .post('/api/v1/payments/webhooks/toss')
       .set('content-type', 'application/json')
       .set('toss-transmission-id', transmissionId)
+      .set('toss-transmission-time', firstSignature.time)
+      .set('toss-transmission-signature', firstSignature.signature)
       .send(rawWebhook);
     expect(webhook.status).toBe(202);
     expect(webhook.body).toMatchObject({ accepted: true, duplicate: false, status: 'PROCESSED' });
@@ -148,6 +165,8 @@ describe('WBS-06 Toss sandbox payments', () => {
       .post('/api/v1/payments/webhooks/toss')
       .set('content-type', 'application/json')
       .set('toss-transmission-id', transmissionId)
+      .set('toss-transmission-time', firstSignature.time)
+      .set('toss-transmission-signature', firstSignature.signature)
       .send(rawWebhook);
     expect(duplicate.body).toMatchObject({ accepted: true, duplicate: true, status: 'PROCESSED' });
     expect(await prisma.paymentWebhook.count({ where: { transmissionId } })).toBe(1);
@@ -157,12 +176,16 @@ describe('WBS-06 Toss sandbox payments', () => {
       sequence: 1,
       data: { paymentKey, orderId: created.body.orderId, amountKrw: '32100', status: 'DONE' },
     });
+    const olderSignature = signedHeaders(olderWebhook);
     const older = await request(app.getHttpServer())
       .post('/api/v1/payments/webhooks/toss')
       .set('content-type', 'application/json')
       .set('toss-transmission-id', `transmission-${randomUUID()}`)
+      .set('toss-transmission-time', olderSignature.time)
+      .set('toss-transmission-signature', olderSignature.signature)
       .send(olderWebhook);
     expect(older.body.status).toBe('IGNORED');
+    delete process.env.TOSS_WEBHOOK_SECRET;
 
     const cancelKey = `cancel-${randomUUID()}`;
     const cancelled = await buyer
@@ -221,5 +244,32 @@ describe('WBS-06 Toss sandbox payments', () => {
     expect(product.status).toBe('SOLD');
     expect(ledger.map((entry) => entry.entryType).sort()).toEqual(['ESCROW_CAPTURE', 'REFUND']);
     expect(ledger.reduce((sum, entry) => sum + entry.amountKrw, 0n)).toBe(0n);
+  });
+
+  it('API-TRADE-008: measures the cancellation window from payment approval', async () => {
+    const { buyer, productId, tradeId } = await acceptedTrade('cancel-window');
+    const order = await buyer
+      .post('/api/v1/payments/orders')
+      .set('idempotency-key', `create-${randomUUID()}`)
+      .send({ tradeId });
+    const paymentKey = `sandbox_${randomUUID()}`;
+    const confirmed = await buyer
+      .post(`/api/v1/payments/${order.body.orderId}/confirm`)
+      .set('idempotency-key', `confirm-${randomUUID()}`)
+      .send({ paymentKey, orderId: order.body.orderId, amountKrw: order.body.amountKrw });
+    expect(confirmed.body.status).toBe('APPROVED');
+    await prisma.payment.update({
+      where: { orderId: order.body.orderId },
+      data: { approvedAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000) },
+    });
+
+    const expired = await buyer
+      .post(`/api/v1/payments/${order.body.orderId}/cancel`)
+      .set('idempotency-key', `cancel-${randomUUID()}`)
+      .send({ reason: '기한이 지난 결제 취소' });
+    expect(expired.status).toBe(409);
+    expect(expired.body.code).toBe('PAYMENT_CANCELLATION_WINDOW_EXPIRED');
+    expect((await prisma.trade.findUniqueOrThrow({ where: { id: tradeId } })).status).toBe('ACCEPTED');
+    expect((await prisma.product.findUniqueOrThrow({ where: { id: productId } })).status).toBe('RESERVED');
   });
 });

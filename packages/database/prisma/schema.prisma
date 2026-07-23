@@ -12,6 +12,7 @@ enum OutboxStatus {
   PROCESSING
   PROCESSED
   FAILED
+  DEAD_LETTER
 }
 
 enum UserRole {
@@ -77,6 +78,9 @@ enum SettlementStatus {
   HOLD
   PAUSED
   READY
+  PROCESSING
+  SETTLED
+  FAILED
   SANDBOX_SETTLED
 }
 
@@ -237,10 +241,14 @@ model OutboxEvent {
   aggregateId   String
   payload       Json
   status        OutboxStatus @default(PENDING)
+  attempts      Int         @default(0)
+  availableAt   DateTime    @default(now())
+  claimedAt     DateTime?
+  lastError     String?
   occurredAt    DateTime    @default(now())
   processedAt   DateTime?
 
-  @@index([status, occurredAt])
+  @@index([status, availableAt, occurredAt])
 }
 
 model AuditLog {
@@ -396,6 +404,11 @@ model Payment {
   approvedAt          DateTime?
   cancelledAt         DateTime?
   refundedAt          DateTime?
+  settlementAvailableAt DateTime?
+  settledAt           DateTime?
+  reconciliationCheckedAt DateTime?
+  provider            String             @default("TOSS")
+  failureCode         String?
   createdAt           DateTime           @default(now())
   updatedAt           DateTime           @updatedAt
   trade               Trade              @relation(fields: [tradeId], references: [id], onDelete: Cascade)

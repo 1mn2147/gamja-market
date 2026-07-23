@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
-const origin = process.env.NEXT_PUBLIC_API_ORIGIN ?? 'http://localhost:4000';
 type Block = { blockedId: string; displayName: string; createdAt: string };
 
 export default function BlockedUsersPage() {
@@ -11,7 +10,7 @@ export default function BlockedUsersPage() {
 
   const reload = useCallback(async () => {
     try {
-      const response = await fetch(`${origin}/api/v1/blocks`, { credentials: 'include' });
+      const response = await fetch('/api/v1/blocks', { credentials: 'include' });
       if (!response.ok) throw new Error();
       const data = await response.json() as { blocks: Block[] };
       setBlocks(data.blocks);
@@ -24,7 +23,7 @@ export default function BlockedUsersPage() {
   useEffect(() => { void reload(); }, [reload]);
 
   async function unblock(blockedId: string) {
-    const response = await fetch(`${origin}/api/v1/blocks/${blockedId}`, { method: 'DELETE', credentials: 'include' });
+    const response = await fetch(`/api/v1/blocks/${blockedId}`, { method: 'DELETE', credentials: 'include' });
     if (!response.ok) {
       setMessage('차단을 해제할 수 없습니다.');
       return;

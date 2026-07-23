@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { SiteShell } from '@gamja/ui';
+import { AuthNavAction } from './auth-nav-action';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ko"><body><SiteShell>{children}</SiteShell></body></html>;
+  return <html lang="ko"><body><SiteShell headerAction={<AuthNavAction />}>{children}</SiteShell></body></html>;
 }

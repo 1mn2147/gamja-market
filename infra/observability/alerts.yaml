@@ -11,3 +11,8 @@ groups:
         for: 5m
         labels: { severity: critical }
         annotations: { summary: "Payment reconciliation needs review" }
+      - alert: SettlementReleaseFailure
+        expr: gamja_settlement_failures > 0
+        for: 5m
+        labels: { severity: critical }
+        annotations: { summary: "Settlement release failed and requires audited retry" }

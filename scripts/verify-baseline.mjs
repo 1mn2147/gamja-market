@@ -15,8 +15,8 @@ const contents = await Promise.all(required.map(async (file) => [file, await rea
 const requirements = await readFile('docs/requirements.md', 'utf8');
 const requirementIds = [...requirements.matchAll(/^\| ((?:AUTH|ITEM|SEARCH|CHAT|PAY|SAFE|ADMIN|SEC)-\d{3}) /gm)].map((match) => match[1]);
 
-if (requirementIds.length !== 88 || new Set(requirementIds).size !== 88) {
-  throw new Error(`Expected 88 unique requirement IDs, received ${requirementIds.length}.`);
+if (requirementIds.length !== 89 || new Set(requirementIds).size !== 89) {
+  throw new Error(`Expected 89 unique requirement IDs, received ${requirementIds.length}.`);
 }
 
 const byFile = new Map(contents);
@@ -43,6 +43,8 @@ for (const expected of [
   '/payments/webhooks/toss:',
   '/admin/overview:',
   '/admin/audit-logs:',
+  '/admin/payments:',
+  '/admin/outbox-events:',
   'SendMessageRequest:',
   'BlockUserRequest:',
   'CreateReportRequest:',
@@ -56,8 +58,9 @@ for (const expected of [
   'PaymentWebhookReceipt:',
   'name: Idempotency-Key',
   'name: toss-transmission-id',
+  'name: toss-transmission-time',
+  'name: toss-transmission-signature',
   'x-raw-body-required: true',
-  'x-sandbox-only: true',
   'AdminActionRequest:',
   'application/problem+json',
 ]) {

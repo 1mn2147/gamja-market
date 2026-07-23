@@ -60,8 +60,13 @@ export class PaymentController {
 
   @Post('webhooks/toss')
   @HttpCode(202)
-  webhook(@Req() request: RawBodyRequest<Request>, @Headers('toss-transmission-id') transmissionId: string | undefined) {
+  webhook(
+    @Req() request: RawBodyRequest<Request>,
+    @Headers('toss-transmission-id') transmissionId: string | undefined,
+    @Headers('toss-transmission-time') transmissionTime: string | undefined,
+    @Headers('toss-transmission-signature') signature: string | undefined,
+  ) {
     if (!request.rawBody) throw new BadRequestException({ code: 'RAW_WEBHOOK_BODY_REQUIRED' });
-    return this.payments.receiveWebhook(transmissionId, request.rawBody.toString('utf8'));
+    return this.payments.receiveWebhook(transmissionId, request.rawBody.toString('utf8'), transmissionTime, signature);
   }
 }
